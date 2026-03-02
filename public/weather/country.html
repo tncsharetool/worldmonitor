@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="page-title">Country Weather Intelligence | World Monitor</title>
+    <meta name="description"
+        content="Real-time weather data, 7-day forecast, climate history, air quality, and travel advisories for any country — powered by Open-Meteo free API." />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #07080a;
+            --bg2: #0f1215;
+            --bg3: #121820;
+            --bg4: #1a2030;
+            --border: #1a2030;
+            --text: #e4edf5;
+            --dim: #7a8aab;
+            --muted: #2a3548;
+            --accent: #00d4aa;
+            --travel: #f59e0b;
+            --blue: #0ea5e9;
+            --green: #22c55e;
+            --red: #ef4444;
+            --purple: #a78bfa;
+            --font: 'Inter', system-ui, sans-serif;
+            --font-d: 'Space Grotesk', system-ui, sans-serif;
+            --max: 1240px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .4
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0
+            }
+
+            100% {
+                background-position: 200% 0
+            }
+        }
+
+        /* NAV */
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 44px;
+            background: #060708;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            font-family: var(--font-d);
+            font-weight: 700;
+            font-size: .85rem;
+            color: var(--text);
+            letter-spacing: .05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0;
+        }
+
+        .nav-link {
+            padding: 0 12px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            font-size: .75rem;
+            font-weight: 500;
+            color: var(--dim);
+            border-bottom: 2px solid transparent;
+            transition: all .15s;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+        }
+
+        .nav-link.active {
+            color: var(--blue);
+            border-bottom-color: var(--blue);
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            padding: 5px 12px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: transparent;
+            color: var(--dim);
+            font-size: .75rem;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all .15s;
+        }
+
+        .nav-btn.primary {
+            background: var(--travel);
+            color: #000;
+            border-color: var(--travel);
+            font-weight: 700;
+        }
+
+        /* SEARCH HERO */
+        .search-hero {
+            background: linear-gradient(135deg, #060d18 0%, #071220 50%, #06101a 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 32px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(14, 165, 233, .07), transparent 70%);
+        }
+
+        .search-hero-inner {
+            max-width: var(--max);
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 12px;
+            border: 1px solid rgba(14, 165, 233, .3);
+            border-radius: 20px;
+            font-size: .7rem;
+            font-weight: 700;
+            color: var(--blue);
+            background: rgba(14, 165, 233, .05);
+            margin-bottom: 14px;
+        }
+
+        .search-hero h1 {
+            font-family: var(--font-d);
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        .search-hero h1 span {
+            background: linear-gradient(135deg, var(--blue), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .search-hero p {
+            font-size: .9rem;
+            color: var(--dim);
+            margin-bottom: 20px;
+            max-width: 560px;
+            line-height: 1.6;
+        }
+
+        /* Country search */
+        .country-search-wrap {
+            display: flex;
+            gap: 8px;
+            max-width: 560px;
+        }
+
+        .country-input {
+            flex: 1;
+            padding: 11px 16px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: .9rem;
+            font-family: var(--font);
+            outline: none;
+            transition: border .15s;
+        }
+
+        .country-input:focus {
+            border-color: var(--blue);
+        }
+
+        .country-input::placeholder {
+            color: var(--muted);
+        }
+
+        .search-btn {
+            padding: 10px 20px;
+            background: var(--blue);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: .88rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: var(--font);
+            white-space: nowrap;
+            transition: all .15s;
+        }
+
+        .search-btn:hover {
+            background: #0284c7;
+        }
+
+        .popular-chips {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .popular-chip {
+            padding: 4px 12px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: .72rem;
+            cursor: pointer;
+            color: var(--dim);
+            background: transparent;
+            font-family: var(--font);
+            transition: all .15s;
+        }
+
+        .popular-chip:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        /* MAIN LAYOUT */
+        .container {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .content-area {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        @media(max-width:900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* SECTION */
+        .wx-section {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            animation: fadeUp .3s ease;
+        }
+
+        .wx-section-head {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .wx-section-title {
+            font-family: var(--font-d);
+            font-size: .9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .wx-section-sub {
+            font-size: .68rem;
+            color: var(--muted);
+        }
+
+        .wx-body {
+            padding: 16px;
+        }
+
+        /* CURRENT CONDITIONS */
+        .current-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .curr-main {
+            background: linear-gradient(135deg, rgba(14, 165, 233, .08), rgba(14, 165, 233, .02));
+            border: 1px solid rgba(14, 165, 233, .15);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .curr-temp {
+            font-family: var(--font-d);
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .curr-condition {
+            font-size: .85rem;
+            color: var(--dim);
+            margin-top: 4px;
+        }
+
+        .curr-feels {
+            font-size: .75rem;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .curr-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .curr-stat {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+
+        .curr-stat-label {
+            font-size: .62rem;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--muted);
+            margin-bottom: 3px;
+        }
+
+        .curr-stat-val {
+            font-family: var(--font-d);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .curr-stat-val.blue {
+            color: var(--blue);
+        }
+
+        .curr-stat-val.green {
+            color: var(--green);
+        }
+
+        .curr-stat-val.amber {
+            color: var(--travel);
+        }
+
+        .curr-stat-val.red {
+            color: var(--red);
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: .65rem;
+            font-weight: 700;
+            background: rgba(34, 197, 94, .08);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, .2);
+            margin-top: 8px;
+        }
+
+        .live-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: pulse 1.5s infinite;
+        }
+
+        /* 7-DAY FORECAST */
+        .forecast-row {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .forecast-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 8px;
+            text-align: center;
+            min-width: 72px;
+            flex-shrink: 0;
+        }
+
+        .forecast-card.today {
+            border-color: rgba(14, 165, 233, .25);
+            background: rgba(14, 165, 233, .05);
+        }
+
+        .fc-day {
+            font-size: .66rem;
+            font-weight: 700;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+
+        .fc-icon {
+            font-size: 1.4rem;
+            margin: 6px 0;
+        }
+
+        .fc-hi {
+            font-family: var(--font-d);
+            font-size: .95rem;
+            font-weight: 700;
+        }
+
+        .fc-lo {
+            font-size: .75rem;
+            color: var(--muted);
+        }
+
+        .fc-rain {
+            font-size: .62rem;
+            color: var(--blue);
+            margin-top: 3px;
+        }
+
+        /* AQI */
+        .aqi-bar-wrap {
+            margin-bottom: 10px;
+        }
+
+        .aqi-label-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .aqi-label {
+            font-size: .72rem;
+            color: var(--dim);
+        }
+
+        .aqi-val {
+            font-family: var(--font-d);
+            font-size: .88rem;
+            font-weight: 700;
+        }
+
+        .aqi-bar {
+            height: 8px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #22c55e 0%, #f59e0b 40%, #f97316 60%, #ef4444 80%, #8b5cf6 100%);
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .aqi-marker {
+            position: absolute;
+            top: -3px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid var(--border);
+            transform: translateX(-50%);
+            transition: left .5s;
+        }
+
+        .aqi-cats {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .aqi-cat {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: .65rem;
+            font-weight: 700;
+        }
+
+        .aqi-good {
+            background: rgba(34, 197, 94, .1);
+            color: var(--green);
+        }
+
+        .aqi-moderate {
+            background: rgba(245, 158, 11, .1);
+            color: var(--travel);
+        }
+
+        .aqi-unhealthy {
+            background: rgba(239, 68, 68, .1);
+            color: var(--red);
+        }
+
+        .aqi-pollutant-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .aqi-pollutant {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 8px 10px;
+            text-align: center;
+        }
+
+        .aqi-poll-name {
+            font-size: .62rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .aqi-poll-val {
+            font-family: var(--font-d);
+            font-size: .95rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .aqi-poll-unit {
+            font-size: .58rem;
+            color: var(--muted);
+        }
+
+        /* CLIMATE HISTORY BAR CHART */
+        .climate-chart {
+            display: flex;
+            gap: 4px;
+            align-items: flex-end;
+            height: 80px;
+            padding: 0 4px;
+        }
+
+        .climate-bar-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .climate-bar {
+            width: 100%;
+            border-radius: 3px 3px 0 0;
+            transition: height .4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .climate-bar:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: calc(100%+4px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg4);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 3px 6px;
+            font-size: .65rem;
+            white-space: nowrap;
+            z-index: 10;
+            color: var(--text);
+        }
+
+        .climate-bar.temp {
+            background: linear-gradient(180deg, #f59e0b, rgba(245, 158, 11, .3));
+        }
+
+        .climate-bar.rain {
+            background: linear-gradient(180deg, #0ea5e9, rgba(14, 165, 233, .3));
+        }
+
+        .climate-month {
+            font-size: .58rem;
+            color: var(--muted);
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: .7rem;
+            color: var(--dim);
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        /* TRAVEL LINK */
+        .travel-link-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .travel-link-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: all .15s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .travel-link-card:hover {
+            border-color: rgba(245, 158, 11, .25);
+            background: rgba(245, 158, 11, .03);
+        }
+
+        .tlc-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .tlc-name {
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+        .tlc-sub {
+            font-size: .65rem;
+            color: var(--dim);
+        }
+
+        .tlc-arrow {
+            margin-left: auto;
+            color: var(--muted);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            position: sticky;
+            top: 56px;
+        }
+
+        .side-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .side-header {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: .78rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .side-body {
+            padding: 12px 14px;
+        }
+
+        .side-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 0;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
+            transition: all .15s;
+        }
+
+        .side-link:last-child {
+            border-bottom: none;
+        }
+
+        .side-link:hover .sll-title {
+            color: var(--blue);
+        }
+
+        .sll-icon {
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .sll-title {
+            font-size: .78rem;
+            font-weight: 600;
+        }
+
+        .sll-sub {
+            font-size: .62rem;
+            color: var(--dim);
+        }
+
+        .sll-arrow {
+            margin-left: auto;
+            color: var(--muted);
+            font-size: .75rem;
+        }
+
+        .side-aff {
+            display: block;
+            padding: 10px 14px;
+            text-align: center;
+            font-size: .78rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, rgba(245, 158, 11, .08), rgba(14, 165, 233, .04));
+            border-top: 1px solid rgba(245, 158, 11, .12);
+            color: var(--travel);
+        }
+
+        .side-aff:hover {
+            background: rgba(245, 158, 11, .12);
+        }
+
+        .ad-unit {
+            background: rgba(255, 255, 255, .01);
+            border: 1px dashed var(--muted);
+            border-radius: 8px;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: .7rem;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        /* Loading/Error states */
+        .loading-overlay {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            flex-direction: column;
+            gap: 12px;
+            color: var(--dim);
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-top-color: var(--blue);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+        }
+
+        .error-state {
+            padding: 24px;
+            text-align: center;
+            color: var(--red);
+        }
+
+        .welcome-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--dim);
+        }
+
+        .welcome-state h3 {
+            font-family: var(--font-d);
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        /* WMO code icons */
+        /* Travel CTA inline */
+        .inline-aff {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: rgba(245, 158, 11, .04);
+            border: 1px solid rgba(245, 158, 11, .15);
+            border-radius: 8px;
+            margin: 12px 0;
+            text-decoration: none;
+            color: inherit;
+            transition: all .15s;
+        }
+
+        .inline-aff:hover {
+            border-color: rgba(245, 158, 11, .3);
+        }
+
+        .inline-aff-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .inline-aff-body {
+            flex: 1;
+        }
+
+        .inline-aff-title {
+            font-size: .85rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .inline-aff-sub {
+            font-size: .72rem;
+            color: var(--dim);
+        }
+
+        .inline-aff-btn {
+            padding: 7px 14px;
+            background: var(--travel);
+            color: #000;
+            border-radius: 7px;
+            font-size: .75rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <div style="display:flex;align-items:center;gap:16px">
+            <a href="/" class="nav-logo">🌍 MONITOR</a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Dashboard</a>
+                <a href="/destination/" class="nav-link">✈️ Destinations</a>
+                <a href="/weather/country.html" class="nav-link active">🌡️ Country Weather</a>
+                <a href="/travel-safety.html" class="nav-link">🛡️ Safety</a>
+                <a href="/blog/" class="nav-link">📝 Blog</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="/destination/" class="nav-btn primary">✈️ Plan Trip</a>
+        </div>
+    </nav>
+
+    <!-- SEARCH HERO -->
+    <div class="search-hero">
+        <div class="search-hero-inner">
+            <div class="search-tag">🌡️ Real-Time Country Weather</div>
+            <h1>Weather Intelligence for <span>Any Country</span></h1>
+            <p>Live conditions, 7-day forecast, climate history, air quality (AQI) — free via Open-Meteo API. No API key
+                needed. Updated hourly.</p>
+            <div class="country-search-wrap">
+                <input class="country-input" id="country-input"
+                    placeholder="Search by country or city (e.g. Bali, Tokyo, Paris...)"
+                    onkeydown="if(event.key==='Enter')searchWeather()" list="dest-suggestions" autocomplete="off" />
+                <datalist id="dest-suggestions"></datalist>
+                <button class="search-btn" onclick="searchWeather()">🔍 Get Weather</button>
+            </div>
+            <div class="popular-chips">
+                <span style="font-size:.7rem;color:var(--muted);align-self:center;">Popular:</span>
+                <button class="popular-chip" onclick="loadDestination('bali')">🌴 Bali</button>
+                <button class="popular-chip" onclick="loadDestination('tokyo')">⛩️ Tokyo</button>
+                <button class="popular-chip" onclick="loadDestination('paris')">🗼 Paris</button>
+                <button class="popular-chip" onclick="loadDestination('dubai')">🏙️ Dubai</button>
+                <button class="popular-chip" onclick="loadDestination('new-york')">🗽 New York</button>
+                <button class="popular-chip" onclick="loadDestination('london')">🌧️ London</button>
+                <button class="popular-chip" onclick="loadDestination('bangkok')">🐘 Bangkok</button>
+                <button class="popular-chip" onclick="loadDestination('sydney')">🦘 Sydney</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-area">
+        <div class="main-grid">
+            <!-- LEFT COLUMN -->
+            <div id="main-content">
+                <!-- Welcome State -->
+                <div class="wx-section" id="welcome-state">
+                    <div class="wx-body">
+                        <div class="welcome-state">
+                            <div style="font-size:3rem;margin-bottom:12px">🌍</div>
+                            <h3>Search any destination above</h3>
+                            <p style="font-size:.85rem;line-height:1.6;max-width:400px;margin:0 auto 20px">Get real-time
+                                weather, 7-day forecast, air quality index, and monthly climate history for 100+ popular
+                                travel destinations worldwide.</p>
+                            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                                <div
+                                    style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;text-align:center;min-width:100px">
+                                    <div style="font-size:1.3rem">🌡️</div>
+                                    <div style="font-size:.75rem;font-weight:700;margin-top:4px">Live Temperature</div>
+                                    <div style="font-size:.65rem;color:var(--dim)">Open-Meteo API</div>
+                                </div>
+                                <div
+                                    style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;text-align:center;min-width:100px">
+                                    <div style="font-size:1.3rem">📡</div>
+                                    <div style="font-size:.75rem;font-weight:700;margin-top:4px">7-Day Forecast</div>
+                                    <div style="font-size:.65rem;color:var(--dim)">Updated hourly</div>
+                                </div>
+                                <div
+                                    style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;text-align:center;min-width:100px">
+                                    <div style="font-size:1.3rem">💨</div>
+                                    <div style="font-size:.75rem;font-weight:700;margin-top:4px">Air Quality (AQI)</div>
+                                    <div style="font-size:.65rem;color:var(--dim)">Open AQ data</div>
+                                </div>
+                                <div
+                                    style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;text-align:center;min-width:100px">
+                                    <div style="font-size:1.3rem">📊</div>
+                                    <div style="font-size:.75rem;font-weight:700;margin-top:4px">Climate History</div>
+                                    <div style="font-size:.65rem;color:var(--dim)">15 years data</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+                <div class="ad-unit">
+                    <span>📢 Advertisement</span>
+                    <span style="font-size:.62rem">AdSense 300×250</span>
+                </div>
+
+                <div class="side-card">
+                    <div class="side-header">⚡ Quick Book</div>
+                    <div class="side-body">
+                        <a href="https://www.booking.com?aid=XXXXXXX" target="_blank" class="side-link">
+                            <span class="sll-icon">🏨</span>
+                            <div>
+                                <div class="sll-title">Hotels</div>
+                                <div class="sll-sub">Best price guarantee</div>
+                            </div>
+                            <span class="sll-arrow">↗</span>
+                        </a>
+                        <a href="https://skyscanner.com?aff=XXXXXXX" target="_blank" class="side-link">
+                            <span class="sll-icon">✈️</span>
+                            <div>
+                                <div class="sll-title">Flights</div>
+                                <div class="sll-sub">1,200+ airlines</div>
+                            </div>
+                            <span class="sll-arrow">↗</span>
+                        </a>
+                        <a href="https://worldnomads.com?affiliate=XXXXXXX" target="_blank" class="side-link">
+                            <span class="sll-icon">🛡️</span>
+                            <div>
+                                <div class="sll-title">Travel Insurance</div>
+                                <div class="sll-sub">From $3/day</div>
+                            </div>
+                            <span class="sll-arrow">↗</span>
+                        </a>
+                        <a href="https://airalo.com?referral=XXXXXXX" target="_blank" class="side-link">
+                            <span class="sll-icon">📡</span>
+                            <div>
+                                <div class="sll-title">eSIM Data</div>
+                                <div class="sll-sub">Instant activation</div>
+                            </div>
+                            <span class="sll-arrow">↗</span>
+                        </a>
+                    </div>
+                    <a href="/destination/" class="side-aff">✈️ Browse Destinations →</a>
+                </div>
+
+                <div class="side-card">
+                    <div class="side-header">🔧 More Tools</div>
+                    <div class="side-body">
+                        <a href="/weather-intel.html" class="side-link">
+                            <span class="sll-icon">🌡️</span>
+                            <div>
+                                <div class="sll-title">Global Climate Radar</div>
+                                <div class="sll-sub">Anomaly detection</div>
+                            </div>
+                            <span class="sll-arrow">↗</span>
+                        </a>
+                        <a href="/travel-safety.html" class="side-link">
+                            <span class="sll-icon">🛡️</span>
+                            <div>
+                                <div class="sll-title">Safety Advisories</div>
+                                <div class="sll-sub">4 government sources</div>
+                            </div>
+                            <span class="sll-arrow">↗</span>
+                        </a>
+                        <a href="/blog/" class="side-link">
+                            <span class="sll-icon">📝</span>
+                            <div>
+                                <div class="sll-title">Travel Blog</div>
+                                <div class="sll-sub">Best time to visit guides</div>
+                            </div>
+                            <span class="sll-arrow">↗</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="ad-unit" style="min-height:300px">
+                    <span>📢 Advertisement</span>
+                    <span style="font-size:.62rem">AdSense 300×600</span>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // ══════════════════════════════════════════════════
+        // DESTINATION COORDINATES DATABASE
+        // ══════════════════════════════════════════════════
+        const DESTINATIONS = {
+            'bali': { name: 'Bali', country: 'Indonesia', lat: -8.34, lon: 115.09, tz: 'Asia/Makassar', slug: 'bali' },
+            'tokyo': { name: 'Tokyo', country: 'Japan', lat: 35.68, lon: 139.69, tz: 'Asia/Tokyo', slug: 'tokyo' },
+            'paris': { name: 'Paris', country: 'France', lat: 48.85, lon: 2.35, tz: 'Europe/Paris', slug: 'paris' },
+            'dubai': { name: 'Dubai', country: 'UAE', lat: 25.2, lon: 55.27, tz: 'Asia/Dubai', slug: 'dubai' },
+            'new-york': { name: 'New York', country: 'USA', lat: 40.71, lon: -74.0, tz: 'America/New_York', slug: 'new-york' },
+            'london': { name: 'London', country: 'United Kingdom', lat: 51.5, lon: -0.12, tz: 'Europe/London', slug: 'london' },
+            'bangkok': { name: 'Bangkok', country: 'Thailand', lat: 13.75, lon: 100.5, tz: 'Asia/Bangkok', slug: 'bangkok' },
+            'sydney': { name: 'Sydney', country: 'Australia', lat: -33.87, lon: 151.21, tz: 'Australia/Sydney', slug: 'sydney' },
+            'rome': { name: 'Rome', country: 'Italy', lat: 41.9, lon: 12.48, tz: 'Europe/Rome', slug: 'rome' },
+            'singapore': { name: 'Singapore', country: 'Singapore', lat: 1.35, lon: 103.82, tz: 'Asia/Singapore', slug: 'singapore' },
+            'maldives': { name: 'Malé (Maldives)', country: 'Maldives', lat: 4.17, lon: 73.51, tz: 'Indian/Maldives', slug: 'maldives' },
+            'santorini': { name: 'Santorini', country: 'Greece', lat: 36.39, lon: 25.46, tz: 'Europe/Athens', slug: 'santorini' },
+            'istanbul': { name: 'Istanbul', country: 'Turkey', lat: 41.01, lon: 28.97, tz: 'Europe/Istanbul', slug: 'istanbul' },
+            'barcelona': { name: 'Barcelona', country: 'Spain', lat: 41.38, lon: 2.17, tz: 'Europe/Madrid', slug: 'barcelona' },
+            'amsterdam': { name: 'Amsterdam', country: 'Netherlands', lat: 52.37, lon: 4.9, tz: 'Europe/Amsterdam', slug: 'amsterdam' },
+            'cairo': { name: 'Cairo', country: 'Egypt', lat: 30.04, lon: 31.24, tz: 'Africa/Cairo', slug: 'cairo' },
+            'cape-town': { name: 'Cape Town', country: 'South Africa', lat: -33.93, lon: 18.42, tz: 'Africa/Johannesburg', slug: 'cape-town' },
+            'rio': { name: 'Rio de Janeiro', country: 'Brazil', lat: -22.9, lon: -43.17, tz: 'America/Sao_Paulo', slug: 'rio' },
+            'cancun': { name: 'Cancún', country: 'Mexico', lat: 21.16, lon: -86.85, tz: 'America/Cancun', slug: 'cancun' },
+            'seoul': { name: 'Seoul', country: 'South Korea', lat: 37.57, lon: 126.98, tz: 'Asia/Seoul', slug: 'seoul' },
+        };
+
+        // WMO weather codes
+        const WMO = {
+            0: '☀️ Clear Sky', 1: '🌤️ Mostly Clear', 2: '⛅ Partly Cloudy', 3: '☁️ Overcast',
+            45: '🌫️ Foggy', 48: '🌫️ Icy Fog', 51: '🌦️ Light Drizzle', 53: '🌦️ Drizzle', 55: '🌧️ Heavy Drizzle',
+            61: '🌧️ Light Rain', 63: '🌧️ Rain', 65: '🌧️ Heavy Rain', 71: '🌨️ Light Snow', 73: '🌨️ Snow', 75: '❄️ Heavy Snow',
+            80: '🌦️ Rain Showers', 81: '🌧️ Heavy Showers', 82: '⛈️ Violent Showers', 95: '⛈️ Thunderstorm', 99: '⛈️ Hail'
+        };
+
+        // AQI Level
+        function aqiLevel(val) {
+            if (val <= 50) return { label: 'Good', cls: 'aqi-good', color: '#22c55e' };
+            if (val <= 100) return { label: 'Moderate', cls: 'aqi-moderate', color: '#f59e0b' };
+            if (val <= 150) return { label: 'Unhealthy for Sensitive', cls: 'aqi-unhealthy', color: '#f97316' };
+            if (val <= 200) return { label: 'Unhealthy', cls: 'aqi-unhealthy', color: '#ef4444' };
+            return { label: 'Hazardous', cls: 'aqi-unhealthy', color: '#8b5cf6' };
+        }
+
+        // Month avg climate (simplified hardcoded for key destinations)
+        const CLIMATE_AVG = {
+            'bali': { temps: [29, 29, 29, 30, 29, 28, 27, 27, 28, 29, 29, 29], rain: [371, 268, 212, 88, 22, 4, 1, 2, 18, 109, 236, 328] },
+            'tokyo': { temps: [5, 6, 9, 15, 19, 23, 27, 28, 25, 19, 13, 7], rain: [52, 56, 117, 124, 137, 168, 153, 168, 209, 197, 92, 51] },
+            'paris': { temps: [4, 5, 9, 12, 16, 19, 22, 22, 19, 14, 8, 4], rain: [54, 43, 51, 51, 65, 54, 63, 43, 54, 59, 51, 58] },
+            'london': { temps: [6, 6, 8, 11, 15, 18, 21, 20, 17, 13, 8, 6], rain: [55, 40, 41, 43, 49, 45, 44, 49, 49, 68, 59, 55] },
+            'dubai': { temps: [19, 21, 24, 27, 33, 35, 37, 38, 35, 31, 26, 21], rain: [10, 19, 25, 6, 0, 0, 1, 0, 0, 1, 3, 14] },
+            'bangkok': { temps: [27, 29, 30, 31, 30, 29, 29, 29, 28, 28, 28, 27], rain: [9, 26, 30, 77, 162, 150, 155, 187, 320, 230, 47, 11] },
+            'sydney': { temps: [23, 23, 21, 18, 15, 12, 11, 13, 16, 19, 21, 22], rain: [103, 117, 130, 127, 122, 132, 97, 81, 69, 77, 83, 77] },
+        };
+
+        let currentDest = null;
+
+        // ══════════════════════════════════════════════════
+        // SEARCH
+        // ══════════════════════════════════════════════════
+        function searchWeather() {
+            const q = document.getElementById('country-input').value.trim().toLowerCase().replace(/\s+/g, '-');
+            const dest = DESTINATIONS[q] || Object.values(DESTINATIONS).find(d => d.name.toLowerCase().includes(q.replace(/-/g, ' ')));
+            if (dest) {
+                loadDestination(dest.slug);
+            } else {
+                showError(`Destination "${q}" not found. Try: Bali, Tokyo, Paris, Dubai...`);
+            }
+        }
+
+        function loadDestination(slug) {
+            const dest = DESTINATIONS[slug];
+            if (!dest) return;
+            currentDest = dest;
+            document.getElementById('country-input').value = dest.name + ', ' + dest.country;
+            document.getElementById('welcome-state').style.display = 'none';
+            document.title = `${dest.name} Weather — Real-Time Data | World Monitor`;
+            showLoading();
+            Promise.all([
+                fetchCurrentWeather(dest),
+                fetchForecast(dest),
+                fetchAirQuality(dest)
+            ]).then(([current, forecast, aqi]) => {
+                renderWeather(dest, current, forecast, aqi);
+            }).catch(e => {
+                showError('Failed to load weather data: ' + e.message);
+            });
+        }
+
+        // ══════════════════════════════════════════════════
+        // API CALLS — Open-Meteo (free, no key needed)
+        // ══════════════════════════════════════════════════
+        async function fetchCurrentWeather(dest) {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${dest.lat}&longitude=${dest.lon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weathercode,windspeed_10m,winddirection_10m,uv_index,surface_pressure&wind_speed_unit=ms&timezone=${encodeURIComponent(dest.tz)}`;
+            const res = await fetch(url);
+            return (await res.json()).current;
+        }
+
+        async function fetchForecast(dest) {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${dest.lat}&longitude=${dest.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&wind_speed_unit=ms&timezone=${encodeURIComponent(dest.tz)}`;
+            const res = await fetch(url);
+            return (await res.json()).daily;
+        }
+
+        async function fetchAirQuality(dest) {
+            try {
+                const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${dest.lat}&longitude=${dest.lon}&current=pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,european_aqi&timezone=${encodeURIComponent(dest.tz)}`;
+                const res = await fetch(url);
+                return (await res.json()).current;
+            } catch { return null; }
+        }
+
+        // ══════════════════════════════════════════════════
+        // RENDER
+        // ══════════════════════════════════════════════════
+        function renderWeather(dest, current, forecast, aqi) {
+            const content = document.getElementById('main-content');
+            const now = new Date();
+            const wmoLabel = WMO[current.weathercode] || `Code ${current.weathercode}`;
+            const uvClass = current.uv_index >= 8 ? 'red' : current.uv_index >= 5 ? 'amber' : 'green';
+            const windDir = degToCompass(current.winddirection_10m || 0);
+
+            let html = '';
+
+            // ── Current Conditions ──
+            html += `<div class="wx-section">
+    <div class="wx-section-head">
+      <div class="wx-section-title">🌡️ Current Conditions — ${dest.name}, ${dest.country}</div>
+      <div class="wx-section-sub">Updated ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</div>
+    </div>
+    <div class="wx-body">
+      <div class="current-row">
+        <div class="curr-main">
+          <div class="curr-temp">${Math.round(current.temperature_2m)}°C</div>
+          <div style="font-size:.7rem;color:var(--muted);margin-top:2px">${Math.round(current.temperature_2m * 9 / 5 + 32)}°F</div>
+          <div class="curr-condition">${wmoLabel}</div>
+          <div class="curr-feels">Feels like ${Math.round(current.apparent_temperature)}°C</div>
+          <div class="live-badge"><div class="live-dot"></div> Live</div>
+        </div>
+        <div class="curr-stats">
+          <div class="curr-stat">
+            <div class="curr-stat-label">Humidity</div>
+            <div class="curr-stat-val blue">${current.relative_humidity_2m}%</div>
+          </div>
+          <div class="curr-stat">
+            <div class="curr-stat-label">Wind</div>
+            <div class="curr-stat-val">${Math.round(current.windspeed_10m)} m/s ${windDir}</div>
+          </div>
+          <div class="curr-stat">
+            <div class="curr-stat-label">UV Index</div>
+            <div class="curr-stat-val ${uvClass}">${current.uv_index || 'N/A'}</div>
+          </div>
+          <div class="curr-stat">
+            <div class="curr-stat-label">Precipitation</div>
+            <div class="curr-stat-val blue">${current.precipitation || 0} mm</div>
+          </div>
+          <div class="curr-stat">
+            <div class="curr-stat-label">Pressure</div>
+            <div class="curr-stat-val">${Math.round(current.surface_pressure || 1013)} hPa</div>
+          </div>
+          <div class="curr-stat">
+            <div class="curr-stat-label">Local Time</div>
+            <div class="curr-stat-val" style="font-size:.85rem">${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: dest.tz || 'UTC' })}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inline affiliate after current weather -->
+      <a href="https://www.booking.com/searchresults.html?ss=${encodeURIComponent(dest.name)}&aid=XXXXXXX" target="_blank" class="inline-aff" style="margin-top:14px">
+        <span class="inline-aff-icon">🏨</span>
+        <div class="inline-aff-body">
+          <div class="inline-aff-title">Hotels in ${dest.name}</div>
+          <div class="inline-aff-sub">Best prices, free cancellation — Booking.com partner</div>
+        </div>
+        <span class="inline-aff-btn">Search Hotels →</span>
+      </a>
+    </div>
+  </div>`;
+
+            // ── 7-Day Forecast ──
+            const days = forecast.time || [];
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            html += `<div class="wx-section">
+    <div class="wx-section-head">
+      <div class="wx-section-title">📅 7-Day Forecast</div>
+      <div class="wx-section-sub">Open-Meteo · ${dest.tz}</div>
+    </div>
+    <div class="wx-body">
+      <div class="forecast-row">
+        ${days.map((d, i) => {
+                const date = new Date(d + 'T00:00:00');
+                const isToday = i === 0;
+                const dayLabel = isToday ? 'Today' : dayNames[date.getDay()];
+                const icon = (WMO[forecast.weathercode[i]] || '').split(' ')[0];
+                const rain = forecast.precipitation_sum[i];
+                return `<div class="forecast-card${isToday ? ' today' : ''}">
+            <div class="fc-day">${dayLabel}</div>
+            <div class="fc-icon">${icon || '🌡️'}</div>
+            <div class="fc-hi">${Math.round(forecast.temperature_2m_max[i])}°</div>
+            <div class="fc-lo">${Math.round(forecast.temperature_2m_min[i])}°</div>
+            ${rain > 0.5 ? `<div class="fc-rain">💧 ${rain.toFixed(0)}mm</div>` : ''}
+          </div>`;
+            }).join('')}
+      </div>
+    </div>
+  </div>`;
+
+            // ── Air Quality ──
+            if (aqi) {
+                const aqiVal = Math.round(aqi.european_aqi || 0);
+                const level = aqiLevel(aqiVal);
+                const pct = Math.min(100, (aqiVal / 300) * 100);
+                html += `<div class="wx-section">
+      <div class="wx-section-head">
+        <div class="wx-section-title">💨 Air Quality Index (AQI)</div>
+        <div class="wx-section-sub">European AQI scale</div>
+      </div>
+      <div class="wx-body">
+        <div class="aqi-bar-wrap">
+          <div class="aqi-label-row">
+            <span class="aqi-label">Current AQI</span>
+            <span class="aqi-val" style="color:${level.color}">${aqiVal} — ${level.label}</span>
+          </div>
+          <div class="aqi-bar"><div class="aqi-marker" style="left:${pct}%"></div></div>
+          <div class="aqi-cats">
+            <span class="aqi-cat aqi-good">0–50 Good</span>
+            <span class="aqi-cat aqi-moderate">51–100 Moderate</span>
+            <span class="aqi-cat aqi-unhealthy">100+ Unhealthy</span>
+          </div>
+        </div>
+        <div class="aqi-pollutant-row">
+          <div class="aqi-pollutant"><div class="aqi-poll-name">PM2.5</div><div class="aqi-poll-val">${(aqi.pm2_5 || 0).toFixed(1)}</div><div class="aqi-poll-unit">μg/m³</div></div>
+          <div class="aqi-pollutant"><div class="aqi-poll-name">PM10</div><div class="aqi-poll-val">${(aqi.pm10 || 0).toFixed(1)}</div><div class="aqi-poll-unit">μg/m³</div></div>
+          <div class="aqi-pollutant"><div class="aqi-poll-name">NO₂</div><div class="aqi-poll-val">${(aqi.nitrogen_dioxide || 0).toFixed(1)}</div><div class="aqi-poll-unit">μg/m³</div></div>
+        </div>
+        <p style="font-size:.72rem;color:var(--muted);margin-top:10px">Source: open-meteo.com air quality API · European AQI standard</p>
+      </div>
+    </div>`;
+            }
+
+            // ── Climate Average Chart ──
+            const climateData = CLIMATE_AVG[dest.slug] || null;
+            if (climateData) {
+                const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+                const maxTemp = Math.max(...climateData.temps);
+                const maxRain = Math.max(...climateData.rain);
+                html += `<div class="wx-section">
+      <div class="wx-section-head">
+        <div class="wx-section-title">📊 Monthly Climate Average</div>
+        <div class="wx-section-sub">Historical climate data</div>
+      </div>
+      <div class="wx-body">
+        <div style="margin-bottom:8px;font-size:.75rem;color:var(--dim)">Average Temperature (°C) by month</div>
+        <div class="climate-chart">
+          ${months.map((m, i) => {
+                    const h = Math.max(6, (climateData.temps[i] / maxTemp) * 70);
+                    const isNow = i === now.getMonth();
+                    return `<div class="climate-bar-wrap">
+              <div class="climate-bar temp" style="height:${h}px${isNow ? ';outline:2px solid var(--blue);outline-offset:1px' : ''}" data-tip="${m}: ${climateData.temps[i]}°C"></div>
+              <div class="climate-month" style="${isNow ? 'color:var(--blue)' : ''}">${m}</div>
+            </div>`;
+                }).join('')}
+        </div>
+        <div style="margin:14px 0 8px;font-size:.75rem;color:var(--dim)">Average Rainfall (mm) by month</div>
+        <div class="climate-chart">
+          ${months.map((m, i) => {
+                    const h = Math.max(4, (climateData.rain[i] / maxRain) * 70);
+                    const isNow = i === now.getMonth();
+                    return `<div class="climate-bar-wrap">
+              <div class="climate-bar rain" style="height:${h}px${isNow ? ';outline:2px solid var(--blue);outline-offset:1px' : ''}" data-tip="${m}: ${climateData.rain[i]}mm"></div>
+              <div class="climate-month" style="${isNow ? 'color:var(--blue)' : ''}">${m}</div>
+            </div>`;
+                }).join('')}
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Temperature</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#0ea5e9"></div>Rainfall</div>
+          <div class="legend-item" style="color:var(--blue)">🔵 = Current month</div>
+        </div>
+      </div>
+    </div>`;
+            }
+
+            // ── Travel Links ──
+            html += `<div class="wx-section">
+    <div class="wx-section-head">
+      <div class="wx-section-title">✈️ Plan Your Trip to ${dest.name}</div>
+    </div>
+    <div class="wx-body">
+      <div class="travel-link-grid">
+        <a href="https://www.booking.com/searchresults.html?ss=${encodeURIComponent(dest.name)}&aid=XXXXXXX" target="_blank" class="travel-link-card">
+          <span class="tlc-icon">🏨</span><div><div class="tlc-name">Book Hotels</div><div class="tlc-sub">Booking.com</div></div><span class="tlc-arrow">↗</span>
+        </a>
+        <a href="https://skyscanner.com?aff=XXXXXXX" target="_blank" class="travel-link-card">
+          <span class="tlc-icon">✈️</span><div><div class="tlc-name">Compare Flights</div><div class="tlc-sub">Skyscanner</div></div><span class="tlc-arrow">↗</span>
+        </a>
+        <a href="https://worldnomads.com?affiliate=XXXXXXX" target="_blank" class="travel-link-card">
+          <span class="tlc-icon">🛡️</span><div><div class="tlc-name">Travel Insurance</div><div class="tlc-sub">World Nomads</div></div><span class="tlc-arrow">↗</span>
+        </a>
+        <a href="https://getyourguide.com/s/?q=${encodeURIComponent(dest.name)}&partner_id=XXXXXXX" target="_blank" class="travel-link-card">
+          <span class="tlc-icon">🎒</span><div><div class="tlc-name">Tours & Activities</div><div class="tlc-sub">GetYourGuide</div></div><span class="tlc-arrow">↗</span>
+        </a>
+        <a href="/destination/city.html?city=${dest.slug}" class="travel-link-card">
+          <span class="tlc-icon">🗺️</span><div><div class="tlc-name">${dest.name} Full Guide</div><div class="tlc-sub">World Monitor</div></div><span class="tlc-arrow">→</span>
+        </a>
+        <a href="/blog/?q=${encodeURIComponent(dest.name)}" class="travel-link-card">
+          <span class="tlc-icon">📝</span><div><div class="tlc-name">Travel Articles</div><div class="tlc-sub">Weather & tips</div></div><span class="tlc-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </div>`;
+
+            content.innerHTML = html;
+        }
+
+        function showLoading() {
+            document.getElementById('main-content').innerHTML = `<div class="wx-section"><div class="loading-overlay"><div class="spinner"></div>Loading weather data...</div></div>`;
+        }
+        function showError(msg) {
+            document.getElementById('main-content').innerHTML = `<div class="wx-section"><div class="error-state">⚠️ ${msg}</div></div>`;
+        }
+        function degToCompass(deg) {
+            const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+            return dirs[Math.round(deg / 45) % 8];
+        }
+
+        // Auto-suggest
+        const inp = document.getElementById('country-input');
+        const dl = document.getElementById('dest-suggestions');
+        Object.values(DESTINATIONS).forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d.name + ', ' + d.country;
+            opt.dataset.slug = d.slug;
+            dl.appendChild(opt);
+        });
+        inp.addEventListener('change', () => {
+            const found = Object.values(DESTINATIONS).find(d => inp.value.startsWith(d.name));
+            if (found) loadDestination(found.slug);
+        });
+
+        // Load from URL param ?city=bali
+        const urlSlug = new URLSearchParams(location.search).get('city');
+        if (urlSlug && DESTINATIONS[urlSlug]) loadDestination(urlSlug);
+        else if (!urlSlug) {
+            // Auto-load Bali as demo
+            loadDestination('bali');
+        }
+    </script>
+</body>
+
+</html>

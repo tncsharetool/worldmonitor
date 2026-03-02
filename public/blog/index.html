@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Travel Blog — Weather, Safety & Destination Guides | World Monitor</title>
+    <meta name="description"
+        content="Expert travel guides, best time to visit, weather forecasts, and safety tips for 100+ bucket-list destinations. Real-time data from World Monitor." />
+    <meta property="og:title" content="Travel Blog | World Monitor" />
+    <meta property="og:type" content="website" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0b0d;
+            --bg2: #0f1114;
+            --bg3: #141720;
+            --bg4: #1a1f2e;
+            --border: #1e2235;
+            --text: #dde4f0;
+            --dim: #7a8aab;
+            --muted: #3a4560;
+            --accent: #00c4a0;
+            --travel: #f59e0b;
+            --travel2: #fb923c;
+            --blue: #0ea5e9;
+            --green: #22c55e;
+            --red: #ef4444;
+            --font: 'Inter', system-ui, sans-serif;
+            --font-d: 'Space Grotesk', system-ui, sans-serif;
+            --max: 1240px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .4
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        /* ── NAV ── */
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 44px;
+            background: #080a0c;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-logo {
+            font-family: var(--font-d);
+            font-weight: 700;
+            font-size: .85rem;
+            letter-spacing: .05em;
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0;
+        }
+
+        .nav-link {
+            padding: 0 12px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            font-size: .75rem;
+            font-weight: 500;
+            color: var(--dim);
+            border-bottom: 2px solid transparent;
+            transition: all .15s;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+        }
+
+        .nav-link.active {
+            color: var(--travel);
+            border-bottom-color: var(--travel);
+        }
+
+        .nav-badge-count {
+            font-size: .6rem;
+            padding: 1px 5px;
+            border-radius: 6px;
+            background: rgba(245, 158, 11, .12);
+            color: var(--travel);
+            border: 1px solid rgba(245, 158, 11, .2);
+            margin-left: 4px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            padding: 5px 12px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: transparent;
+            color: var(--dim);
+            font-size: .75rem;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all .15s;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--travel);
+            color: var(--travel);
+        }
+
+        .nav-btn.primary {
+            background: var(--travel);
+            color: #000;
+            border-color: var(--travel);
+            font-weight: 700;
+        }
+
+        .nav-btn.primary:hover {
+            background: #e08c00;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, #0a0f1a 0%, #0f1820 50%, #0a1420 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 40px 20px 32px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(245, 158, 11, .06) 0%, transparent 70%);
+        }
+
+        .hero-breadcrumb {
+            font-size: .7rem;
+            color: var(--dim);
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .hero-breadcrumb a {
+            color: var(--blue);
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border: 1px solid rgba(245, 158, 11, .3);
+            border-radius: 20px;
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--travel);
+            background: rgba(245, 158, 11, .06);
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: var(--font-d);
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--travel), var(--travel2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-sub {
+            font-size: .95rem;
+            color: var(--dim);
+            max-width: 600px;
+            margin: 0 auto 24px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-num {
+            font-family: var(--font-d);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--travel);
+        }
+
+        .hero-stat-label {
+            font-size: .68rem;
+            color: var(--dim);
+            margin-top: 2px;
+        }
+
+        /* ── LAYOUT ── */
+        .container {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .page-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+            padding: 28px 20px;
+            max-width: var(--max);
+            margin: 0 auto;
+        }
+
+        @media(max-width:900px) {
+            .page-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+        }
+
+        /* ── FILTER BAR ── */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-label {
+            font-size: .72rem;
+            font-weight: 600;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-right: 4px;
+        }
+
+        .filter-chip {
+            padding: 5px 12px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: .75rem;
+            cursor: pointer;
+            color: var(--dim);
+            background: transparent;
+            font-family: var(--font);
+            transition: all .15s;
+        }
+
+        .filter-chip:hover,
+        .filter-chip.active {
+            background: rgba(245, 158, 11, .08);
+            color: var(--travel);
+            border-color: rgba(245, 158, 11, .3);
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 7px 14px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: .8rem;
+            font-family: var(--font);
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--travel);
+        }
+
+        .search-input::placeholder {
+            color: var(--muted);
+        }
+
+        .sort-select {
+            padding: 6px 10px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            color: var(--dim);
+            font-size: .75rem;
+            font-family: var(--font);
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* ── SHEETS STATUS ── */
+        .sheets-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: .78rem;
+        }
+
+        .sheets-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .sheets-dot.connected {
+            background: var(--green);
+            box-shadow: 0 0 4px var(--green);
+            animation: pulse 2s infinite;
+        }
+
+        .sheets-dot.demo {
+            background: var(--travel);
+            box-shadow: 0 0 4px var(--travel);
+        }
+
+        .sheets-dot.error {
+            background: var(--red);
+        }
+
+        .sheets-info {
+            color: var(--dim);
+        }
+
+        .sheets-info strong {
+            color: var(--text);
+        }
+
+        .sheets-config-btn {
+            margin-left: auto;
+            padding: 3px 10px;
+            border: 1px solid rgba(245, 158, 11, .3);
+            border-radius: 5px;
+            background: transparent;
+            color: var(--travel);
+            font-size: .68rem;
+            cursor: pointer;
+            font-family: var(--font);
+        }
+
+        /* ── BLOG GRID ── */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .post-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all .2s;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            animation: fadeUp .3s ease;
+        }
+
+        .post-card:hover {
+            border-color: rgba(245, 158, 11, .25);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .3);
+        }
+
+        .post-thumb {
+            background: linear-gradient(135deg, var(--bg4), var(--bg2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            min-height: 130px;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .post-thumb-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            inset: 0;
+        }
+
+        .post-category-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-size: .6rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .cat-weather {
+            background: rgba(14, 165, 233, .15);
+            color: var(--blue);
+            border: 1px solid rgba(14, 165, 233, .25);
+        }
+
+        .cat-safety {
+            background: rgba(239, 68, 68, .12);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, .25);
+        }
+
+        .cat-destination {
+            background: rgba(245, 158, 11, .1);
+            color: var(--travel);
+            border: 1px solid rgba(245, 158, 11, .2);
+        }
+
+        .cat-guide {
+            background: rgba(34, 197, 94, .08);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, .2);
+        }
+
+        .cat-comparison {
+            background: rgba(168, 85, 247, .1);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, .2);
+        }
+
+        .post-content {
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .post-dest {
+            font-size: .68rem;
+            font-weight: 600;
+            color: var(--travel);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .post-date {
+            font-size: .65rem;
+            color: var(--muted);
+        }
+
+        .post-read {
+            font-size: .65rem;
+            color: var(--muted);
+        }
+
+        .post-title {
+            font-family: var(--font-d);
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.35;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .post-excerpt {
+            font-size: .8rem;
+            color: var(--dim);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+
+        .post-tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .post-tag {
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: .62rem;
+            background: rgba(255, 255, 255, .04);
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+
+        .post-cta {
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--travel);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .post-seo {
+            font-size: .6rem;
+            color: var(--muted);
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .seo-traffic {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: rgba(34, 197, 94, .06);
+            color: var(--green);
+        }
+
+        /* Featured post */
+        .post-card.featured {
+            grid-template-columns: 1fr;
+            border-color: rgba(245, 158, 11, .2);
+            background: linear-gradient(135deg, rgba(245, 158, 11, .04), var(--bg3));
+        }
+
+        .post-card.featured .post-thumb {
+            min-height: 180px;
+            font-size: 5rem;
+        }
+
+        .post-card.featured .post-title {
+            font-size: 1.3rem;
+        }
+
+        /* Loading */
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 60px 20px;
+            color: var(--dim);
+        }
+
+        .spinner {
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--border);
+            border-top-color: var(--travel);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* AdSense inline */
+        .ad-inline {
+            background: rgba(255, 255, 255, .02);
+            border: 1px dashed var(--muted);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            color: var(--muted);
+            font-size: .7rem;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 6px 0;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            align-self: start;
+            position: sticky;
+            top: 60px;
+        }
+
+        .sidebar-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: .78rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sidebar-body {
+            padding: 12px 14px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
+            transition: all .15s;
+        }
+
+        .sidebar-link:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .sidebar-link:hover .sl-title {
+            color: var(--travel);
+        }
+
+        .sl-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            width: 28px;
+            text-align: center;
+        }
+
+        .sl-title {
+            font-size: .8rem;
+            font-weight: 600;
+        }
+
+        .sl-sub {
+            font-size: .65rem;
+            color: var(--dim);
+        }
+
+        .sl-arrow {
+            margin-left: auto;
+            color: var(--muted);
+            font-size: .8rem;
+        }
+
+        .sidebar-aff {
+            display: block;
+            padding: 10px 14px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, .08), rgba(251, 146, 60, .04));
+            border-top: 1px solid rgba(245, 158, 11, .12);
+            text-align: center;
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--travel);
+            transition: background .15s;
+        }
+
+        .sidebar-aff:hover {
+            background: rgba(245, 158, 11, .12);
+        }
+
+        .trending-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .trending-item:last-child {
+            border-bottom: none;
+        }
+
+        .trending-num {
+            font-family: var(--font-d);
+            font-size: .9rem;
+            font-weight: 700;
+            color: var(--muted);
+            width: 18px;
+            flex-shrink: 0;
+        }
+
+        .trending-title {
+            font-size: .78rem;
+            line-height: 1.3;
+            flex: 1;
+        }
+
+        .trending-views {
+            font-size: .62rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .sidebar-ad {
+            background: rgba(255, 255, 255, .02);
+            border: 1px dashed var(--muted);
+            border-radius: 8px;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: .7rem;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        /* Config modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .7);
+            z-index: 500;
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            width: 90%;
+            max-width: 480px;
+        }
+
+        .modal h3 {
+            font-family: var(--font-d);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .modal p {
+            font-size: .8rem;
+            color: var(--dim);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .modal-field {
+            margin-bottom: 14px;
+        }
+
+        .modal-label {
+            font-size: .72rem;
+            font-weight: 600;
+            color: var(--dim);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 9px 12px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: .85rem;
+            font-family: var(--font);
+            outline: none;
+        }
+
+        .modal-input:focus {
+            border-color: var(--travel);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: .82rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: var(--font);
+        }
+
+        .modal-btn.cancel {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--dim);
+        }
+
+        .modal-btn.save {
+            background: var(--travel);
+            border: 1px solid var(--travel);
+            color: #000;
+        }
+
+        .modal-hint {
+            font-size: .7rem;
+            color: var(--muted);
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        .modal-hint a {
+            color: var(--blue);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 24px;
+            justify-content: center;
+        }
+
+        .page-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--dim);
+            font-size: .78rem;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all .15s;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            border-color: var(--travel);
+            color: var(--travel);
+            background: rgba(245, 158, 11, .06);
+        }
+
+        /* No results */
+        .no-posts {
+            padding: 40px;
+            text-align: center;
+            color: var(--dim);
+        }
+
+        .no-posts h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <div class="nav-left">
+            <a href="/" class="nav-logo">🌍 MONITOR</a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Dashboard</a>
+                <a href="/destination/" class="nav-link">✈️ Destinations</a>
+                <a href="/weather-intel.html" class="nav-link">🌡️ Weather</a>
+                <a href="/travel-safety.html" class="nav-link">🛡️ Safety</a>
+                <a href="/blog/" class="nav-link active">📝 Blog <span class="nav-badge-count"
+                        id="post-count">...</span></a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <button class="nav-btn" onclick="openConfigModal()">⚙️ Connect Sheets</button>
+            <a href="/destination/" class="nav-btn primary">✈️ Explore Destinations</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-breadcrumb"><a href="/">World Monitor</a> › Blog</div>
+        <div class="hero-tag">✍️ Travel Intelligence Blog</div>
+        <h1>Weather, Safety & <span>Destination Guides</span></h1>
+        <p class="hero-sub">Long-form guides combining real-time weather data, government advisories, and insider travel
+            tips — updated continuously by World Monitor's data engine.</p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-num" id="stat-posts">0</div>
+                <div class="hero-stat-label">Articles</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-num" id="stat-dest">50+</div>
+                <div class="hero-stat-label">Destinations</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-num">Free</div>
+                <div class="hero-stat-label">Always Free</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-num">Live</div>
+                <div class="hero-stat-label">Real-time Data</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="page-layout">
+        <main>
+            <!-- Sheets Status Bar -->
+            <div class="sheets-status" id="sheets-status">
+                <div class="sheets-dot demo" id="status-dot"></div>
+                <div class="sheets-info" id="status-text"><strong>Demo Mode</strong> — Showing sample articles. Connect
+                    your Google Sheet to load custom content.</div>
+                <button class="sheets-config-btn" onclick="openConfigModal()">🔗 Connect Sheet</button>
+            </div>
+
+            <!-- Filter / Search Bar -->
+            <div class="filter-bar">
+                <span class="filter-label">Filter:</span>
+                <button class="filter-chip active" data-filter="all" onclick="setFilter('all',this)">All</button>
+                <button class="filter-chip" data-filter="weather" onclick="setFilter('weather',this)">🌡️
+                    Weather</button>
+                <button class="filter-chip" data-filter="safety" onclick="setFilter('safety',this)">🛡️ Safety</button>
+                <button class="filter-chip" data-filter="destination" onclick="setFilter('destination',this)">✈️
+                    Destination</button>
+                <button class="filter-chip" data-filter="guide" onclick="setFilter('guide',this)">📖 Guide</button>
+                <button class="filter-chip" data-filter="comparison" onclick="setFilter('comparison',this)">⚖️
+                    Compare</button>
+                <input class="search-input" id="search-input" placeholder="🔍 Search articles..."
+                    oninput="filterPosts()" />
+                <select class="sort-select" id="sort-select" onchange="sortAndRender()">
+                    <option value="date">📅 Latest</option>
+                    <option value="traffic">📈 Most Traffic</option>
+                    <option value="reads">⏱️ Quick Reads</option>
+                </select>
+            </div>
+
+            <!-- Blog Grid -->
+            <div id="blog-grid" class="blog-grid">
+                <div class="loading-state">
+                    <div class="spinner"></div>Loading articles...
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination"></div>
+        </main>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <!-- AdSense Top -->
+            <div class="sidebar-ad">
+                <span>📢 Advertisement</span>
+                <span style="font-size:.65rem">AdSense Unit 300×250</span>
+                <!-- Google AdSense: <ins class="adsbygoogle" data-ad-slot="XXXXXXX"> -->
+            </div>
+
+            <!-- Plan Your Trip -->
+            <div class="sidebar-card">
+                <div class="sidebar-header">💼 Plan Your Trip</div>
+                <div class="sidebar-body">
+                    <a href="https://www.booking.com?aid=XXXXXXX" target="_blank" class="sidebar-link">
+                        <span class="sl-icon">🏨</span>
+                        <div>
+                            <div class="sl-title">Book Hotels</div>
+                            <div class="sl-sub">Best price guarantee</div>
+                        </div>
+                        <span class="sl-arrow">↗</span>
+                    </a>
+                    <a href="https://skyscanner.com?aff=XXXXXXX" target="_blank" class="sidebar-link">
+                        <span class="sl-icon">✈️</span>
+                        <div>
+                            <div class="sl-title">Compare Flights</div>
+                            <div class="sl-sub">Search 1,200+ airlines</div>
+                        </div>
+                        <span class="sl-arrow">↗</span>
+                    </a>
+                    <a href="https://worldnomads.com?affiliate=XXXXXXX" target="_blank" class="sidebar-link">
+                        <span class="sl-icon">🛡️</span>
+                        <div>
+                            <div class="sl-title">Travel Insurance</div>
+                            <div class="sl-sub">World Nomads, from $3/day</div>
+                        </div>
+                        <span class="sl-arrow">↗</span>
+                    </a>
+                    <a href="https://getyourguide.com?partner=XXXXXXX" target="_blank" class="sidebar-link">
+                        <span class="sl-icon">🎒</span>
+                        <div>
+                            <div class="sl-title">Tours & Activities</div>
+                            <div class="sl-sub">Skip-the-line tickets</div>
+                        </div>
+                        <span class="sl-arrow">↗</span>
+                    </a>
+                    <a href="https://airalo.com?referral=XXXXXXX" target="_blank" class="sidebar-link">
+                        <span class="sl-icon">📡</span>
+                        <div>
+                            <div class="sl-title">eSIM Data</div>
+                            <div class="sl-sub">Stay connected anywhere</div>
+                        </div>
+                        <span class="sl-arrow">↗</span>
+                    </a>
+                </div>
+                <a href="/destination/" class="sidebar-aff">✈️ Browse All Destinations →</a>
+            </div>
+
+            <!-- Trending Posts -->
+            <div class="sidebar-card">
+                <div class="sidebar-header">🔥 Trending This Week</div>
+                <div class="sidebar-body" id="trending-list">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+
+            <!-- AdSense Bottom -->
+            <div class="sidebar-ad">
+                <span>📢 Advertisement</span>
+                <span style="font-size:.65rem">AdSense Unit 300×600</span>
+            </div>
+
+            <!-- Quick Tools -->
+            <div class="sidebar-card">
+                <div class="sidebar-header">🔧 Real-Time Tools</div>
+                <div class="sidebar-body">
+                    <a href="/weather-intel.html" class="sidebar-link">
+                        <span class="sl-icon">🌡️</span>
+                        <div>
+                            <div class="sl-title">Weather Anomaly Radar</div>
+                            <div class="sl-sub">15 global climate zones</div>
+                        </div>
+                        <span class="sl-arrow">↗</span>
+                    </a>
+                    <a href="/travel-safety.html" class="sidebar-link">
+                        <span class="sl-icon">🛡️</span>
+                        <div>
+                            <div class="sl-title">Safety Advisories</div>
+                            <div class="sl-sub">Live from 4 governments</div>
+                        </div>
+                        <span class="sl-arrow">↗</span>
+                    </a>
+                    <a href="/destination/" class="sidebar-link">
+                        <span class="sl-icon">🗺️</span>
+                        <div>
+                            <div class="sl-title">Destination Index</div>
+                            <div class="sl-sub">50+ bucket-list places</div>
+                        </div>
+                        <span class="sl-arrow">↗</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- CONFIG MODAL -->
+    <div class="modal-overlay" id="config-modal">
+        <div class="modal">
+            <h3>🔗 Connect Google Sheet</h3>
+            <p>Paste your Google Sheet ID to load blog articles automatically. The sheet must be <strong>published to
+                    the web</strong> as CSV.</p>
+            <div class="modal-field">
+                <label class="modal-label">Google Sheet ID</label>
+                <input class="modal-input" id="sheet-id-input"
+                    placeholder="e.g. 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms" />
+                <div class="modal-hint">
+                    Found in your Sheet URL: docs.google.com/spreadsheets/d/<strong>[SHEET_ID]</strong>/edit<br />
+                    Must have columns: <strong>slug, title, category, destination, excerpt, keywords, emoji, date,
+                        read_min, monthly_search, affiliate_type, published</strong><br />
+                    <a href="https://docs.google.com/spreadsheets/d/1demo_template/copy" target="_blank">📋 Copy
+                        template Sheet →</a>
+                </div>
+            </div>
+            <div class="modal-field">
+                <label class="modal-label">Sheet Name (Tab)</label>
+                <input class="modal-input" id="sheet-tab-input" placeholder="Sheet1" value="Posts" />
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeConfigModal()">Cancel</button>
+                <button class="modal-btn save" onclick="saveAndConnect()">💾 Save & Connect</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ══════════════════════════════════════════════════
+        // DEMO DATA — used when no Sheet is connected
+        // Replace with real Google Sheets ID in config
+        // ══════════════════════════════════════════════════
+        const DEMO_POSTS = [
+            {
+                slug: "best-time-visit-bali", title: "Best Time to Visit Bali in 2026 — Month-by-Month Weather Guide",
+                category: "weather", destination: "Bali", emoji: "🌴",
+                excerpt: "Bali's weather varies dramatically by month. Dry season (Apr–Sep) is ideal for beaches; wet season brings lush landscapes but daily rain. Our data shows Oct–Nov as shoulder season sweet spot.",
+                keywords: "best time to visit bali,bali weather by month,bali rainy season",
+                date: "2026-02-28", read_min: 8, monthly_search: 22000,
+                affiliate_type: "hotels", tags: ["Bali", "Season", "Beach"], featured: true
+            },
+            {
+                slug: "tokyo-cherry-blossom-2026", title: "Tokyo Cherry Blossom 2026 — Peak Dates, Best Spots & Booking Tips",
+                category: "destination", destination: "Tokyo", emoji: "🌸",
+                excerpt: "Our climate models predict Tokyo's 2026 cherry blossom (sakura) peak between March 25–April 5. This guide covers the 8 best hanami parks, budget hotels near Ueno, and how to book 6 months early.",
+                keywords: "tokyo cherry blossom 2026,sakura tokyo dates,hanami guide",
+                date: "2026-02-25", read_min: 12, monthly_search: 40000,
+                affiliate_type: "tours", tags: ["Tokyo", "Sakura", "Spring"]
+            },
+            {
+                slug: "is-it-safe-travel-turkey-2026", title: "Is Turkey Safe for Tourists in 2026? Current Advisory & What to Know",
+                category: "safety", destination: "Turkey", emoji: "🕌",
+                excerpt: "Turkey holds a Level 2 'Exercise Increased Caution' advisory. Earthquake risks in eastern regions, petty crime in tourist areas, and political demonstrations — full breakdown with city-by-city safety scores.",
+                keywords: "is turkey safe 2026,turkey travel advisory,istanbul safe for tourists",
+                date: "2026-02-20", read_min: 10, monthly_search: 12000,
+                affiliate_type: "insurance", tags: ["Turkey", "Safety", "Advisory"]
+            },
+            {
+                slug: "santorini-vs-mykonos", title: "Santorini vs Mykonos 2026 — Which Greek Island is Right for You?",
+                category: "comparison", destination: "Santorini", emoji: "🏛️",
+                excerpt: "Both iconic, but wildly different vibes. Santorini for romantic sunsets & caldera views; Mykonos for parties & beaches. We compare cost, crowds, weather windows, hotel prices, and who should pick which.",
+                keywords: "santorini vs mykonos,which greek island,santorini or mykonos 2026",
+                date: "2026-02-15", read_min: 9, monthly_search: 11000,
+                affiliate_type: "hotels", tags: ["Greece", "Comparison", "Mediterranean"]
+            },
+            {
+                slug: "caribbean-storm-season-2026", title: "Caribbean Cruise Season 2026 — When to Book to Avoid Hurricane Season",
+                category: "weather", destination: "Caribbean", emoji: "🌊",
+                excerpt: "Hurricane season runs June–November in the Caribbean. Our 30-year climate data shows September is the absolute worst month. This guide maps the safest booking windows for each island chain.",
+                keywords: "caribbean hurricane season 2026,best time caribbean cruise,storm season caribbean",
+                date: "2026-02-10", read_min: 7, monthly_search: 4000,
+                affiliate_type: "insurance", tags: ["Caribbean", "Hurricane", "Cruise"]
+            },
+            {
+                slug: "bali-vs-thailand-cost", title: "Bali vs Thailand Budget Comparison 2026 — Daily Costs Breakdown",
+                category: "comparison", destination: "Bali", emoji: "🥥",
+                excerpt: "Both are SE Asia budget kings, but the gap is narrowing. We break down accommodation, food, transport, and activities costs for backpackers, mid-range, and luxury travelers in both destinations.",
+                keywords: "bali vs thailand cost 2026,bali or thailand budget,southeast asia cheap",
+                date: "2026-02-05", read_min: 11, monthly_search: 9000,
+                affiliate_type: "hotels", tags: ["Bali", "Thailand", "Budget"]
+            },
+            {
+                slug: "machu-picchu-altitude-sickness", title: "Altitude Sickness at Machu Picchu — Prevention, Symptoms & What to Pack",
+                category: "guide", destination: "Machu Picchu", emoji: "🏔️",
+                excerpt: "At 2,430m (7,972ft), most visitors feel fine at Machu Picchu itself. But Cusco at 3,400m hits hard. Complete guide: acclimatization schedule, Diamox dosage, symptoms, and what World Monitor's weather data says.",
+                keywords: "altitude sickness machu picchu,cusco altitude sickness,machu picchu health tips",
+                date: "2026-01-28", read_min: 9, monthly_search: 6000,
+                affiliate_type: "insurance", tags: ["Peru", "Health", "Altitude"]
+            },
+            {
+                slug: "maldives-overwater-bungalow-vs-budget", title: "Maldives 2026 — Overwater Bungalow vs Budget Guesthouse: Is it Worth It?",
+                category: "comparison", destination: "Maldives", emoji: "🏝️",
+                excerpt: "Overwater bungalows start at $500/night. Budget guesthouses on local islands: $50–80. We stayed in both and break down the real differences — water clarity, marine life, privacy, and Instagram value.",
+                keywords: "maldives overwater bungalow worth it,maldives budget guesthouse,maldives cheap",
+                date: "2026-01-20", read_min: 14, monthly_search: 5000,
+                affiliate_type: "hotels", tags: ["Maldives", "Luxury", "Budget"]
+            },
+            {
+                slug: "serengeti-migration-calendar-2026", title: "Serengeti Great Migration 2026 — Month-by-Month Calendar & Best Camps",
+                category: "destination", destination: "Serengeti", emoji: "🦁",
+                excerpt: "1.5 million wildebeest follow rainfall patterns across Tanzania and Kenya. We map each migration stage, the dramatic river crossings (July–Aug), and which camps position you best at each phase.",
+                keywords: "serengeti migration calendar 2026,great migration best time,when to visit serengeti",
+                date: "2026-01-15", read_min: 13, monthly_search: 3000,
+                affiliate_type: "tours", tags: ["Africa", "Safari", "Migration"]
+            },
+            {
+                slug: "best-time-southeast-asia", title: "Best Time to Visit Southeast Asia — Country-by-Country Weather Guide",
+                category: "weather", destination: "Southeast Asia", emoji: "🌏",
+                excerpt: "Thailand, Vietnam, Cambodia, Indonesia — all follow different monsoon patterns. This comprehensive guide syncs weather windows across countries so you can plan a multi-country trip with no rainy surprises.",
+                keywords: "best time visit southeast asia,southeast asia weather guide,SEA travel months",
+                date: "2026-01-10", read_min: 16, monthly_search: 18000,
+                affiliate_type: "insurance", tags: ["SE Asia", "Weather", "Planning"]
+            }
+        ];
+
+        // ══════════════════════════════════════════════════
+        // STATE
+        // ══════════════════════════════════════════════════
+        let allPosts = [];
+        let filteredPosts = [];
+        let currentFilter = 'all';
+        let currentPage = 1;
+        const PAGE_SIZE = 6;
+
+        // Category colors
+        const CAT_CLASS = { weather: 'cat-weather', safety: 'cat-safety', destination: 'cat-destination', guide: 'cat-guide', comparison: 'cat-comparison' };
+        const CAT_LABEL = { weather: '🌡️ Weather', safety: '🛡️ Safety', destination: '✈️ Destination', guide: '📖 Guide', comparison: '⚖️ Compare' };
+        const AFF_CTA = { hotels: '🏨 Book Hotels', tours: '🎒 Book Tours', insurance: '🛡️ Get Insured', esim: '📡 Get eSIM' };
+        const AFF_URL = {
+            hotels: 'https://www.booking.com?aid=XXXXXXX',
+            tours: 'https://getyourguide.com?partner=XXXXXXX',
+            insurance: 'https://worldnomads.com?affiliate=XXXXXXX',
+            esim: 'https://airalo.com?referral=XXXXXXX'
+        };
+
+        // ══════════════════════════════════════════════════
+        // GOOGLE SHEETS INTEGRATION
+        // ══════════════════════════════════════════════════
+        const STORAGE_KEY = 'wm_blog_sheet';
+
+        async function loadFromSheet(sheetId, tabName = 'Posts') {
+            // Google Sheets published CSV URL
+            const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(tabName)}`;
+            const res = await fetch(url);
+            const text = await res.text();
+            // Strip Google's wrapper: "google.visualization.Query.setResponse({...})"
+            const json = JSON.parse(text.substring(47).slice(0, -2));
+            const cols = json.table.cols.map(c => c.label.toLowerCase().replace(/\s+/g, '_'));
+            return json.table.rows.map(row => {
+                const obj = {};
+                row.c.forEach((cell, i) => { obj[cols[i]] = cell ? cell.v : ''; });
+                return obj;
+            }).filter(r => r.published === true || r.published === 'TRUE' || r.published === 'true');
+        }
+
+        async function initBlog() {
+            const config = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            const dot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+
+            if (config.sheetId) {
+                dot.className = 'sheets-dot'; // loading
+                statusText.innerHTML = '⏳ Connecting to Google Sheet...';
+                try {
+                    allPosts = await loadFromSheet(config.sheetId, config.tabName || 'Posts');
+                    dot.className = 'sheets-dot connected';
+                    statusText.innerHTML = `<strong>✅ Connected</strong> — ${allPosts.length} articles loaded from Google Sheet`;
+                } catch (e) {
+                    console.error('Sheet load error:', e);
+                    dot.className = 'sheets-dot error';
+                    statusText.innerHTML = `<strong>⚠️ Sheet Error</strong> — ${e.message}. Check Sheet is published publicly.`;
+                    allPosts = DEMO_POSTS;
+                }
+            } else {
+                allPosts = DEMO_POSTS;
+            }
+
+            document.getElementById('stat-posts').textContent = allPosts.length;
+            document.getElementById('post-count').textContent = allPosts.length;
+            renderTrending();
+            filterPosts();
+        }
+
+        // ══════════════════════════════════════════════════
+        // RENDER
+        // ══════════════════════════════════════════════════
+        function setFilter(f, el) {
+            currentFilter = f;
+            currentPage = 1;
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            filterPosts();
+        }
+
+        function filterPosts() {
+            const q = document.getElementById('search-input').value.toLowerCase();
+            filteredPosts = allPosts.filter(p => {
+                const matchCat = currentFilter === 'all' || p.category === currentFilter;
+                const matchQ = !q || p.title.toLowerCase().includes(q)
+                    || (p.destination || '').toLowerCase().includes(q)
+                    || (p.keywords || '').toLowerCase().includes(q)
+                    || (p.tags || []).join(' ').toLowerCase().includes(q);
+                return matchCat && matchQ;
+            });
+            sortAndRender();
+        }
+
+        function sortAndRender() {
+            const sort = document.getElementById('sort-select').value;
+            if (sort === 'traffic') filteredPosts.sort((a, b) => (b.monthly_search || 0) - (a.monthly_search || 0));
+            else if (sort === 'reads') filteredPosts.sort((a, b) => (a.read_min || 0) - (b.read_min || 0));
+            else filteredPosts.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+            renderPage();
+        }
+
+        function renderPage() {
+            const start = (currentPage - 1) * PAGE_SIZE;
+            const page = filteredPosts.slice(start, start + PAGE_SIZE);
+            const grid = document.getElementById('blog-grid');
+
+            if (filteredPosts.length === 0) {
+                grid.innerHTML = `<div class="no-posts"><h3>No articles found</h3><p>Try a different search or filter.</p></div>`;
+                document.getElementById('pagination').innerHTML = '';
+                return;
+            }
+
+            grid.innerHTML = '';
+            page.forEach((post, idx) => {
+                // Insert ad every 3 posts
+                if (idx === 3) {
+                    const ad = document.createElement('div');
+                    ad.className = 'ad-inline';
+                    ad.innerHTML = '📢 Advertisement — AdSense Leaderboard (728×90)';
+                    grid.appendChild(ad);
+                }
+                grid.appendChild(buildPostCard(post, idx === 0 && currentPage === 1 && post.featured));
+            });
+
+            renderPagination();
+        }
+
+        function buildPostCard(post, featured = false) {
+            const card = document.createElement('a');
+            card.href = `/blog/post.html?slug=${post.slug}`;
+            card.className = `post-card${featured ? ' featured' : ''}`;
+
+            const tags = Array.isArray(post.tags) ? post.tags : (post.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+            const affType = post.affiliate_type || 'hotels';
+            const search = post.monthly_search ? parseInt(post.monthly_search).toLocaleString() : null;
+            const date = post.date ? new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+
+            card.innerHTML = `
+    <div class="post-thumb">
+      ${post.emoji ? `<span>${post.emoji}</span>` : ''}
+      <span class="post-category-badge ${CAT_CLASS[post.category] || 'cat-destination'}">${CAT_LABEL[post.category] || post.category || 'Article'}</span>
+    </div>
+    <div class="post-content">
+      <div>
+        <div class="post-meta">
+          <span class="post-dest">✈️ ${post.destination || ''}</span>
+          <span class="post-date">${date}</span>
+          <span class="post-read">⏱️ ${post.read_min || '?'} min</span>
+        </div>
+        <div class="post-title">${post.title}</div>
+        <div class="post-excerpt">${post.excerpt || ''}</div>
+        ${search ? `<div class="post-seo"><span class="seo-traffic">📈 ~${search}/mo searches</span></div>` : ''}
+      </div>
+      <div class="post-footer">
+        <div class="post-tags">${tags.map(t => `<span class="post-tag">${t}</span>`).join('')}</div>
+        <span class="post-cta">${AFF_CTA[affType] || 'Read More'} →</span>
+      </div>
+    </div>
+  `;
+            return card;
+        }
+
+        function renderPagination() {
+            const total = Math.ceil(filteredPosts.length / PAGE_SIZE);
+            const pg = document.getElementById('pagination');
+            if (total <= 1) { pg.innerHTML = ''; return; }
+            let html = '';
+            if (currentPage > 1) html += `<button class="page-btn" onclick="goPage(${currentPage - 1})">← Prev</button>`;
+            for (let i = 1; i <= total; i++) {
+                html += `<button class="page-btn${i === currentPage ? ' active' : ''}" onclick="goPage(${i})">${i}</button>`;
+            }
+            if (currentPage < total) html += `<button class="page-btn" onclick="goPage(${currentPage + 1})">Next →</button>`;
+            pg.innerHTML = html;
+        }
+
+        function goPage(n) { currentPage = n; renderPage(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        function renderTrending() {
+            const top5 = [...allPosts].sort((a, b) => (b.monthly_search || 0) - (a.monthly_search || 0)).slice(0, 5);
+            document.getElementById('trending-list').innerHTML = top5.map((p, i) => `
+    <a href="/blog/post.html?slug=${p.slug}" class="trending-item" style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);text-decoration:none;color:inherit;">
+      <span class="trending-num" style="font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--muted);width:18px;">${i + 1}</span>
+      <span class="trending-title" style="font-size:.78rem;line-height:1.3;flex:1;">${p.emoji || ''} ${p.title}</span>
+      <span class="trending-views" style="font-size:.62rem;color:var(--muted);white-space:nowrap;">${p.monthly_search ? parseInt(p.monthly_search).toLocaleString() + '/mo' : ''}</span>
+    </a>
+  `).join('');
+        }
+
+        // ══════════════════════════════════════════════════
+        // CONFIG MODAL
+        // ══════════════════════════════════════════════════
+        function openConfigModal() {
+            const config = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            document.getElementById('sheet-id-input').value = config.sheetId || '';
+            document.getElementById('sheet-tab-input').value = config.tabName || 'Posts';
+            document.getElementById('config-modal').classList.add('open');
+        }
+        function closeConfigModal() { document.getElementById('config-modal').classList.remove('open'); }
+        function saveAndConnect() {
+            const sheetId = document.getElementById('sheet-id-input').value.trim();
+            const tabName = document.getElementById('sheet-tab-input').value.trim() || 'Posts';
+            if (!sheetId) { alert('Please enter a Sheet ID'); return; }
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ sheetId, tabName }));
+            closeConfigModal();
+            initBlog();
+        }
+
+        // Click outside modal to close
+        document.getElementById('config-modal').addEventListener('click', e => {
+            if (e.target === e.currentTarget) closeConfigModal();
+        });
+
+        // ══════════════════════════════════════════════════
+        // INIT
+        // ══════════════════════════════════════════════════
+        initBlog();
+    </script>
+</body>
+
+</html>

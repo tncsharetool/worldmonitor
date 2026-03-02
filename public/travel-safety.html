@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Travel Safety Dashboard | World Monitor</title>
+    <meta name="description"
+        content="Check government travel advisories from US, UK, Australia & New Zealand. Real-time Do-Not-Travel warnings, safety alerts & travel insurance recommendations. Powered by WorldMonitor intelligence." />
+    <meta name="keywords"
+        content="travel safety, travel advisory, do not travel, country safety rating, travel warning, safe travel, government travel alert" />
+    <link rel="canonical" href="https://worldmonitor.app/travel-safety" />
+
+    <meta property="og:title" content="Travel Safety Dashboard | World Monitor" />
+    <meta property="og:description"
+        content="Is your destination safe? Real-time travel advisories from 4 governments. AI-powered country safety intelligence." />
+    <meta property="og:image" content="https://worldmonitor.app/favico/og-image.png" />
+    <meta property="og:url" content="https://worldmonitor.app/travel-safety" />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/favico/favicon.ico" />
+
+    <!-- Google AdSense — replace ca-pub-XXXXXXXXXXXXXXXX with your publisher ID -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+    <style>
+        :root {
+            --bg: #080d0e;
+            --bg-card: #0f1a1c;
+            --bg-card2: #131f22;
+            --border: #1e3035;
+            --accent: #0ea5e9;
+            --accent-g: #00c4a0;
+            --dnt: #ef4444;
+            --reconsider: #f97316;
+            --caution: #f59e0b;
+            --normal: #22c55e;
+            --text: #e2eaed;
+            --text-dim: #7aa3af;
+            --text-muted: #4a7080;
+            --font: 'Inter', system-ui, sans-serif;
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* NAV */
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: rgba(8, 13, 14, 0.95);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .nav-brand-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.4
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 6px;
+        }
+
+        .nav-links a {
+            padding: 5px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #060e11 0%, #07121a 60%, #051419 100%);
+            padding: 56px 24px 48px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(14, 165, 233, 0.07) 0%, transparent 70%);
+        }
+
+        .hero-inner {
+            max-width: 1260px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+            background: rgba(14, 165, 233, 0.06);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero-badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 40px;
+            align-items: end;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4.5vw, 3rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 14px;
+            background: linear-gradient(135deg, #ffffff 0%, #7dd3ea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: var(--text-dim);
+            max-width: 560px;
+            margin-bottom: 24px;
+        }
+
+        /* SEARCH */
+        .search-box {
+            display: flex;
+            gap: 0;
+            max-width: 500px;
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--bg-card);
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.1);
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            color: var(--text);
+            font-family: var(--font);
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-box button {
+            padding: 12px 20px;
+            background: var(--accent);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: #000;
+            transition: opacity 0.2s;
+        }
+
+        .search-box button:hover {
+            opacity: 0.85;
+        }
+
+        /* STATS BAR */
+        .stats-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 28px;
+        }
+
+        .stat-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.83rem;
+            font-weight: 500;
+            border: 1px solid;
+        }
+
+        .stat-chip-num {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .stat-dnt {
+            background: rgba(239, 68, 68, 0.08);
+            border-color: rgba(239, 68, 68, 0.25);
+        }
+
+        .stat-dnt .stat-chip-num {
+            color: var(--dnt);
+        }
+
+        .stat-rec {
+            background: rgba(249, 115, 22, 0.08);
+            border-color: rgba(249, 115, 22, 0.25);
+        }
+
+        .stat-rec .stat-chip-num {
+            color: var(--reconsider);
+        }
+
+        .stat-cau {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: rgba(245, 158, 11, 0.25);
+        }
+
+        .stat-cau .stat-chip-num {
+            color: var(--caution);
+        }
+
+        .stat-norm {
+            background: rgba(34, 197, 94, 0.08);
+            border-color: rgba(34, 197, 94, 0.25);
+        }
+
+        .stat-norm .stat-chip-num {
+            color: var(--normal);
+        }
+
+        /* MAIN LAYOUT */
+        .container {
+            max-width: 1260px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 24px;
+            padding: 28px 0;
+            align-items: start;
+        }
+
+        /* FILTER BAR */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .filter-btn {
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-dim);
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font);
+        }
+
+        .filter-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .filter-btn.active {
+            background: rgba(14, 165, 233, 0.12);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* ADVISORY LIST */
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .section-heading h2 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--dnt);
+            box-shadow: 0 0 6px var(--dnt);
+            animation: pulse 2s infinite;
+        }
+
+        .badge-count {
+            background: var(--accent);
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .advisory-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .advisory-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .advisory-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--level-color, var(--border));
+        }
+
+        .advisory-item:hover {
+            border-color: rgba(14, 165, 233, 0.25);
+            background: var(--bg-card2);
+        }
+
+        .advisory-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .advisory-level-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .level-dnt {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--dnt);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .level-reconsider {
+            background: rgba(249, 115, 22, 0.15);
+            color: var(--reconsider);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .level-caution {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--caution);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .level-normal {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--normal);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+        }
+
+        .advisory-title {
+            font-size: 0.88rem;
+            font-weight: 500;
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        .advisory-title a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .advisory-title a:hover {
+            color: var(--accent);
+        }
+
+        .advisory-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .advisory-source {
+            font-size: 0.73rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .advisory-time {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* INLINE CTA per row */
+        .advisory-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .cta-insurance {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--dnt);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .cta-insurance:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .cta-esim {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(14, 165, 233, 0.25);
+        }
+
+        .cta-esim:hover {
+            background: rgba(14, 165, 233, 0.2);
+        }
+
+        .cta-vpn {
+            background: rgba(0, 196, 160, 0.1);
+            color: var(--accent-g);
+            border: 1px solid rgba(0, 196, 160, 0.25);
+        }
+
+        .cta-vpn:hover {
+            background: rgba(0, 196, 160, 0.2);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .ad-unit {
+            background: var(--bg-card);
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 256px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-align: center;
+            gap: 6px;
+        }
+
+        .ad-unit-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            opacity: 0.5;
+        }
+
+        .ad-leaderboard {
+            background: var(--bg-card);
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            gap: 8px;
+        }
+
+        /* SEARCH RESULT CARD */
+        .result-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card2) 100%);
+            border: 1px solid;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        .result-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .result-flag {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+
+        .result-country {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .result-cii {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+        }
+
+        /* AFFILIATE SIDEBAR */
+        .aff-sidebar-card {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.07) 0%, rgba(0, 196, 160, 0.04) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.18);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .aff-sidebar-card h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .aff-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .aff-list-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .aff-list-item:hover {
+            border-color: var(--accent);
+            background: rgba(14, 165, 233, 0.06);
+        }
+
+        .aff-list-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .aff-list-text {
+            flex: 1;
+        }
+
+        .aff-list-title {
+            font-weight: 600;
+            font-size: 0.82rem;
+        }
+
+        .aff-list-sub {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        .aff-list-arrow {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* INFO CARD */
+        .info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+
+        .info-card h3 {
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .info-card p,
+        .info-card li {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .info-card ul {
+            padding-left: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .info-card a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .info-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* SKELETON */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card2) 50%, var(--bg-card) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 6px;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0
+            }
+
+            100% {
+                background-position: -200% 0
+            }
+        }
+
+        .last-updated {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        /* NO RESULTS */
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* PAGE FOOTER */
+        .page-footer {
+            border-top: 1px solid var(--border);
+            padding: 28px 24px;
+            margin-top: 32px;
+        }
+
+        .footer-inner {
+            max-width: 1260px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer-sources {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .footer-sources strong {
+            color: var(--text-dim);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-links a {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <a href="/" class="nav-brand">
+            <div class="nav-brand-dot"></div>
+            World Monitor
+        </a>
+        <div class="nav-links">
+            <a href="/">Dashboard</a>
+            <a href="/weather-intel.html">Weather Intel</a>
+            <a href="/travel-safety.html" class="active">Travel Safety</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-badge">
+                <div class="hero-badge-dot"></div> Live Government Advisories
+            </div>
+            <div class="hero-layout">
+                <div>
+                    <h1>Is Your Destination Safe?</h1>
+                    <p>Real-time travel advisories from 4 governments (US, UK, Australia, NZ) + WHO/CDC health alerts.
+                        Updated continuously via WorldMonitor intelligence.</p>
+
+                    <!-- SEARCH BOX -->
+                    <div class="search-box">
+                        <input type="text" id="country-search"
+                            placeholder="Search country (e.g. Iran, Ukraine, Thailand...)" autocomplete="off" />
+                        <button onclick="handleSearch()">Search →</button>
+                    </div>
+
+                    <!-- SEARCH RESULT -->
+                    <div id="search-result" style="margin-top:16px; display:none;"></div>
+                </div>
+                <div class="stats-bar" id="stats-bar">
+                    <div class="stat-chip stat-dnt">
+                        <div>
+                            <div class="stat-chip-num" id="stat-dnt">—</div>
+                            <div
+                                style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;">
+                                Do Not Travel</div>
+                        </div>
+                    </div>
+                    <div class="stat-chip stat-rec">
+                        <div>
+                            <div class="stat-chip-num" id="stat-rec">—</div>
+                            <div
+                                style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;">
+                                Reconsider</div>
+                        </div>
+                    </div>
+                    <div class="stat-chip stat-cau">
+                        <div>
+                            <div class="stat-chip-num" id="stat-cau">—</div>
+                            <div
+                                style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;">
+                                Caution</div>
+                        </div>
+                    </div>
+                    <div class="stat-chip stat-norm">
+                        <div>
+                            <div class="stat-chip-num" id="stat-norm">—</div>
+                            <div
+                                style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;">
+                                Normal</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LEADERBOARD AD -->
+    <div class="container" style="padding-top:20px;">
+        <div class="ad-leaderboard">
+            <!-- <ins class="adsbygoogle" data-ad-client="ca-pub-XXXXXXX" data-ad-slot="XXXXXXX" ...></ins> -->
+            <span style="font-size:1rem">📢</span>
+            <span class="ad-unit-label">Google AdSense — 728×90 Leaderboard</span>
+        </div>
+    </div>
+
+    <!-- MAIN LAYOUT -->
+    <div class="container">
+        <div class="main-grid">
+
+            <!-- ═══ LEFT COLUMN ═══ -->
+            <div>
+                <!-- FILTER BAR -->
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">All</button>
+                    <button class="filter-btn" data-filter="critical" onclick="setFilter('critical', this)">🔴 Critical
+                        Only</button>
+                    <button class="filter-btn" data-filter="US" onclick="setFilter('US', this)">🇺🇸 US</button>
+                    <button class="filter-btn" data-filter="AU" onclick="setFilter('AU', this)">🇦🇺 Australia</button>
+                    <button class="filter-btn" data-filter="UK" onclick="setFilter('UK', this)">🇬🇧 UK</button>
+                    <button class="filter-btn" data-filter="NZ" onclick="setFilter('NZ', this)">🇳🇿 NZ</button>
+                    <button class="filter-btn" data-filter="health" onclick="setFilter('health', this)">🏥
+                        Health</button>
+                </div>
+
+                <div class="last-updated" id="last-updated">
+                    <span>🔄</span> Loading advisories...
+                </div>
+
+                <div class="section-heading">
+                    <div class="live-dot"></div>
+                    <h2>Travel Advisories</h2>
+                    <span class="badge-count" id="total-count">—</span>
+                </div>
+
+                <!-- ADVISORY LIST -->
+                <div class="advisory-list" id="advisory-list">
+                    <div class="advisory-item" style="height:76px">
+                        <div class="skeleton" style="height:100%;border-radius:8px;"></div>
+                    </div>
+                    <div class="advisory-item" style="height:76px">
+                        <div class="skeleton" style="height:100%;border-radius:8px;"></div>
+                    </div>
+                    <div class="advisory-item" style="height:76px">
+                        <div class="skeleton" style="height:100%;border-radius:8px;"></div>
+                    </div>
+                    <div class="advisory-item" style="height:76px">
+                        <div class="skeleton" style="height:100%;border-radius:8px;"></div>
+                    </div>
+                    <div class="advisory-item" style="height:76px">
+                        <div class="skeleton" style="height:100%;border-radius:8px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ SIDEBAR ═══ -->
+            <div class="sidebar">
+
+                <!-- ADSENSE 300x250 -->
+                <div class="ad-unit">
+                    <!-- <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-XXXXXXX" data-ad-slot="XXXXXXX"></ins> -->
+                    <span style="font-size:1.5rem">📢</span>
+                    <span class="ad-unit-label">Google AdSense</span>
+                    <span style="font-size:0.72rem;opacity:.4">300 × 250 — Medium Rectangle</span>
+                </div>
+
+                <!-- AFFILIATE: Travel Essentials -->
+                <div class="aff-sidebar-card">
+                    <h3>✈️ Travel Essentials</h3>
+                    <div class="aff-list">
+                        <a href="https://worldnomads.com/?affiliate=worldmonitor" target="_blank"
+                            rel="noopener sponsored" class="aff-list-item">
+                            <span class="aff-list-icon">🛡️</span>
+                            <div class="aff-list-text">
+                                <div class="aff-list-title">World Nomads Insurance</div>
+                                <div class="aff-list-sub">Covers risky destinations, medical, cancellation</div>
+                            </div>
+                            <span class="aff-list-arrow">→</span>
+                        </a>
+                        <a href="https://safetywing.com/?referenceID=XXXXXXX" target="_blank" rel="noopener sponsored"
+                            class="aff-list-item">
+                            <span class="aff-list-icon">🌐</span>
+                            <div class="aff-list-text">
+                                <div class="aff-list-title">SafetyWing Nomad Insurance</div>
+                                <div class="aff-list-sub">$1.5/day — designed for long-term travelers</div>
+                            </div>
+                            <span class="aff-list-arrow">→</span>
+                        </a>
+                        <a href="https://ref.airalo.com/XXXXXXX" target="_blank" rel="noopener sponsored"
+                            class="aff-list-item">
+                            <span class="aff-list-icon">📡</span>
+                            <div class="aff-list-text">
+                                <div class="aff-list-title">Airalo eSIM</div>
+                                <div class="aff-list-sub">Stay connected in 200+ countries instantly</div>
+                            </div>
+                            <span class="aff-list-arrow">→</span>
+                        </a>
+                        <a href="https://www.expressvpn.com/refer-a-friend/XXXXXXX" target="_blank"
+                            rel="noopener sponsored" class="aff-list-item">
+                            <span class="aff-list-icon">🔒</span>
+                            <div class="aff-list-text">
+                                <div class="aff-list-title">ExpressVPN</div>
+                                <div class="aff-list-sub">Stay private in restrictive countries</div>
+                            </div>
+                            <span class="aff-list-arrow">→</span>
+                        </a>
+                        <a href="https://www.ivisa.com/partner/XXXXXXX" target="_blank" rel="noopener sponsored"
+                            class="aff-list-item">
+                            <span class="aff-list-icon">📋</span>
+                            <div class="aff-list-text">
+                                <div class="aff-list-title">iVisa — Fast Visa Service</div>
+                                <div class="aff-list-sub">e-Visa, visa on arrival, travel docs</div>
+                            </div>
+                            <span class="aff-list-arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ADVISORY LEGEND -->
+                <div class="info-card">
+                    <h3>ℹ️ Advisory Levels Explained</h3>
+                    <ul>
+                        <li><strong style="color:var(--dnt)">Do Not Travel</strong> — Avoid all travel. Evacuation risk.
+                        </li>
+                        <li><strong style="color:var(--reconsider)">Reconsider</strong> — Reconsider due to serious
+                            risks.</li>
+                        <li><strong style="color:var(--caution)">Exercise Caution</strong> — Take extra precautions.
+                        </li>
+                        <li><strong style="color:var(--normal)">Normal</strong> — Standard travel advisories apply.</li>
+                    </ul>
+                    <p style="margin-top:8px">Sources: <a href="https://travel.state.gov" target="_blank">US State
+                            Dept</a> · <a href="https://smartraveller.gov.au" target="_blank">Australia DFAT</a> · <a
+                            href="https://gov.uk/foreign-travel-advice" target="_blank">UK FCDO</a> · <a
+                            href="https://safetravel.govt.nz" target="_blank">NZ MFAT</a> · WHO/CDC</p>
+                </div>
+
+                <!-- ADSENSE 300x600 -->
+                <div class="ad-unit" style="min-height:340px;">
+                    <!-- <ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px" data-ad-client="ca-pub-XXXXXXX" data-ad-slot="XXXXXXX"></ins> -->
+                    <span style="font-size:1.5rem">📢</span>
+                    <span class="ad-unit-label">Google AdSense</span>
+                    <span style="font-size:0.72rem;opacity:.4">300 × 600 — Half Page</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENT SECTION (SEO) -->
+        <section style="max-width:860px;margin:0 auto 40px;padding:32px 0;border-top:1px solid var(--border);">
+            <h2 style="font-family:var(--font-display);font-size:1.35rem;margin-bottom:16px;">Essential Travel Safety
+                Checklist</h2>
+            <div style="display:grid;gap:14px;">
+                <div class="info-card">
+                    <h3>🛡️ Before You Travel — High Risk Destinations</h3>
+                    <p>If your destination has a "Reconsider" or "Do Not Travel" advisory, ensure you have comprehensive
+                        travel insurance that covers <strong>emergency medical evacuation</strong>, political
+                        evacuation, and trip cancellation.
+                        <a href="https://worldnomads.com/?affiliate=worldmonitor" target="_blank"
+                            rel="noopener sponsored">Compare World Nomads & SafetyWing →</a>
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3>📡 Stay Connected in Restricted Regions</h3>
+                    <p>Many countries under travel advisories also restrict certain apps and communication services. An
+                        eSIM paired with a VPN ensures uninterrupted access to family, banks, and emergency services.
+                        <a href="https://ref.airalo.com/XXXXXXX" target="_blank" rel="noopener sponsored">Get Airalo
+                            eSIM →</a> ·
+                        <a href="https://www.expressvpn.com/refer-a-friend/XXXXXXX" target="_blank"
+                            rel="noopener sponsored">ExpressVPN →</a>
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3>📋 Visa & Entry Requirements</h3>
+                    <p>Travel advisories often coincide with tighter visa policies and new entry requirements. Check
+                        processed visa times early, especially for destinations in conflict zones or under sanctions.
+                        <a href="https://www.ivisa.com/partner/XXXXXXX" target="_blank"
+                            rel="noopener sponsored">Fast-track your visa with iVisa →</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER AD -->
+    <div class="container">
+        <div class="ad-leaderboard" style="margin-bottom:24px;">
+            <span style="font-size:1rem">📢</span>
+            <span class="ad-unit-label">Advertisement · 728×90</span>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="page-footer">
+        <div class="footer-inner">
+            <div class="footer-sources">
+                <strong>Sources:</strong> US State Dept · Australia DFAT · UK FCDO · NZ MFAT · WHO · CDC · ECDC · US
+                Embassy Alerts
+            </div>
+            <div class="footer-links">
+                <a href="/">← Dashboard</a>
+                <a href="/weather-intel.html">Weather Intel</a>
+                <a href="https://github.com/koala73/worldmonitor" target="_blank" rel="noopener">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =========================================
+        // World Monitor — Travel Safety Page
+        // =========================================
+
+        const API_BASE = 'https://worldmonitor.app';
+        const AFF_LINKS = {
+            insurance: 'https://worldnomads.com/?affiliate=worldmonitor',
+            safetywing: 'https://safetywing.com/?referenceID=XXXXXXX',
+            esim: 'https://ref.airalo.com/XXXXXXX',
+            vpn: 'https://www.expressvpn.com/refer-a-friend/XXXXXXX',
+            visa: 'https://www.ivisa.com/partner/XXXXXXX',
+        };
+
+        let allAdvisories = [];
+        let activeFilter = 'all';
+
+        const LEVEL_ORDER = { 'do-not-travel': 0, reconsider: 1, caution: 2, normal: 3, undefined: 4 };
+        const LEVEL_COLOR = {
+            'do-not-travel': '#ef4444',
+            reconsider: '#f97316',
+            caution: '#f59e0b',
+            normal: '#22c55e',
+        };
+        const LEVEL_LABEL = {
+            'do-not-travel': '🚫 Do Not Travel',
+            reconsider: '⚠️ Reconsider',
+            caution: '⚡ Caution',
+            normal: '✅ Normal',
+        };
+        const SOURCE_FLAG = { US: '🇺🇸', AU: '🇦🇺', UK: '🇬🇧', NZ: '🇳🇿', EU: '🇪🇺', INT: '🏥' };
+
+        function getCtaForLevel(level, title) {
+            const c = title.toLowerCase();
+            if (level === 'do-not-travel') {
+                return `<a href="${AFF_LINKS.insurance}&src=dnt" target="_blank" rel="noopener sponsored" class="advisory-cta cta-insurance">🛡️ Get Insurance</a>
+            <a href="${AFF_LINKS.vpn}" target="_blank" rel="noopener sponsored" class="advisory-cta cta-vpn">🔒 VPN</a>`;
+            }
+            if (level === 'reconsider') {
+                return `<a href="${AFF_LINKS.insurance}&src=recon" target="_blank" rel="noopener sponsored" class="advisory-cta cta-insurance">🛡️ Insurance</a>
+            <a href="${AFF_LINKS.esim}" target="_blank" rel="noopener sponsored" class="advisory-cta cta-esim">📡 eSIM</a>`;
+            }
+            if (level === 'caution') {
+                return `<a href="${AFF_LINKS.esim}" target="_blank" rel="noopener sponsored" class="advisory-cta cta-esim">📡 eSIM</a>`;
+            }
+            return '';
+        }
+
+        function formatTime(date) {
+            const now = new Date();
+            const diff = now - new Date(date);
+            const mins = Math.floor(diff / 60000);
+            const hrs = Math.floor(mins / 60);
+            const days = Math.floor(hrs / 24);
+            if (mins < 1) return 'just now';
+            if (mins < 60) return `${mins}m ago`;
+            if (hrs < 24) return `${hrs}h ago`;
+            if (days < 7) return `${days}d ago`;
+            return new Date(date).toLocaleDateString();
+        }
+
+        function renderAdvisory(a) {
+            const levelCls = `level-${(a.level || 'info').replace('-', '')}`;
+            const levelLabel = LEVEL_LABEL[a.level] || 'ℹ️ Info';
+            const flag = SOURCE_FLAG[a.sourceCountry] || '🌐';
+            const levelColor = LEVEL_COLOR[a.level] || '#4a7080';
+            const cta = getCtaForLevel(a.level, a.title || '');
+
+            return `<div class="advisory-item" style="--level-color:${levelColor}">
+    <div class="advisory-header">
+      <span class="advisory-level-badge ${a.level === 'do-not-travel' ? 'level-dnt' : a.level === 'reconsider' ? 'level-reconsider' : a.level === 'caution' ? 'level-caution' : 'level-normal'}">${levelLabel}</span>
+      <div class="advisory-title">
+        ${a.link ? `<a href="${a.link}" target="_blank" rel="noopener">${a.title || '(No title)'}</a>` : (a.title || '(No title)')}
+      </div>
+    </div>
+    <div class="advisory-meta">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="advisory-source">${flag} ${a.source || a.sourceCountry}</span>
+        ${a.pubDate ? `<span class="advisory-time">${formatTime(a.pubDate)}</span>` : ''}
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">${cta}</div>
+    </div>
+  </div>`;
+        }
+
+        function getFiltered() {
+            if (activeFilter === 'critical') return allAdvisories.filter(a => a.level === 'do-not-travel' || a.level === 'reconsider');
+            if (activeFilter === 'health') return allAdvisories.filter(a => a.sourceCountry === 'EU' || a.sourceCountry === 'INT');
+            if (['US', 'AU', 'UK', 'NZ'].includes(activeFilter)) return allAdvisories.filter(a => a.sourceCountry === activeFilter);
+            return allAdvisories;
+        }
+
+        function setFilter(filter, btn) {
+            activeFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderList();
+        }
+
+        function renderList() {
+            const list = document.getElementById('advisory-list');
+            const totalCount = document.getElementById('total-count');
+            const filtered = getFiltered();
+            totalCount.textContent = filtered.length;
+            if (!filtered.length) {
+                list.innerHTML = '<div class="no-results">No advisories matching current filter.</div>';
+                return;
+            }
+            list.innerHTML = filtered.slice(0, 40).map(renderAdvisory).join('');
+        }
+
+        function updateStats(advisories) {
+            document.getElementById('stat-dnt').textContent = advisories.filter(a => a.level === 'do-not-travel').length;
+            document.getElementById('stat-rec').textContent = advisories.filter(a => a.level === 'reconsider').length;
+            document.getElementById('stat-cau').textContent = advisories.filter(a => a.level === 'caution').length;
+            document.getElementById('stat-norm').textContent = advisories.filter(a => a.level === 'normal').length;
+        }
+
+        function handleSearch() {
+            const q = document.getElementById('country-search').value.trim().toLowerCase();
+            if (!q) return;
+            const matches = allAdvisories.filter(a =>
+                (a.title || '').toLowerCase().includes(q) ||
+                (a.country || '').toLowerCase().includes(q)
+            );
+            const resultEl = document.getElementById('search-result');
+            if (!matches.length) {
+                resultEl.style.display = 'block';
+                resultEl.innerHTML = `<div style="padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;font-size:0.85rem;color:var(--text-muted)">No advisories found for "<strong style="color:var(--text)">${q}</strong>". It may be considered safe for travel. <a href="${AFF_LINKS.insurance}" target="_blank" rel="noopener sponsored" style="color:var(--accent)">Still consider travel insurance →</a></div>`;
+                return;
+            }
+            const top = matches[0];
+            const lvlColor = LEVEL_COLOR[top.level] || '#4a7080';
+            resultEl.style.display = 'block';
+            resultEl.innerHTML = `<div class="result-card" style="border-color:${lvlColor}40">
+    <div class="result-card-header">
+      <span class="result-flag">${SOURCE_FLAG[top.sourceCountry] || '🌐'}</span>
+      <div>
+        <div class="result-country">${q.charAt(0).toUpperCase() + q.slice(1)}</div>
+        <div class="result-cii">${matches.length} advisory/advisories from ${[...new Set(matches.map(m => m.sourceCountry))].join(', ')}</div>
+      </div>
+      <span class="advisory-level-badge ${top.level === 'do-not-travel' ? 'level-dnt' : top.level === 'reconsider' ? 'level-reconsider' : top.level === 'caution' ? 'level-caution' : 'level-normal'}">${LEVEL_LABEL[top.level] || 'Info'}</span>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a href="${AFF_LINKS.insurance}&country=${encodeURIComponent(q)}" target="_blank" rel="noopener sponsored" class="advisory-cta cta-insurance">🛡️ Travel Insurance for this country</a>
+      <a href="${AFF_LINKS.esim}" target="_blank" rel="noopener sponsored" class="advisory-cta cta-esim">📡 Get eSIM</a>
+      <a href="${AFF_LINKS.visa}&country=${encodeURIComponent(q)}" target="_blank" rel="noopener sponsored" style="background:rgba(0,196,160,.1);color:var(--accent-g);border:1px solid rgba(0,196,160,.25)" class="advisory-cta">📋 Check Visa</a>
+    </div>
+  </div>`;
+        }
+
+        // Enter key support
+        document.getElementById('country-search').addEventListener('keypress', e => { if (e.key === 'Enter') handleSearch(); });
+
+        async function loadData() {
+            try {
+                const resp = await fetch(`${API_BASE}/api/intelligence/v1/list-security-advisories`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({})
+                });
+                if (!resp.ok) throw new Error('API error');
+                const data = await resp.json();
+                allAdvisories = (data.advisories || data.items || data || [])
+                    .sort((a, b) => (LEVEL_ORDER[a.level] || 4) - (LEVEL_ORDER[b.level] || 4));
+            } catch {
+                // Demo fallback
+                allAdvisories = [
+                    { level: 'do-not-travel', title: 'Iran – Do Not Travel due to risk of terrorism, civil unrest, kidnapping, arbitrary arrest', source: 'US State Dept', sourceCountry: 'US', link: 'https://travel.state.gov', pubDate: new Date(Date.now() - 3600000) },
+                    { level: 'do-not-travel', title: 'Ukraine – Avoid all travel due to armed conflict, high risk to personal security', source: 'Australia DFAT', sourceCountry: 'AU', link: 'https://smartraveller.gov.au', pubDate: new Date(Date.now() - 7200000) },
+                    { level: 'do-not-travel', title: 'North Korea – Do Not Travel — risk of unlawful detention', source: 'US State Dept', sourceCountry: 'US', link: 'https://travel.state.gov', pubDate: new Date(Date.now() - 86400000) },
+                    { level: 'reconsider', title: 'Myanmar – Reconsider Travel: civil unrest, crime, arbitrary enforcement of laws', source: 'US State Dept', sourceCountry: 'US', link: 'https://travel.state.gov', pubDate: new Date(Date.now() - 43200000) },
+                    { level: 'reconsider', title: 'Russia – Reconsider Travel: arbitrary detention, risk of harassment and wrongful detention', source: 'UK FCDO', sourceCountry: 'UK', link: 'https://gov.uk/foreign-travel-advice', pubDate: new Date(Date.now() - 28800000) },
+                    { level: 'reconsider', title: 'Pakistan – Exercise a High Degree of Caution: terrorism, kidnapping', source: 'Australia DFAT', sourceCountry: 'AU', link: 'https://smartraveller.gov.au', pubDate: new Date(Date.now() - 21600000) },
+                    { level: 'caution', title: 'Turkey – Exercise Increased Caution: terrorism, arbitrary arrests', source: 'US State Dept', sourceCountry: 'US', link: 'https://travel.state.gov', pubDate: new Date(Date.now() - 18000000) },
+                    { level: 'caution', title: 'India – Exercise Caution: crime, disease, air quality concerns', source: 'NZ MFAT', sourceCountry: 'NZ', link: 'https://safetravel.govt.nz', pubDate: new Date(Date.now() - 14400000) },
+                    { level: 'caution', title: 'Thailand – Disease Outbreak: Dengue fever risk elevated in northern provinces', source: 'US', sourceCountry: 'INT', link: 'https://wwwnc.cdc.gov', pubDate: new Date(Date.now() - 10800000) },
+                    { level: 'normal', title: 'Japan – Normal Precautions: low crime, natural disaster awareness (earthquakes)', source: 'US State Dept', sourceCountry: 'US', link: 'https://travel.state.gov', pubDate: new Date(Date.now() - 5400000) },
+                    { level: 'normal', title: 'Germany – Normal Precautions: occasional crime and terrorism awareness', source: 'UK FCDO', sourceCountry: 'UK', link: 'https://gov.uk/foreign-travel-advice', pubDate: new Date(Date.now() - 3600000) },
+                ];
+            }
+
+            updateStats(allAdvisories);
+            document.getElementById('total-count').textContent = allAdvisories.length;
+            document.getElementById('last-updated').innerHTML = `<span>✅</span> Updated: ${new Date().toUTCString()}`;
+            renderList();
+        }
+
+        loadData();
+    </script>
+</body>
+
+</html>

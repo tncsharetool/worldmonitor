@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="page-title">Travel Guide | World Monitor Blog</title>
+    <meta name="description" id="page-desc"
+        content="Expert travel guide from World Monitor — real-time weather, safety advisories, and destination intelligence." />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=Merriweather:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0b0d;
+            --bg2: #0f1114;
+            --bg3: #141720;
+            --bg4: #1a1f2e;
+            --border: #1e2235;
+            --text: #dde4f0;
+            --dim: #7a8aab;
+            --muted: #3a4560;
+            --accent: #00c4a0;
+            --travel: #f59e0b;
+            --travel2: #fb923c;
+            --blue: #0ea5e9;
+            --green: #22c55e;
+            --red: #ef4444;
+            --font: 'Inter', system-ui, sans-serif;
+            --font-d: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'Merriweather', 'Georgia', serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .4
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        /* NAV */
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 44px;
+            background: #080a0c;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-logo {
+            font-family: var(--font-d);
+            font-weight: 700;
+            font-size: .85rem;
+            letter-spacing: .05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0;
+        }
+
+        .nav-link {
+            padding: 0 12px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            font-size: .75rem;
+            font-weight: 500;
+            color: var(--dim);
+            border-bottom: 2px solid transparent;
+            transition: all .15s;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+        }
+
+        .nav-link.active {
+            color: var(--travel);
+            border-bottom-color: var(--travel);
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            padding: 5px 12px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: transparent;
+            color: var(--dim);
+            font-size: .75rem;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all .15s;
+        }
+
+        .nav-btn.primary {
+            background: var(--travel);
+            color: #000;
+            border-color: var(--travel);
+            font-weight: 700;
+        }
+
+        /* PROGRESS */
+        .read-progress {
+            position: fixed;
+            top: 44px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border);
+            z-index: 99;
+        }
+
+        .read-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--travel), var(--travel2));
+            transition: width .1s;
+        }
+
+        /* HERO */
+        .post-hero {
+            padding: 40px 20px 36px;
+            background: linear-gradient(135deg, #0a0f1a, #0f1820);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .post-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(245, 158, 11, .07), transparent 70%);
+        }
+
+        .post-hero-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .breadcrumb {
+            font-size: .7rem;
+            color: var(--dim);
+            margin-bottom: 14px;
+        }
+
+        .breadcrumb a {
+            color: var(--blue);
+        }
+
+        .breadcrumb span {
+            color: var(--muted);
+        }
+
+        .post-category-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .post-cat-badge {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        .cat-weather {
+            background: rgba(14, 165, 233, .15);
+            color: var(--blue);
+            border: 1px solid rgba(14, 165, 233, .25);
+        }
+
+        .cat-safety {
+            background: rgba(239, 68, 68, .12);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, .25);
+        }
+
+        .cat-destination {
+            background: rgba(245, 158, 11, .1);
+            color: var(--travel);
+            border: 1px solid rgba(245, 158, 11, .2);
+        }
+
+        .cat-guide {
+            background: rgba(34, 197, 94, .08);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, .2);
+        }
+
+        .cat-comparison {
+            background: rgba(168, 85, 247, .1);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, .2);
+        }
+
+        .post-dest-link {
+            font-size: .8rem;
+            color: var(--dim);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .post-dest-link a {
+            color: var(--travel);
+        }
+
+        .post-title {
+            font-family: var(--font-d);
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 16px;
+        }
+
+        .post-excerpt-hero {
+            font-size: 1rem;
+            color: var(--dim);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            max-width: 680px;
+        }
+
+        .post-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            font-size: .75rem;
+            color: var(--dim);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .meta-item strong {
+            color: var(--text);
+        }
+
+        .meta-divider {
+            width: 1px;
+            height: 14px;
+            background: var(--border);
+        }
+
+        .seo-badge {
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: .68rem;
+            font-weight: 700;
+            background: rgba(34, 197, 94, .08);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, .2);
+        }
+
+        /* QUICK CTA HERO */
+        .hero-cta-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .hero-cta-btn {
+            padding: 9px 18px;
+            border-radius: 9px;
+            font-size: .82rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: var(--font);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all .15s;
+        }
+
+        .cta-primary {
+            background: var(--travel);
+            color: #000;
+        }
+
+        .cta-primary:hover {
+            background: #e08c00;
+        }
+
+        .cta-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--dim);
+        }
+
+        .cta-secondary:hover {
+            border-color: var(--travel);
+            color: var(--travel);
+        }
+
+        /* LAYOUT */
+        .post-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 28px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 20px;
+        }
+
+        @media(max-width:900px) {
+            .post-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .post-sidebar {
+                display: none;
+            }
+        }
+
+        /* ARTICLE BODY */
+        .article-body {
+            font-family: var(--font-body);
+            font-size: .95rem;
+            color: #c8d4e8;
+            line-height: 1.85;
+        }
+
+        .article-body h2 {
+            font-family: var(--font-d);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 28px 0 14px;
+            padding-left: 14px;
+            border-left: 3px solid var(--travel);
+        }
+
+        .article-body h3 {
+            font-family: var(--font-d);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 20px 0 10px;
+        }
+
+        .article-body p {
+            margin-bottom: 16px;
+        }
+
+        .article-body ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .article-body li {
+            margin-bottom: 8px;
+        }
+
+        .article-body strong {
+            color: var(--text);
+        }
+
+        .article-body a {
+            color: var(--blue);
+            text-decoration: underline;
+        }
+
+        .article-body blockquote {
+            border-left: 3px solid var(--travel);
+            padding: 12px 16px;
+            background: rgba(245, 158, 11, .04);
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            font-style: italic;
+            color: var(--dim);
+        }
+
+        /* Data callout */
+        .data-callout {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin: 20px 0;
+            display: flex;
+            gap: 12px;
+        }
+
+        .data-callout-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .data-callout-title {
+            font-family: var(--font-d);
+            font-size: .85rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .data-callout-text {
+            font-size: .8rem;
+            color: var(--dim);
+            line-height: 1.5;
+            font-family: var(--font);
+        }
+
+        .data-callout.warning {
+            border-color: rgba(239, 68, 68, .2);
+            background: rgba(239, 68, 68, .04);
+        }
+
+        .data-callout.tip {
+            border-color: rgba(34, 197, 94, .2);
+            background: rgba(34, 197, 94, .04);
+        }
+
+        .data-callout.info {
+            border-color: rgba(14, 165, 233, .2);
+            background: rgba(14, 165, 233, .04);
+        }
+
+        /* Month calendar in post */
+        .month-table {
+            display: flex;
+            gap: 4px;
+            margin: 14px 0;
+            flex-wrap: wrap;
+        }
+
+        .month-cell {
+            flex: 1;
+            min-width: 50px;
+            text-align: center;
+            padding: 8px 4px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .month-cell.good {
+            background: rgba(34, 197, 94, .08);
+            border-color: rgba(34, 197, 94, .2);
+            color: var(--green);
+        }
+
+        .month-cell.ok {
+            background: rgba(245, 158, 11, .06);
+            border-color: rgba(245, 158, 11, .15);
+            color: var(--travel);
+        }
+
+        .month-cell.bad {
+            background: rgba(239, 68, 68, .05);
+            border-color: rgba(239, 68, 68, .1);
+            color: var(--red);
+        }
+
+        .month-cell-name {
+            font-size: .58rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            display: block;
+            font-family: var(--font);
+        }
+
+        .month-cell-icon {
+            font-size: 1rem;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Affiliate blocks in post */
+        .aff-block {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 24px 0;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: inherit;
+            transition: all .15s;
+        }
+
+        .aff-block:hover {
+            border-color: rgba(245, 158, 11, .3);
+            background: rgba(245, 158, 11, .03);
+        }
+
+        .aff-block-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .aff-block-body {
+            flex: 1;
+        }
+
+        .aff-block-title {
+            font-family: var(--font-d);
+            font-size: .95rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .aff-block-sub {
+            font-size: .78rem;
+            color: var(--dim);
+            line-height: 1.4;
+        }
+
+        .aff-block-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: .78rem;
+            font-weight: 700;
+            background: var(--travel);
+            color: #000;
+            white-space: nowrap;
+            cursor: pointer;
+            font-family: var(--font);
+        }
+
+        .aff-block-btn.blue {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .aff-block-btn.green {
+            background: var(--green);
+            color: #000;
+        }
+
+        /* AdSense in content */
+        .ad-content {
+            background: rgba(255, 255, 255, .02);
+            border: 1px dashed var(--muted);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            color: var(--muted);
+            font-size: .7rem;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 24px 0;
+        }
+
+        /* Tags */
+        .post-tags-section {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .post-tag {
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: .72rem;
+            background: rgba(255, 255, 255, .04);
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+
+        /* Related posts */
+        .related-section {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .related-title {
+            font-family: var(--font-d);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .related-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: all .15s;
+        }
+
+        .related-card:hover {
+            border-color: rgba(245, 158, 11, .25);
+        }
+
+        .related-emoji {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+        }
+
+        .related-name {
+            font-size: .8rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 4px;
+        }
+
+        .related-dest {
+            font-size: .68rem;
+            color: var(--dim);
+        }
+
+        /* Sidebar */
+        .post-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            align-self: start;
+            position: sticky;
+            top: 60px;
+        }
+
+        .sidebar-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: .78rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sidebar-body {
+            padding: 12px 14px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
+            transition: all .15s;
+        }
+
+        .sidebar-link:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-link:hover .sl-title {
+            color: var(--travel);
+        }
+
+        .sl-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            width: 28px;
+            text-align: center;
+        }
+
+        .sl-title {
+            font-size: .8rem;
+            font-weight: 600;
+        }
+
+        .sl-sub {
+            font-size: .65rem;
+            color: var(--dim);
+        }
+
+        .sl-arrow {
+            margin-left: auto;
+            color: var(--muted);
+        }
+
+        .sidebar-aff {
+            display: block;
+            padding: 10px 14px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, .08), rgba(251, 146, 60, .04));
+            border-top: 1px solid rgba(245, 158, 11, .12);
+            text-align: center;
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--travel);
+        }
+
+        .sidebar-ad {
+            background: rgba(255, 255, 255, .02);
+            border: 1px dashed var(--muted);
+            border-radius: 8px;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: .7rem;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        /* TOC */
+        .toc {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 24px;
+        }
+
+        .toc-title {
+            font-size: .75rem;
+            font-weight: 700;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 10px;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .toc-item a {
+            font-size: .78rem;
+            color: var(--dim);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 0;
+            transition: color .15s;
+        }
+
+        .toc-item a:hover {
+            color: var(--travel);
+        }
+
+        .toc-item a::before {
+            content: '#';
+            font-size: .6rem;
+            color: var(--muted);
+        }
+
+        /* Weather snippet */
+        .weather-snippet {
+            background: linear-gradient(135deg, rgba(14, 165, 233, .06), rgba(14, 165, 233, .02));
+            border: 1px solid rgba(14, 165, 233, .2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 16px 0;
+            font-family: var(--font);
+        }
+
+        .ws-title {
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--blue);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 10px;
+        }
+
+        .ws-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .ws-stat {
+            text-align: center;
+        }
+
+        .ws-val {
+            font-family: var(--font-d);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .ws-label {
+            font-size: .62rem;
+            color: var(--dim);
+        }
+
+        .ws-source {
+            font-size: .62rem;
+            color: var(--muted);
+            margin-top: 8px;
+        }
+
+        /* Loading */
+        .page-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            flex-direction: column;
+            gap: 16px;
+            color: var(--dim);
+        }
+
+        .spinner {
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--border);
+            border-top-color: var(--travel);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .not-found {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--dim);
+        }
+
+        .not-found h2 {
+            font-family: var(--font-d);
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Reading Progress -->
+    <div class="read-progress">
+        <div class="read-progress-bar" id="progress-bar"></div>
+    </div>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <div class="nav-left">
+            <a href="/" class="nav-logo">🌍 MONITOR</a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Dashboard</a>
+                <a href="/destination/" class="nav-link">✈️ Destinations</a>
+                <a href="/weather-intel.html" class="nav-link">🌡️ Weather</a>
+                <a href="/travel-safety.html" class="nav-link">🛡️ Safety</a>
+                <a href="/blog/" class="nav-link active">📝 Blog</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="/blog/" class="nav-btn">← All Articles</a>
+            <a href="/destination/" class="nav-btn primary">✈️ Explore</a>
+        </div>
+    </nav>
+
+    <!-- Post Hero (filled by JS) -->
+    <div id="post-hero" class="post-hero" style="display:none">
+        <div class="post-hero-container">
+            <div class="breadcrumb">
+                <a href="/">World Monitor</a> › <a href="/blog/">Blog</a> › <span id="hero-cat">Guide</span>
+            </div>
+            <div class="post-category-row">
+                <span class="post-cat-badge" id="cat-badge">Article</span>
+                <span class="post-dest-link">✈️ <a href="#" id="dest-link">Destination</a></span>
+            </div>
+            <h1 class="post-title" id="post-title-el">Loading...</h1>
+            <p class="post-excerpt-hero" id="post-excerpt-el"></p>
+            <div class="post-meta-row">
+                <span class="meta-item">📅 <strong id="post-date-el">—</strong></span>
+                <div class="meta-divider"></div>
+                <span class="meta-item">⏱️ <strong id="post-read-el">—</strong> min read</span>
+                <div class="meta-divider"></div>
+                <span class="meta-item" id="post-search-el" style="display:none">📈 <strong
+                        id="post-search-num">—</strong>/mo searches</span>
+            </div>
+            <div class="hero-cta-row" id="hero-ctas"></div>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div id="page-loading" class="page-loading">
+        <div class="spinner"></div>Loading article...
+    </div>
+
+    <!-- Post Layout -->
+    <div id="post-layout" class="post-layout" style="display:none">
+        <main>
+            <!-- TOC -->
+            <div class="toc" id="toc-block">
+                <div class="toc-title">📋 In This Article</div>
+                <ul class="toc-list" id="toc-list"></ul>
+            </div>
+            <!-- AdSense Top -->
+            <div class="ad-content">📢 Advertisement — AdSense (728×90) <!-- data-ad-slot="XXXXXXX" --></div>
+            <!-- Body -->
+            <div class="article-body" id="article-content"></div>
+            <!-- Tags -->
+            <div class="post-tags-section" id="post-tags"></div>
+            <!-- AdSense Mid -->
+            <div class="ad-content" style="margin-top:28px">📢 Advertisement — AdSense In-Article</div>
+            <!-- Related -->
+            <div class="related-section" id="related-section"></div>
+        </main>
+
+        <!-- SIDEBAR -->
+        <aside class="post-sidebar" id="post-sidebar">
+            <div class="sidebar-ad">
+                <span>📢 Advertisement</span>
+                <span style="font-size:.65rem">AdSense 300×250</span>
+            </div>
+            <!-- Quick Book -->
+            <div class="sidebar-card" id="sidebar-book">
+                <div class="sidebar-header">⚡ Quick Book</div>
+                <div class="sidebar-body" id="sidebar-aff-links"></div>
+                <a href="/destination/" class="sidebar-aff">✈️ Full Destination Guide →</a>
+            </div>
+            <!-- Live Data -->
+            <div class="sidebar-card">
+                <div class="sidebar-header">📡 Live Data Tools</div>
+                <div class="sidebar-body">
+                    <a href="/weather-intel.html" class="sidebar-link">
+                        <span class="sl-icon">🌡️</span>
+                        <div>
+                            <div class="sl-title">Weather Anomaly</div>
+                            <div class="sl-sub">Live climate data</div>
+                        </div>
+                        <span class="sl-arrow">↗</span>
+                    </a>
+                    <a href="/travel-safety.html" class="sidebar-link">
+                        <span class="sl-icon">🛡️</span>
+                        <div>
+                            <div class="sl-title">Safety Advisories</div>
+                            <div class="sl-sub">4-government real-time</div>
+                        </div>
+                        <span class="sl-arrow">↗</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Sidebar AdSense 2 -->
+            <div class="sidebar-ad">
+                <span>📢 Advertisement</span>
+                <span style="font-size:.65rem">AdSense 300×600</span>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Not Found -->
+    <div id="not-found" class="not-found" style="display:none">
+        <h2>📄 Article Not Found</h2>
+        <p style="color:var(--dim);margin-bottom:20px;">This article may have been moved or removed.</p>
+        <a href="/blog/" style="color:var(--travel);font-weight:700;">← Back to Blog</a>
+    </div>
+
+    <script type="module">
+        // ══════════════════════════════════════════════════
+        // SAME DEMO DATA — in production, fetch from sheet
+        // ══════════════════════════════════════════════════
+        const DEMO_POSTS = [
+            { slug: "best-time-visit-bali", title: "Best Time to Visit Bali in 2026 — Month-by-Month Weather Guide", category: "weather", destination: "Bali", destSlug: "bali", emoji: "🌴", excerpt: "Bali's weather varies dramatically by month. Dry season (Apr–Sep) is ideal for beaches; wet season brings lush landscapes but daily rain. Our data shows Oct–Nov as shoulder season sweet spot.", keywords: "best time to visit bali,bali weather by month", date: "2026-02-28", read_min: 8, monthly_search: 22000, affiliate_type: "hotels", tags: ["Bali", "Season", "Beach"] },
+            { slug: "tokyo-cherry-blossom-2026", title: "Tokyo Cherry Blossom 2026 — Peak Dates, Best Spots & Booking Tips", category: "destination", destination: "Tokyo", destSlug: "tokyo", emoji: "🌸", excerpt: "Climate models predict Tokyo's 2026 sakura peak between March 25–April 5. This guide covers the 8 best hanami parks, budget hotels near Ueno, and how to book 6 months early.", keywords: "tokyo cherry blossom 2026,sakura tokyo", date: "2026-02-25", read_min: 12, monthly_search: 40000, affiliate_type: "tours", tags: ["Tokyo", "Sakura", "Spring"] },
+            { slug: "is-it-safe-travel-turkey-2026", title: "Is Turkey Safe for Tourists in 2026?", category: "safety", destination: "Turkey", destSlug: "istanbul", emoji: "🕌", excerpt: "Turkey holds Level 2 'Exercise Caution'. Earthquake risks, petty crime in tourist areas, and political demonstrations — full breakdown with city-by-city safety scores.", date: "2026-02-20", read_min: 10, monthly_search: 12000, affiliate_type: "insurance", tags: ["Turkey", "Safety"] },
+            { slug: "santorini-vs-mykonos", title: "Santorini vs Mykonos 2026 — Which Greek Island?", category: "comparison", destination: "Santorini", destSlug: "santorini", emoji: "🏛️", excerpt: "Santorini for romantic sunsets; Mykonos for parties. We compare cost, crowds, weather, and hotel prices.", date: "2026-02-15", read_min: 9, monthly_search: 11000, affiliate_type: "hotels", tags: ["Greece", "Comparison"] },
+            { slug: "caribbean-storm-season-2026", title: "Caribbean Cruise 2026 — When to Book to Avoid Hurricanes", category: "weather", destination: "Caribbean", emoji: "🌊", excerpt: "Hurricane season runs June–November. September is the absolute worst. This guide maps safe booking windows for each island.", date: "2026-02-10", read_min: 7, monthly_search: 4000, affiliate_type: "insurance", tags: ["Caribbean", "Hurricane"] },
+            { slug: "bali-vs-thailand-cost", title: "Bali vs Thailand Budget 2026 — Real Cost Breakdown", category: "comparison", destination: "Bali", destSlug: "bali", emoji: "🥥", excerpt: "Both are SE Asia budget kings but the gap is narrowing. We compare accommodation, food, transport for backpackers to luxury.", date: "2026-02-05", read_min: 11, monthly_search: 9000, affiliate_type: "hotels", tags: ["Bali", "Thailand", "Budget"] },
+            { slug: "machu-picchu-altitude-sickness", title: "Altitude Sickness at Machu Picchu — What to Know", category: "guide", destination: "Machu Picchu", destSlug: "machu-picchu", emoji: "🏔️", excerpt: "At 2,430m most visitors feel fine at Machu Picchu. Cusco at 3,400m hits hard. Full guide: acclimatization, Diamox, symptoms.", date: "2026-01-28", read_min: 9, monthly_search: 6000, affiliate_type: "insurance", tags: ["Peru", "Health", "Altitude"] },
+            { slug: "maldives-overwater-bungalow-vs-budget", title: "Maldives — Overwater Bungalow vs Budget Guesthouse?", category: "comparison", destination: "Maldives", destSlug: "maldives", emoji: "🏝️", excerpt: "Overwater bungalows start $500/night. Budget guesthouses: $50–80. We stayed in both and break down the real differences.", date: "2026-01-20", read_min: 14, monthly_search: 5000, affiliate_type: "hotels", tags: ["Maldives", "Luxury", "Budget"] },
+            { slug: "serengeti-migration-calendar-2026", title: "Serengeti Great Migration 2026 — Month-by-Month Calendar", category: "destination", destination: "Serengeti", emoji: "🦁", excerpt: "1.5 million wildebeest follow rainfall patterns. We map each migration stage and the dramatic July–Aug river crossings.", date: "2026-01-15", read_min: 13, monthly_search: 3000, affiliate_type: "tours", tags: ["Africa", "Safari", "Migration"] },
+            { slug: "best-time-southeast-asia", title: "Best Time to Visit Southeast Asia — Full Weather Guide", category: "weather", destination: "Southeast Asia", emoji: "🌏", excerpt: "Thailand, Vietnam, Cambodia, Indonesia — all follow different monsoon patterns. Plan a multi-country trip with no rainy surprises.", date: "2026-01-10", read_min: 16, monthly_search: 18000, affiliate_type: "insurance", tags: ["SE Asia", "Weather", "Planning"] }
+        ];
+
+        const CAT_CLASS = { weather: 'cat-weather', safety: 'cat-safety', destination: 'cat-destination', guide: 'cat-guide', comparison: 'cat-comparison' };
+        const CAT_LABEL = { weather: '🌡️ Weather Guide', safety: '🛡️ Safety Report', destination: '✈️ Destination Guide', guide: '📖 Travel Guide', comparison: '⚖️ Comparison' };
+
+        const AFF_LINKS = {
+            hotels: [
+                { icon: '🏨', title: 'Find Hotels', sub: 'Best price + free cancellation — Booking.com', url: 'https://booking.com?aid=XXXXXXX', btnClass: '' },
+                { icon: '✈️', title: 'Compare Flights', sub: 'Cheapest dates & routes — Skyscanner', url: 'https://skyscanner.com?aff=XXXXXXX', btnClass: 'blue' },
+            ],
+            tours: [
+                { icon: '🎒', title: 'Book Tours & Activities', sub: 'Skip-the-line, free cancellation — GetYourGuide', url: 'https://getyourguide.com?partner=XXXXXXX', btnClass: '' },
+                { icon: '🏨', title: 'Book Hotels', sub: 'Best price guarantee — Booking.com', url: 'https://booking.com?aid=XXXXXXX', btnClass: 'blue' },
+            ],
+            insurance: [
+                { icon: '🛡️', title: 'Travel Insurance', sub: 'Medical, cancellation & baggage — World Nomads', url: 'https://worldnomads.com?affiliate=XXXXXXX', btnClass: 'green' },
+                { icon: '📡', title: 'eSIM Data', sub: 'No roaming, instant activation — Airalo', url: 'https://airalo.com?referral=XXXXXXX', btnClass: 'blue' },
+            ],
+            esim: [
+                { icon: '📡', title: 'eSIM for This Trip', sub: 'Stay connected, no roaming fees — Airalo', url: 'https://airalo.com?referral=XXXXXXX', btnClass: '' },
+                { icon: '🔒', title: 'VPN + Security', sub: 'Stay private on public WiFi — ExpressVPN', url: 'https://expressvpn.com?aff=XXXXXXX', btnClass: 'blue' },
+            ]
+        };
+
+        // Post content generator (for demo — real version loads from Sheet markdown column or GDrive)
+        function generateContent(post) {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const BALI_MONTHS = { good: [3, 4, 5, 6, 7, 8], ok: [2, 9, 10], bad: [0, 1, 11] };
+
+            let html = '';
+
+            // Section 1: Overview
+            html += `<h2 id="s1">Overview — ${post.destination}</h2>
+  <p>This comprehensive guide is built on <strong>real-time climate data</strong> from World Monitor's global weather network, combined with official government travel advisories and first-hand destination intelligence. Whether you're planning your first trip or optimizing timing for the best experience, this guide gives you the data-driven edge.</p>`;
+
+            // Weather data callout
+            html += `<div class="weather-snippet">
+    <div class="ws-title">🌡️ Live Climate Data — ${post.destination}</div>
+    <div class="ws-row">
+      <div class="ws-stat"><div class="ws-val" id="live-temp">—</div><div class="ws-label">Current Temp</div></div>
+      <div class="ws-stat"><div class="ws-val" id="live-humidity">—</div><div class="ws-label">Humidity</div></div>
+      <div class="ws-stat"><div class="ws-val" id="live-wind">—</div><div class="ws-label">Wind</div></div>
+      <div class="ws-stat"><div class="ws-val" id="live-condition">—</div><div class="ws-label">Condition</div></div>
+    </div>
+    <div class="ws-source">Source: Open-Meteo API — updated hourly</div>
+  </div>`;
+
+            // Section 2: Best Time
+            html += `<h2 id="s2">Best Time to Visit ${post.destination}</h2>
+  <p>Understanding seasonal patterns is critical for an optimal experience. Here's our month-by-month breakdown based on 15 years of climate data:</p>`;
+
+            // Month calendar
+            html += `<div class="month-table">`;
+            months.forEach((m, i) => {
+                const isGood = BALI_MONTHS.good.includes(i);
+                const isOk = BALI_MONTHS.ok.includes(i);
+                const cls = isGood ? 'good' : isOk ? 'ok' : 'bad';
+                const icon = isGood ? '☀️' : isOk ? '🌤️' : '🌧️';
+                html += `<div class="month-cell ${cls}"><span class="month-cell-name">${m}</span><span class="month-cell-icon">${icon}</span></div>`;
+            });
+            html += `</div>`;
+            html += `<p>🟢 <strong>Best months</strong> — optimal weather, clear skies. 🟡 <strong>Shoulder</strong> — some rain but less crowds. 🔴 <strong>Avoid</strong> — heavy monsoon or extreme heat.</p>`;
+
+            // Affiliate block 1
+            const affType = post.affiliate_type || 'hotels';
+            const affs = AFF_LINKS[affType] || AFF_LINKS.hotels;
+            affs.forEach(aff => {
+                html += `<a href="${aff.url}" target="_blank" class="aff-block">
+      <span class="aff-block-icon">${aff.icon}</span>
+      <div class="aff-block-body"><div class="aff-block-title">${aff.title}</div><div class="aff-block-sub">${aff.sub}</div></div>
+      <button class="aff-block-btn ${aff.btnClass || ''}">Book Now →</button>
+    </a>`;
+            });
+
+            // Section 3: Safety
+            html += `<h2 id="s3">Safety & Travel Advisory</h2>
+  <div class="data-callout info"><div class="data-callout-icon">🛡️</div><div><div class="data-callout-title">Current Advisory Level</div><div class="data-callout-text">Based on real-time data from US State Department, UK FCO, Australian DFAT, and Canadian Global Affairs. Always verify before travel — advisories change. <a href="/travel-safety.html">Check live advisory →</a></div></div></div>
+  <p>Safety conditions evolve constantly. World Monitor aggregates advisories from 4 major governments and cross-references with on-ground incident reports. For ${post.destination}, current conditions are assessed continually.</p>`;
+
+            // Section 4: Practical Tips
+            html += `<h2 id="s4">Essential Travel Tips</h2>
+  <blockquote>"The difference between a good trip and a great one is timing. Get the weather right and everything else falls into place."</blockquote>
+  <ul>
+    <li><strong>Book accommodation early</strong> — especially for peak months, properties fill up 3–6 months ahead</li>
+    <li><strong>Get travel insurance</strong> — medical evacuation from remote areas can cost $50,000+</li>
+    <li><strong>SIM vs eSIM</strong> — eSIM from Airalo is easier to activate before you land</li>
+    <li><strong>Check visa requirements</strong> — processing times vary and some require advance booking</li>
+    <li><strong>Monitor weather 2 weeks out</strong> — use World Monitor for anomaly alerts</li>
+  </ul>`;
+
+            // Insurance affiliate
+            html += `<a href="https://worldnomads.com?affiliate=XXXXXXX" target="_blank" class="aff-block">
+    <span class="aff-block-icon">🛡️</span>
+    <div class="aff-block-body"><div class="aff-block-title">Don't Travel Without Insurance</div><div class="aff-block-sub">World Nomads covers adventure activities, medical emergencies, trip cancellation, and lost baggage — from $3/day</div></div>
+    <button class="aff-block-btn green">Get Covered →</button>
+  </a>`;
+
+            html += `<h2 id="s5">Getting There — Flights & Visa</h2>
+  <p>Compare flight prices across 1,200+ airlines. The cheapest months to fly are generally 6–8 weeks before off-peak dates. Use Skyscanner's "Whole Month" view to find the lowest-cost day combination.</p>
+  <a href="https://skyscanner.com?aff=XXXXXXX" target="_blank" class="aff-block">
+    <span class="aff-block-icon">✈️</span>
+    <div class="aff-block-body"><div class="aff-block-title">Compare Flights to ${post.destination}</div><div class="aff-block-sub">Search 1,200+ airlines — flexible date search, price alerts, no booking fees</div></div>
+    <button class="aff-block-btn blue">Find Flights →</button>
+  </a>`;
+
+            html += `<div class="data-callout tip"><div class="data-callout-icon">💡</div><div><div class="data-callout-title">Pro Tip: Set Price Alerts</div><div class="data-callout-text">Skyscanner price alerts are free. Set them 3–4 months before travel and you'll catch the dip when airlines release sale fares.</div></div></div>`;
+
+            return html;
+        }
+
+        // ══════════════════════════════════════════════════
+        // INIT
+        // ══════════════════════════════════════════════════
+        async function initPost() {
+            const params = new URLSearchParams(window.location.search);
+            const slug = params.get('slug');
+
+            if (!slug) { showNotFound(); return; }
+
+            // Try localStorage sheet config
+            const config = JSON.parse(localStorage.getItem('wm_blog_sheet') || '{}');
+            let posts = DEMO_POSTS;
+
+            // In production: load from sheet same as index.html
+            // If sheet connected, could fetch all posts and find by slug
+
+            const post = posts.find(p => p.slug === slug);
+            if (!post) { showNotFound(); return; }
+
+            renderPost(post);
+            loadLiveWeather(post);
+            updateReadProgress();
+        }
+
+        function renderPost(post) {
+            // Update meta
+            document.getElementById('page-title').textContent = post.title + ' | World Monitor';
+            document.getElementById('page-desc').setAttribute('content', post.excerpt || '');
+
+            // Hero
+            document.getElementById('hero-cat').textContent = post.category;
+            const catBadge = document.getElementById('cat-badge');
+            catBadge.textContent = CAT_LABEL[post.category] || post.category;
+            catBadge.className = `post-cat-badge ${CAT_CLASS[post.category] || 'cat-destination'}`;
+            document.getElementById('dest-link').textContent = post.destination;
+            if (post.destSlug) document.getElementById('dest-link').href = `/destination/city.html?city=${post.destSlug}`;
+            document.getElementById('post-title-el').textContent = post.emoji ? post.emoji + ' ' + post.title : post.title;
+            document.getElementById('post-excerpt-el').textContent = post.excerpt || '';
+            if (post.date) document.getElementById('post-date-el').textContent = new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            document.getElementById('post-read-el').textContent = post.read_min || '—';
+            if (post.monthly_search) {
+                document.getElementById('post-search-el').style.display = 'flex';
+                document.getElementById('post-search-num').textContent = parseInt(post.monthly_search).toLocaleString();
+            }
+
+            // Hero CTAs
+            const affType = post.affiliate_type || 'hotels';
+            const ctaMap = { hotels: '🏨 Book Hotels', tours: '🎒 Book Tours', insurance: '🛡️ Get Insurance', esim: '📡 Get eSIM' };
+            const urlMap = { hotels: 'https://booking.com?aid=XXXXXXX', tours: 'https://getyourguide.com?partner=XXXXXXX', insurance: 'https://worldnomads.com?affiliate=XXXXXXX', esim: 'https://airalo.com?referral=XXXXXXX' };
+            document.getElementById('hero-ctas').innerHTML = `
+    <a href="${urlMap[affType]}" target="_blank" class="hero-cta-btn cta-primary">${ctaMap[affType] || 'Book Now'}</a>
+    ${post.destSlug ? `<a href="/destination/city.html?city=${post.destSlug}" class="hero-cta-btn cta-secondary">🗺️ Full ${post.destination} Guide</a>` : ''}
+    <a href="/travel-safety.html" class="hero-cta-btn cta-secondary">🛡️ Check Safety</a>
+  `;
+
+            // TOC
+            const tocItems = [
+                { id: 's1', label: `Overview — ${post.destination}` },
+                { id: 's2', label: 'Best Time to Visit' },
+                { id: 's3', label: 'Safety & Advisory' },
+                { id: 's4', label: 'Essential Tips' },
+                { id: 's5', label: 'Flights & Visa' },
+            ];
+            document.getElementById('toc-list').innerHTML = tocItems.map(t => `<li class="toc-item"><a href="#${t.id}">${t.label}</a></li>`).join('');
+
+            // Article
+            document.getElementById('article-content').innerHTML = generateContent(post);
+
+            // Tags
+            const tags = Array.isArray(post.tags) ? post.tags : (post.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+            document.getElementById('post-tags').innerHTML = `<span style="font-size:.72rem;color:var(--dim);font-weight:600;">Tags:</span>` + tags.map(t => `<span class="post-tag">${t}</span>`).join('');
+
+            // Related posts
+            const related = DEMO_POSTS.filter(p => p.slug !== post.slug && (p.destination === post.destination || p.category === post.category)).slice(0, 4);
+            if (related.length) {
+                document.getElementById('related-section').innerHTML = `
+      <div class="related-title">📖 Related Articles</div>
+      <div class="related-grid">${related.map(r => `
+        <a href="/blog/post.html?slug=${r.slug}" class="related-card">
+          <div class="related-emoji">${r.emoji || '📄'}</div>
+          <div class="related-name">${r.title}</div>
+          <div class="related-dest">✈️ ${r.destination}</div>
+        </a>`).join('')}
+      </div>`;
+            }
+
+            // Sidebar affiliate
+            const affs = AFF_LINKS[affType] || AFF_LINKS.hotels;
+            document.getElementById('sidebar-aff-links').innerHTML = affs.map(a => `
+    <a href="${a.url}" target="_blank" class="sidebar-link">
+      <span class="sl-icon">${a.icon}</span>
+      <div><div class="sl-title">${a.title}</div><div class="sl-sub">${a.sub}</div></div>
+      <span class="sl-arrow">↗</span>
+    </a>`).join('');
+
+            // Show
+            document.getElementById('page-loading').style.display = 'none';
+            document.getElementById('post-hero').style.display = 'block';
+            document.getElementById('post-layout').style.display = 'grid';
+        }
+
+        async function loadLiveWeather(post) {
+            // Hardcoded coords for demo destinations
+            const COORDS = {
+                'Bali': { lat: -8.34, lon: 115.09 }, 'Tokyo': { lat: 35.68, lon: 139.69 },
+                'Turkey': { lat: 41.01, lon: 28.97 }, 'Santorini': { lat: 36.39, lon: 25.46 },
+                'Caribbean': { lat: 18.2, lon: -66.6 }, 'Machu Picchu': { lat: -13.16, lon: -72.54 },
+                'Maldives': { lat: 3.2, lon: 73.2 }, 'Southeast Asia': { lat: 13.75, lon: 100.5 }
+            };
+            const coords = COORDS[post.destination];
+            if (!coords) return;
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m,relative_humidity_2m,windspeed_10m,weathercode&wind_speed_unit=ms&timezone=auto`;
+                const res = await fetch(url);
+                const data = await res.json();
+                const c = data.current;
+                const WMO = { 0: '☀️ Clear', 1: '🌤️ Mostly Clear', 2: '⛅ Partly Cloudy', 3: '☁️ Overcast', 45: '🌫️ Fog', 48: '🌫️ Fog', 51: '🌦️ Drizzle', 61: '🌧️ Rain', 71: '🌨️ Snow', 80: '🌦️ Showers', 95: '⛈️ Thunderstorm' };
+                if (document.getElementById('live-temp')) {
+                    document.getElementById('live-temp').textContent = `${Math.round(c.temperature_2m)}°C`;
+                    document.getElementById('live-humidity').textContent = `${c.relative_humidity_2m}%`;
+                    document.getElementById('live-wind').textContent = `${Math.round(c.windspeed_10m)} m/s`;
+                    document.getElementById('live-condition').textContent = WMO[c.weathercode] || `Code ${c.weathercode}`;
+                }
+            } catch (e) { console.warn('Weather fetch failed:', e); }
+        }
+
+        function showNotFound() {
+            document.getElementById('page-loading').style.display = 'none';
+            document.getElementById('not-found').style.display = 'block';
+        }
+
+        function updateReadProgress() {
+            window.addEventListener('scroll', () => {
+                const el = document.getElementById('article-content');
+                if (!el) return;
+                const rect = el.getBoundingClientRect();
+                const total = el.offsetHeight;
+                const scrolled = Math.max(0, -rect.top);
+                const pct = Math.min(100, (scrolled / total) * 100);
+                const bar = document.getElementById('progress-bar');
+                if (bar) bar.style.width = pct + '%';
+            });
+        }
+
+        initPost();
+    </script>
+</body>
+
+</html>

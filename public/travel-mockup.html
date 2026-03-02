@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>World Monitor — Travel & Weather Integration Mockup</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0b0d;
+            --bg2: #0f1114;
+            --bg3: #141720;
+            --border: #1e2235;
+            --text: #dde4f0;
+            --dim: #7a8aab;
+            --muted: #3a4560;
+            --accent: #00c4a0;
+            --travel: #f59e0b;
+            --travel2: #fb923c;
+            --danger: #ef4444;
+            --blue: #0ea5e9;
+            --font: 'Inter', system-ui, sans-serif;
+            --font-d: 'Space Grotesk', system-ui, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .4
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0
+            }
+
+            100% {
+                background-position: -200% 0
+            }
+        }
+
+        /* ══════════════════════════════════ HEADER ══════════════════════════════════ */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            height: 44px;
+            background: #080a0c;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 200;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Variant Switcher — existing 4 + NEW Travel */
+        .variant-switcher {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .variant-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            text-decoration: none;
+            font-size: .72rem;
+            font-weight: 500;
+            color: var(--dim);
+            border-bottom: 2px solid transparent;
+            transition: all .15s;
+            white-space: nowrap;
+        }
+
+        .variant-option:hover {
+            color: var(--text);
+        }
+
+        .variant-option.active {
+            color: var(--text);
+            border-bottom-color: var(--accent);
+        }
+
+        .variant-option.travel-active {
+            color: var(--travel) !important;
+            border-bottom-color: var(--travel) !important;
+            background: rgba(245, 158, 11, .05);
+        }
+
+        .variant-divider {
+            width: 1px;
+            height: 16px;
+            background: var(--border);
+            margin: 0 2px;
+        }
+
+        .variant-icon {
+            font-size: .95rem;
+        }
+
+        .variant-label {
+            font-size: .7rem;
+            font-weight: 600;
+            letter-spacing: .01em;
+        }
+
+        /* ✈️ TRAVEL BADGE — nổi bật hơn các variant khác */
+        .variant-travel {
+            background: linear-gradient(135deg, rgba(245, 158, 11, .12) 0%, rgba(251, 146, 60, .08) 100%);
+            border: 1px solid rgba(245, 158, 11, .25);
+            border-radius: 6px;
+            padding: 3px 10px;
+            margin-left: 4px;
+            position: relative;
+        }
+
+        .variant-travel::before {
+            content: 'NEW';
+            position: absolute;
+            top: -7px;
+            right: -4px;
+            font-size: .5rem;
+            font-weight: 800;
+            padding: 1px 4px;
+            border-radius: 4px;
+            background: var(--travel);
+            color: #000;
+            letter-spacing: .05em;
+        }
+
+        .variant-travel .variant-icon {
+            font-size: 1rem;
+        }
+
+        .variant-travel .variant-label {
+            color: var(--travel);
+            font-weight: 700;
+        }
+
+        .logo {
+            font-family: var(--font-d);
+            font-weight: 700;
+            font-size: .85rem;
+            letter-spacing: .05em;
+        }
+
+        .version {
+            font-size: .6rem;
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        .live-badge {
+            font-size: .65rem;
+            color: #22c55e;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .header-btn {
+            padding: 4px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--dim);
+            font-size: .72rem;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all .15s;
+        }
+
+        .header-btn:hover {
+            border-color: var(--travel);
+            color: var(--travel);
+        }
+
+        /* ══════════════════════════════════ TRAVEL NAV BAR ══════════════════════════════════ */
+        /* Hiển thị khi click variant Travel — sub-navigation bar */
+        .travel-nav-bar {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            padding: 0 16px;
+            background: rgba(245, 158, 11, .03);
+            border-bottom: 1px solid rgba(245, 158, 11, .12);
+            height: 36px;
+            overflow-x: auto;
+        }
+
+        .travel-nav-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .travel-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0 14px;
+            font-size: .72rem;
+            font-weight: 500;
+            color: var(--dim);
+            cursor: pointer;
+            height: 100%;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: all .15s;
+        }
+
+        .travel-nav-item:hover {
+            color: var(--travel);
+        }
+
+        .travel-nav-item.active {
+            color: var(--travel);
+            border-bottom-color: var(--travel);
+        }
+
+        .travel-nav-divider {
+            width: 1px;
+            height: 16px;
+            background: var(--border);
+            flex-shrink: 0;
+        }
+
+        .travel-nav-badge {
+            font-size: .55rem;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, .15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, .25);
+        }
+
+        .travel-nav-badge.orange {
+            background: rgba(245, 158, 11, .15);
+            color: var(--travel);
+            border-color: rgba(245, 158, 11, .25);
+        }
+
+        /* ══════════════════════════════════ MAIN LAYOUT ══════════════════════════════════ */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            height: calc(100vh - 80px);
+        }
+
+        .map-section {
+            border-right: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0a1a1f 0%, #061418 100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .map-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0, 0, 0, .2);
+        }
+
+        .map-title {
+            font-size: .78rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .map-pin-btn {
+            padding: 3px 8px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            background: transparent;
+            color: var(--dim);
+            font-size: .68rem;
+            cursor: pointer;
+        }
+
+        /* Travel Map Overlay Mockup */
+        .map-mock {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-mock-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0, 196, 160, .04) 0%, transparent 70%);
+        }
+
+        /* Simulated destination pins on map */
+        .map-pin {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform .15s;
+        }
+
+        .map-pin:hover {
+            transform: scale(1.2);
+        }
+
+        .map-pin-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .5rem;
+        }
+
+        .map-pin-label {
+            font-size: .52rem;
+            color: var(--dim);
+            margin-top: 1px;
+            white-space: nowrap;
+        }
+
+        .pin-red .map-pin-dot {
+            background: rgba(239, 68, 68, .2);
+            border-color: #ef4444;
+            box-shadow: 0 0 6px rgba(239, 68, 68, .4);
+        }
+
+        .pin-amber .map-pin-dot {
+            background: rgba(245, 158, 11, .2);
+            border-color: var(--travel);
+            box-shadow: 0 0 6px rgba(245, 158, 11, .4);
+        }
+
+        .pin-green .map-pin-dot {
+            background: rgba(34, 197, 94, .2);
+            border-color: #22c55e;
+            box-shadow: 0 0 6px rgba(34, 197, 94, .3);
+        }
+
+        .pin-blue .map-pin-dot {
+            background: rgba(14, 165, 233, .2);
+            border-color: #0ea5e9;
+            box-shadow: 0 0 6px rgba(14, 165, 233, .3);
+        }
+
+        .map-legend {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(0, 0, 0, .6);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .legend-title {
+            font-size: .6rem;
+            font-weight: 700;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin-bottom: 2px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .62rem;
+            color: var(--dim);
+        }
+
+        .legend-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .map-overlay-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 6px 12px;
+            background: rgba(245, 158, 11, .12);
+            border: 1px solid rgba(245, 158, 11, .3);
+            border-radius: 8px;
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--travel);
+            cursor: pointer;
+        }
+
+        /* ══════════════════════════════════ PANELS GRID ══════════════════════════════════ */
+        .panels-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            overflow-y: auto;
+            align-content: start;
+        }
+
+        .panels-grid::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .panels-grid::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        /* Panel */
+        .panel {
+            border: 1px solid var(--border);
+            border-radius: 0;
+            padding: 0;
+            border-right: none;
+            border-bottom: none;
+            position: relative;
+            overflow: hidden;
+            min-height: 240px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel:last-child {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0, 0, 0, .15);
+            flex-shrink: 0;
+        }
+
+        .panel-label {
+            font-size: .72rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: .01em;
+        }
+
+        .panel-badge {
+            font-size: .58rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .panel-action-btn {
+            padding: 2px 6px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--muted);
+            font-size: .62rem;
+            cursor: pointer;
+        }
+
+        .panel-body {
+            padding: 10px 12px;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* ── TRAVEL PANEL: Destination Picker ── */
+        .dest-panel {
+            grid-column: 1 / -1;
+        }
+
+        .dest-panel .panel-header-bar {
+            background: rgba(245, 158, 11, .05);
+            border-bottom-color: rgba(245, 158, 11, .15);
+        }
+
+        .dest-panel .panel-label {
+            color: var(--travel);
+        }
+
+        .dest-search {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .dest-search input {
+            flex: 1;
+            padding: 7px 12px;
+            background: #0a0c10;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            color: var(--text);
+            font-size: .8rem;
+            font-family: var(--font);
+            outline: none;
+        }
+
+        .dest-search input:focus {
+            border-color: var(--travel);
+        }
+
+        .dest-search input::placeholder {
+            color: var(--muted);
+        }
+
+        .dest-search button {
+            padding: 7px 14px;
+            background: var(--travel);
+            color: #000;
+            border: none;
+            border-radius: 7px;
+            font-weight: 700;
+            font-size: .78rem;
+            cursor: pointer;
+            font-family: var(--font);
+        }
+
+        .dest-chips {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .dest-chip {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: .7rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            color: var(--dim);
+            background: transparent;
+            transition: all .15s;
+        }
+
+        .dest-chip.active,
+        .dest-chip:hover {
+            background: rgba(245, 158, 11, .08);
+            color: var(--travel);
+            border-color: rgba(245, 158, 11, .3);
+        }
+
+        .dest-scroll {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .dest-scroll::-webkit-scrollbar {
+            height: 2px;
+        }
+
+        .dest-scroll::-webkit-scrollbar-thumb {
+            background: var(--border);
+        }
+
+        .dest-mini-card {
+            flex-shrink: 0;
+            width: 130px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all .2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .dest-mini-card:hover {
+            border-color: rgba(245, 158, 11, .3);
+            transform: translateY(-2px);
+        }
+
+        .dest-mini-hero {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .dest-mini-name {
+            font-size: .75rem;
+            font-weight: 700;
+            padding: 6px 8px 2px;
+        }
+
+        .dest-mini-country {
+            font-size: .62rem;
+            color: var(--dim);
+            padding: 0 8px 6px;
+        }
+
+        .dest-mini-good {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            font-size: .52rem;
+            padding: 1px 5px;
+            border-radius: 6px;
+            background: rgba(34, 197, 94, .15);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, .25);
+        }
+
+        /* ── TRAVEL PANEL: Weather ── */
+        .weather-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .weather-row:last-child {
+            border-bottom: none;
+        }
+
+        .weather-zone {
+            font-size: .8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .weather-metrics {
+            display: flex;
+            gap: 12px;
+        }
+
+        .weather-val {
+            font-family: var(--font-d);
+            font-size: .9rem;
+            font-weight: 700;
+        }
+
+        .sev-badge-sm {
+            font-size: .6rem;
+            padding: 2px 7px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .sev-extreme {
+            background: rgba(239, 68, 68, .12);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, .25);
+        }
+
+        .sev-moderate {
+            background: rgba(245, 158, 11, .1);
+            color: var(--travel);
+            border: 1px solid rgba(245, 158, 11, .2);
+        }
+
+        .sev-normal {
+            background: rgba(34, 197, 94, .08);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, .2);
+        }
+
+        /* ── TRAVEL PANEL: Advisories ── */
+        .advisory-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            margin-bottom: 4px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+        .advisory-row:hover {
+            border-color: rgba(14, 165, 233, .2);
+        }
+
+        .advisory-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--adv-color, var(--border));
+        }
+
+        .adv-level {
+            font-size: .6rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 6px;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
+        .adv-dnt {
+            background: rgba(239, 68, 68, .15);
+            color: #ef4444;
+        }
+
+        .adv-rec {
+            background: rgba(249, 115, 22, .12);
+            color: #f97316;
+        }
+
+        .adv-cau {
+            background: rgba(245, 158, 11, .1);
+            color: var(--travel);
+        }
+
+        .adv-title {
+            font-size: .78rem;
+            flex: 1;
+        }
+
+        .adv-cta {
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: .62rem;
+            font-weight: 700;
+            text-decoration: none;
+            background: rgba(239, 68, 68, .1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, .2);
+            white-space: nowrap;
+        }
+
+        /* ── FULL-WIDTH MONETIZATION PANEL ── */
+        .monetize-panel {
+            grid-column: 1 / -1;
+            border: 1px solid rgba(245, 158, 11, .18);
+            background: linear-gradient(135deg, rgba(245, 158, 11, .04) 0%, rgba(251, 146, 60, .02) 100%);
+        }
+
+        .monetize-panel .panel-header-bar {
+            background: rgba(245, 158, 11, .07);
+            border-bottom-color: rgba(245, 158, 11, .15);
+        }
+
+        .aff-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .aff-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, .2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: .75rem;
+            transition: all .15s;
+            cursor: pointer;
+        }
+
+        .aff-chip:hover {
+            border-color: var(--travel);
+            color: var(--travel);
+            background: rgba(245, 158, 11, .05);
+        }
+
+        .aff-chip-icon {
+            font-size: 1.1rem;
+        }
+
+        .aff-chip-body {}
+
+        .aff-chip-title {
+            font-weight: 600;
+            font-size: .75rem;
+        }
+
+        .aff-chip-sub {
+            font-size: .62rem;
+            color: var(--dim);
+        }
+
+        /* ══════════════════════════════════ ANNOTATION OVERLAY ══════════════════════════════════ */
+        .annotation {
+            position: absolute;
+            z-index: 50;
+        }
+
+        .annotation-bubble {
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: .68rem;
+            line-height: 1.4;
+            font-weight: 500;
+            max-width: 200px;
+        }
+
+        .ann-new {
+            background: rgba(245, 158, 11, .15);
+            border: 1px solid rgba(245, 158, 11, .4);
+            color: var(--travel);
+        }
+
+        .ann-info {
+            background: rgba(14, 165, 233, .1);
+            border: 1px solid rgba(14, 165, 233, .3);
+            color: #67d8f7;
+        }
+
+        .ann-highlight {
+            background: rgba(0, 196, 160, .1);
+            border: 1px solid rgba(0, 196, 160, .3);
+            color: #34ddb8;
+        }
+
+        .annotation-arrow {
+            font-size: .9rem;
+            line-height: 1;
+        }
+
+        /* ══════════════════════════════════ MOCKUP LABEL ══════════════════════════════════ */
+        .mockup-label {
+            position: fixed;
+            bottom: 12px;
+            right: 12px;
+            z-index: 999;
+            background: rgba(0, 0, 0, .8);
+            border: 1px solid var(--travel);
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: .7rem;
+            color: var(--travel);
+            backdrop-filter: blur(8px);
+        }
+
+        /* ══════════════════════════════════ SECTION 2: STANDALONE PAGES NAV ══════════════════════════════════ */
+        .site-structure {
+            padding: 20px;
+            background: var(--bg2);
+            border-top: 2px solid rgba(245, 158, 11, .2);
+        }
+
+        .site-title {
+            font-family: var(--font-d);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--travel);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .site-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .site-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            transition: all .2s;
+            cursor: pointer;
+        }
+
+        .site-card:hover {
+            border-color: rgba(245, 158, 11, .3);
+            transform: translateY(-1px);
+        }
+
+        .site-card-icon {
+            font-size: 1.6rem;
+            margin-bottom: 6px;
+        }
+
+        .site-card-path {
+            font-size: .68rem;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 4px;
+            font-family: monospace;
+        }
+
+        .site-card-name {
+            font-weight: 700;
+            font-size: .9rem;
+            margin-bottom: 4px;
+        }
+
+        .site-card-desc {
+            font-size: .75rem;
+            color: var(--dim);
+            line-height: 1.4;
+        }
+
+        .site-card-status {
+            margin-top: 8px;
+            font-size: .62rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .status-done {
+            background: rgba(34, 197, 94, .1);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, .2);
+        }
+
+        .status-next {
+            background: rgba(245, 158, 11, .1);
+            color: var(--travel);
+            border: 1px solid rgba(245, 158, 11, .2);
+        }
+
+        .status-planned {
+            background: rgba(100, 116, 139, .1);
+            color: #94a3b8;
+            border: 1px solid rgba(100, 116, 139, .2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════ MOCKUP HEADER ═══════════════════════════ -->
+    <div class="header">
+        <div class="header-left">
+            <!-- Existing variant switcher + NEW Travel tab -->
+            <div class="variant-switcher">
+                <a href="#" class="variant-option">
+                    <span class="variant-icon">🌍</span>
+                    <span class="variant-label">World</span>
+                </a>
+                <span class="variant-divider"></span>
+                <a href="#" class="variant-option">
+                    <span class="variant-icon">💻</span>
+                    <span class="variant-label">Tech</span>
+                </a>
+                <span class="variant-divider"></span>
+                <a href="#" class="variant-option">
+                    <span class="variant-icon">📈</span>
+                    <span class="variant-label">Finance</span>
+                </a>
+                <span class="variant-divider"></span>
+                <!-- ✈️ TRAVEL — ĐÂY LÀ MỤC MỚI NỔI BẬT -->
+                <a href="#" class="variant-option variant-travel travel-active">
+                    <span class="variant-icon">✈️</span>
+                    <span class="variant-label">Travel</span>
+                </a>
+            </div>
+
+            <span class="logo">MONITOR</span><span class="version">v2.1</span>
+            <div class="live-badge"><span class="status-dot"></span>LIVE</div>
+        </div>
+        <div class="header-right">
+            <button class="header-btn">⌘K Search</button>
+            <button class="header-btn">⚙️</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════ TRAVEL SUB-NAV BAR ═══════════════════════════ -->
+    <!-- Hiện ra khi chọn variant "Travel" — navigation ngách riêng -->
+    <div class="travel-nav-bar">
+        <a href="#" class="travel-nav-item active">🗺️ Overview</a>
+        <div class="travel-nav-divider"></div>
+        <a href="#" class="travel-nav-item">✈️ Destinations <span class="travel-nav-badge orange">50+</span></a>
+        <div class="travel-nav-divider"></div>
+        <a href="#" class="travel-nav-item">🌡️ Weather Intel</a>
+        <div class="travel-nav-divider"></div>
+        <a href="#" class="travel-nav-item">🛡️ Safety Advisories <span class="travel-nav-badge">2 DNT</span></a>
+        <div class="travel-nav-divider"></div>
+        <a href="#" class="travel-nav-item">📝 Blog</a>
+        <div class="travel-nav-divider"></div>
+        <a href="#" class="travel-nav-item">🔧 Embed Widget</a>
+    </div>
+
+    <!-- ═══════════════════════════ MAIN CONTENT ═══════════════════════════ -->
+    <div class="main-content">
+
+        <!-- MAP SECTION — Travel mode: pins color-coded by advisory level -->
+        <div class="map-section">
+            <div class="map-header">
+                <div class="map-title">🗺️ Travel Intelligence Map <span
+                        style="font-size:.62rem;color:var(--dim);font-weight:400">— Safety + Weather overlay</span>
+                </div>
+                <button class="map-pin-btn">📌 Pin</button>
+            </div>
+            <div class="map-mock">
+                <div class="map-mock-bg"></div>
+                <!-- Simulated destination pins -->
+                <div class="map-pin pin-red" style="top:38%;left:65%">
+                    <div class="map-pin-dot">🚫</div>
+                    <div class="map-pin-label">Ukraine</div>
+                </div>
+                <div class="map-pin pin-red" style="top:42%;left:70%">
+                    <div class="map-pin-dot">🚫</div>
+                    <div class="map-pin-label">Iran</div>
+                </div>
+                <div class="map-pin pin-amber" style="top:48%;left:55%">
+                    <div class="map-pin-dot">⚡</div>
+                    <div class="map-pin-label">Turkey</div>
+                </div>
+                <div class="map-pin pin-amber" style="top:55%;left:72%">
+                    <div class="map-pin-dot">⚡</div>
+                    <div class="map-pin-label">Pakistan</div>
+                </div>
+                <div class="map-pin pin-green" style="top:60%;left:82%">
+                    <div class="map-pin-dot">✅</div>
+                    <div class="map-pin-label">Bali</div>
+                </div>
+                <div class="map-pin pin-green" style="top:35%;left:85%">
+                    <div class="map-pin-dot">✅</div>
+                    <div class="map-pin-label">Tokyo</div>
+                </div>
+                <div class="map-pin pin-blue" style="top:45%;left:45%">
+                    <div class="map-pin-dot">🌡️</div>
+                    <div class="map-pin-label">Sahel +4°C</div>
+                </div>
+                <div class="map-pin pin-green" style="top:52%;left:48%">
+                    <div class="map-pin-dot">✅</div>
+                    <div class="map-pin-label">Santorini</div>
+                </div>
+                <div class="map-pin pin-green" style="top:65%;left:25%">
+                    <div class="map-pin-dot">✅</div>
+                    <div class="map-pin-label">Rio</div>
+                </div>
+                <div class="map-pin pin-amber" style="top:72%;left:30%">
+                    <div class="map-pin-dot">⚡</div>
+                    <div class="map-pin-label">Mexico</div>
+                </div>
+
+                <button class="map-overlay-btn">🗓️ Filter by Month</button>
+
+                <div class="map-legend">
+                    <div class="legend-title">Advisory + Weather</div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#ef4444"></div>Do Not Travel
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#f59e0b"></div>Exercise Caution
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#22c55e"></div>Safe to Travel
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#0ea5e9"></div>Climate Anomaly
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANELS GRID -->
+        <div class="panels-grid">
+
+            <!-- PANEL 1: Destination Picker (FULL WIDTH across 2 cols) -->
+            <div class="panel dest-panel">
+                <div class="panel-header-bar">
+                    <div class="panel-label">✈️ Bucket-List Destinations <span class="panel-badge"
+                            style="background:rgba(245,158,11,.1);color:var(--travel)">50+ places</span></div>
+                    <div class="panel-actions">
+                        <button class="panel-action-btn">All Regions ↓</button>
+                        <button class="panel-action-btn">Best Now ✅</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="dest-search">
+                        <input placeholder="🔍 Search destination (Bali, Tokyo, Iceland...)" />
+                        <button>Explore →</button>
+                    </div>
+                    <div class="dest-chips">
+                        <button class="dest-chip active">🌏 Asia Pacific</button>
+                        <button class="dest-chip">🇪🇺 Europe</button>
+                        <button class="dest-chip">🌎 Americas</button>
+                        <button class="dest-chip">🏜️ Middle East</button>
+                        <button class="dest-chip">🌍 Africa</button>
+                        <button class="dest-chip">🏝️ Beach</button>
+                        <button class="dest-chip">🏔️ Adventure</button>
+                        <button class="dest-chip">🏛️ History</button>
+                    </div>
+                    <div class="dest-scroll">
+                        <a href="#" class="dest-mini-card">
+                            <div class="dest-mini-hero" style="background:linear-gradient(135deg,#1a4a20,#0d2d1a)">
+                                🌴 <span class="dest-mini-good">✅ Good Now</span>
+                            </div>
+                            <div class="dest-mini-name">Bali</div>
+                            <div class="dest-mini-country">🇮🇩 Indonesia</div>
+                        </a>
+                        <a href="#" class="dest-mini-card">
+                            <div class="dest-mini-hero" style="background:linear-gradient(135deg,#1a0a2e,#0d0d24)">🗼
+                            </div>
+                            <div class="dest-mini-name">Tokyo</div>
+                            <div class="dest-mini-country">🇯🇵 Japan</div>
+                        </a>
+                        <a href="#" class="dest-mini-card">
+                            <div class="dest-mini-hero" style="background:linear-gradient(135deg,#0a1a3a,#060f22)">
+                                🏺 <span class="dest-mini-good">✅ Good Now</span>
+                            </div>
+                            <div class="dest-mini-name">Santorini</div>
+                            <div class="dest-mini-country">🇬🇷 Greece</div>
+                        </a>
+                        <a href="#" class="dest-mini-card">
+                            <div class="dest-mini-hero" style="background:linear-gradient(135deg,#0a0814,#06050e)">🗼
+                            </div>
+                            <div class="dest-mini-name">Paris</div>
+                            <div class="dest-mini-country">🇫🇷 France</div>
+                        </a>
+                        <a href="#" class="dest-mini-card">
+                            <div class="dest-mini-hero" style="background:linear-gradient(135deg,#000814,#000510)">🌌
+                            </div>
+                            <div class="dest-mini-name">Iceland</div>
+                            <div class="dest-mini-country">🇮🇸 Iceland</div>
+                        </a>
+                        <a href="#" class="dest-mini-card">
+                            <div class="dest-mini-hero" style="background:linear-gradient(135deg,#0a1a0a,#060f06)">
+                                🏔️ <span class="dest-mini-good">✅ Good Now</span>
+                            </div>
+                            <div class="dest-mini-name">Machu Picchu</div>
+                            <div class="dest-mini-country">🇵🇪 Peru</div>
+                        </a>
+                        <a href="#" class="dest-mini-card">
+                            <div class="dest-mini-hero" style="background:linear-gradient(135deg,#1a0a2e,#0d0d24)">🏝️
+                            </div>
+                            <div class="dest-mini-name">Maldives</div>
+                            <div class="dest-mini-country">🇲🇻 Maldives</div>
+                        </a>
+                        <a href="#" class="dest-mini-card">
+                            <div class="dest-mini-hero" style="background:linear-gradient(135deg,#1a1000,#0d0900)">🌇
+                            </div>
+                            <div class="dest-mini-name">Dubai</div>
+                            <div class="dest-mini-country">🇦🇪 UAE</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 2: Climate Anomaly (existing panel enhanced) -->
+            <div class="panel">
+                <div class="panel-header-bar">
+                    <div class="panel-label">
+                        <div
+                            style="width:6px;height:6px;border-radius:50%;background:#ef4444;box-shadow:0 0 4px #ef4444;animation:pulse 2s infinite">
+                        </div>
+                        🌡️ Climate Anomaly Radar
+                        <span class="panel-badge" style="background:rgba(239,68,68,.1);color:#ef4444">2 Extreme</span>
+                    </div>
+                    <div class="panel-actions">
+                        <button class="panel-action-btn" onclick="window.open('/weather-intel.html')">Full Page
+                            ↗</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="weather-row">
+                        <div class="weather-zone">🌡️ Persian Gulf</div>
+                        <div class="weather-metrics"><span class="weather-val" style="color:#f87171">+6.1°C</span></div>
+                        <span class="sev-badge-sm sev-extreme">EXTREME</span>
+                    </div>
+                    <div class="weather-row">
+                        <div class="weather-zone">🌧️ SE Asia (Mekong)</div>
+                        <div class="weather-metrics"><span class="weather-val" style="color:#38bdf8">+65mm</span></div>
+                        <span class="sev-badge-sm sev-moderate">MODERATE</span>
+                    </div>
+                    <div class="weather-row">
+                        <div class="weather-zone">🏜️ Eastern Australia</div>
+                        <div class="weather-metrics"><span class="weather-val" style="color:#f59e0b">-18mm</span></div>
+                        <span class="sev-badge-sm sev-moderate">MODERATE</span>
+                    </div>
+                    <div class="weather-row">
+                        <div class="weather-zone">🌤️ Central Europe</div>
+                        <div class="weather-metrics"><span class="weather-val" style="color:#22c55e">+1.2°C</span></div>
+                        <span class="sev-badge-sm sev-normal">NORMAL</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 3: Security Advisories (existing panel enhanced) -->
+            <div class="panel">
+                <div class="panel-header-bar">
+                    <div class="panel-label">
+                        <div
+                            style="width:6px;height:6px;border-radius:50%;background:#ef4444;box-shadow:0 0 4px #ef4444;animation:pulse 2s infinite">
+                        </div>
+                        🛡️ Travel Safety Advisories
+                        <span class="panel-badge" style="background:rgba(239,68,68,.1);color:#ef4444">3 DNT</span>
+                    </div>
+                    <div class="panel-actions">
+                        <button class="panel-action-btn" onclick="window.open('/travel-safety.html')">Full Page
+                            ↗</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="advisory-row" style="--adv-color:#ef4444">
+                        <span class="adv-level adv-dnt">🚫 DNT</span>
+                        <span class="adv-title">Ukraine — Avoid all travel</span>
+                        <a href="#" class="adv-cta">Get Insured</a>
+                    </div>
+                    <div class="advisory-row" style="--adv-color:#ef4444">
+                        <span class="adv-level adv-dnt">🚫 DNT</span>
+                        <span class="adv-title">Iran — Terrorism risk</span>
+                        <a href="#" class="adv-cta">Get Insured</a>
+                    </div>
+                    <div class="advisory-row" style="--adv-color:#f97316">
+                        <span class="adv-level adv-rec">⚠️ REC</span>
+                        <span class="adv-title">Myanmar — Civil unrest</span>
+                        <a href="#" class="adv-cta"
+                            style="background:rgba(249,115,22,.1);color:#f97316;border-color:rgba(249,115,22,.2)">eSIM</a>
+                    </div>
+                    <div class="advisory-row" style="--adv-color:#f59e0b">
+                        <span class="adv-level adv-cau">⚡ CAU</span>
+                        <span class="adv-title">Turkey — Exercise caution</span>
+                        <a href="#" class="adv-cta"
+                            style="background:rgba(245,158,11,.1);color:var(--travel);border-color:rgba(245,158,11,.2)">VPN</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 4: Monetization affiliate block -->
+            <div class="panel monetize-panel">
+                <div class="panel-header-bar">
+                    <div class="panel-label" style="color:var(--travel)">💰 Trip Planning Tools <span
+                            style="font-size:.6rem;color:var(--dim);font-weight:400">— Recommended partners</span></div>
+                </div>
+                <div class="panel-body">
+                    <div class="aff-row">
+                        <a href="#" class="aff-chip">
+                            <span class="aff-chip-icon">🏨</span>
+                            <div class="aff-chip-body">
+                                <div class="aff-chip-title">Hotels</div>
+                                <div class="aff-chip-sub">Booking.com</div>
+                            </div>
+                        </a>
+                        <a href="#" class="aff-chip">
+                            <span class="aff-chip-icon">✈️</span>
+                            <div class="aff-chip-body">
+                                <div class="aff-chip-title">Flights</div>
+                                <div class="aff-chip-sub">Skyscanner</div>
+                            </div>
+                        </a>
+                        <a href="#" class="aff-chip">
+                            <span class="aff-chip-icon">🛡️</span>
+                            <div class="aff-chip-body">
+                                <div class="aff-chip-title">Insurance</div>
+                                <div class="aff-chip-sub">World Nomads</div>
+                            </div>
+                        </a>
+                        <a href="#" class="aff-chip">
+                            <span class="aff-chip-icon">🎒</span>
+                            <div class="aff-chip-body">
+                                <div class="aff-chip-title">Activities</div>
+                                <div class="aff-chip-sub">GetYourGuide</div>
+                            </div>
+                        </a>
+                        <a href="#" class="aff-chip">
+                            <span class="aff-chip-icon">📡</span>
+                            <div class="aff-chip-body">
+                                <div class="aff-chip-title">eSIM Data</div>
+                                <div class="aff-chip-sub">Airalo</div>
+                            </div>
+                        </a>
+                        <a href="#" class="aff-chip">
+                            <span class="aff-chip-icon">🔒</span>
+                            <div class="aff-chip-body">
+                                <div class="aff-chip-title">VPN</div>
+                                <div class="aff-chip-sub">ExpressVPN</div>
+                            </div>
+                        </a>
+                        <a href="#" class="aff-chip">
+                            <span class="aff-chip-icon">📋</span>
+                            <div class="aff-chip-body">
+                                <div class="aff-chip-title">Visa Fast</div>
+                                <div class="aff-chip-sub">iVisa</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════ WEBSITE STRUCTURE SECTION ═══════════════════════════ -->
+    <div class="site-structure">
+        <div class="site-title">🗺️ Cấu Trúc Website Travel — Tích Hợp Vào WorldMonitor</div>
+        <div class="site-grid">
+            <div class="site-card">
+                <div class="site-card-icon">🗺️</div>
+                <div class="site-card-path">/ hoặc /map</div>
+                <div class="site-card-name">World Monitor Dashboard</div>
+                <div class="site-card-desc">App gốc — thêm variant ✈️ Travel vào header variant switcher</div>
+                <span class="site-card-status status-done">✅ Modify header</span>
+            </div>
+            <div class="site-card">
+                <div class="site-card-icon">🌡️</div>
+                <div class="site-card-path">/weather-intel</div>
+                <div class="site-card-name">Weather Intel Page</div>
+                <div class="site-card-desc">15 climate zones, affiliate theo severity, AdSense 3 vị trí</div>
+                <span class="site-card-status status-done">✅ Đã xây xong</span>
+            </div>
+            <div class="site-card">
+                <div class="site-card-icon">🛡️</div>
+                <div class="site-card-path">/travel-safety</div>
+                <div class="site-card-name">Travel Safety Dashboard</div>
+                <div class="site-card-desc">Advisories từ 4 chính phủ, country search, CTA insurance/eSIM</div>
+                <span class="site-card-status status-done">✅ Đã xây xong</span>
+            </div>
+            <div class="site-card">
+                <div class="site-card-icon">✈️</div>
+                <div class="site-card-path">/destination/</div>
+                <div class="site-card-name">Destination Index</div>
+                <div class="site-card-desc">50+ điểm đến bucket-list, filter region/tags, searchable grid</div>
+                <span class="site-card-status status-done">✅ Đã xây xong</span>
+            </div>
+            <div class="site-card">
+                <div class="site-card-icon">🏝️</div>
+                <div class="site-card-path">/destination/city?city=bali</div>
+                <div class="site-card-name">City Guide Template</div>
+                <div class="site-card-desc">Best month calendar, live weather API, full affiliate stack (6 partners)
+                </div>
+                <span class="site-card-status status-done">✅ Đã xây xong</span>
+            </div>
+            <div class="site-card">
+                <div class="site-card-icon">📝</div>
+                <div class="site-card-path">/blog/</div>
+                <div class="site-card-name">Travel Blog (SEO)</div>
+                <div class="site-card-desc">"Best time to visit Southeast Asia", "Storm season Caribbean 2026"</div>
+                <span class="site-card-status status-next">⚡ Tiếp theo</span>
+            </div>
+            <div class="site-card">
+                <div class="site-card-icon">🔧</div>
+                <div class="site-card-path">/tools/widget</div>
+                <div class="site-card-name">Embeddable Widgets</div>
+                <div class="site-card-desc">Weather widget + Safety badge nhúng được cho blog khác → backlinks</div>
+                <span class="site-card-status status-planned">📋 Planned</span>
+            </div>
+            <div class="site-card">
+                <div class="site-card-icon">🔔</div>
+                <div class="site-card-path">/alerts/</div>
+                <div class="site-card-name">Travel Alerts Feed</div>
+                <div class="site-card-desc">RSS/push alerts khi advisory thay đổi — user subscribe → retention</div>
+                <span class="site-card-status status-planned">📋 Planned</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="mockup-label">🎨 UI Mockup — Thiết Kế Tích Hợp Travel Variant</div>
+</body>
+
+</html>

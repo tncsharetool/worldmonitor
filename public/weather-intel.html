@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Weather Intelligence | World Monitor</title>
+  <meta name="description" content="Real-time global climate anomaly radar. Track extreme weather events, temperature spikes, and flood warnings across 15 regions worldwide. Powered by NASA & Open-Meteo data." />
+  <meta name="keywords" content="global weather, climate anomaly, extreme weather tracker, travel weather, weather intelligence, flood warning, heat wave tracker" />
+  <link rel="canonical" href="https://worldmonitor.app/weather-intel" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Global Weather Intelligence | World Monitor" />
+  <meta property="og:description" content="Real-time climate anomaly monitoring across 15 global regions. Know before you go." />
+  <meta property="og:image" content="https://worldmonitor.app/favico/og-image.png" />
+  <meta property="og:url" content="https://worldmonitor.app/weather-intel" />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="/favico/favicon.ico" />
+
+  <!-- Google AdSense — replace ca-pub-XXXXXXXXXXXXXXXX with your publisher ID -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+  <style>
+    :root {
+      --bg: #080d0e;
+      --bg-card: #0f1a1c;
+      --bg-card2: #131f22;
+      --border: #1e3035;
+      --accent: #00c4a0;
+      --accent2: #0ea5e9;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --text: #e2eaed;
+      --text-dim: #7aa3af;
+      --text-muted: #4a7080;
+      --extreme: #ef4444;
+      --moderate: #f59e0b;
+      --normal: #22c55e;
+      --font: 'Inter', system-ui, sans-serif;
+      --font-display: 'Space Grotesk', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(8,13,14,0.95);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .nav-brand-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .nav-links { display: flex; gap: 6px; }
+    .nav-links a {
+      padding: 5px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); border-color: var(--accent); background: rgba(0,196,160,0.06); }
+    .nav-links a.active { color: var(--accent); border-color: var(--accent); background: rgba(0,196,160,0.1); }
+    .nav-back { font-size: 0.8rem; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 4px; }
+    .nav-back:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #060e11 0%, #0a1a20 60%, #061420 100%);
+      padding: 64px 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,196,160,0.08) 0%, transparent 70%);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border: 1px solid rgba(0,196,160,0.3);
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      background: rgba(0,196,160,0.06);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s ease-in-out infinite; }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 0%, #a0d8e0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      max-width: 620px;
+      margin: 0 auto 28px;
+      position: relative;
+    }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-num { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--accent); display: block; }
+    .hero-stat-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* MAIN LAYOUT */
+    .container { max-width: 1260px; margin: 0 auto; padding: 0 24px; }
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px;
+      padding: 28px 0;
+      align-items: start;
+    }
+
+    /* SECTION HEADING */
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-heading h2 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; }
+    .section-heading .badge-count {
+      background: var(--accent);
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--danger); box-shadow: 0 0 6px var(--danger); animation: pulse 2s infinite; }
+
+    /* ALERT BANNER */
+    .alert-banner {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px;
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .alert-banner.visible { display: flex; }
+    .alert-banner-icon { font-size: 1.3rem; }
+    .alert-banner-text { font-size: 0.88rem; }
+    .alert-banner-count { font-weight: 700; color: var(--danger); }
+
+    /* ZONE CARDS */
+    .zones-grid { display: flex; flex-direction: column; gap: 10px; }
+    .zone-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .zone-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      border-radius: 3px 0 0 3px;
+      background: var(--sev-color, var(--border));
+    }
+    .zone-card:hover { border-color: rgba(0,196,160,0.3); background: var(--bg-card2); transform: translateX(2px); }
+    .zone-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .zone-name { font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+    .zone-icon { font-size: 1.1rem; }
+    .sev-badge {
+      font-size: 0.67rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .sev-extreme { background: rgba(239,68,68,0.15); color: var(--extreme); border: 1px solid rgba(239,68,68,0.3); }
+    .sev-moderate { background: rgba(245,158,11,0.15); color: var(--warn); border: 1px solid rgba(245,158,11,0.3); }
+    .sev-normal { background: rgba(34,197,94,0.12); color: var(--normal); border: 1px solid rgba(34,197,94,0.25); }
+    .zone-metrics { display: flex; gap: 16px; flex-wrap: wrap; }
+    .zone-metric { display: flex; flex-direction: column; }
+    .zone-metric-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .zone-metric-val { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; }
+    .warm { color: #f87171; }
+    .cold { color: #60a5fa; }
+    .wet { color: #38bdf8; }
+    .dry { color: #fbbf24; }
+
+    /* AFFILIATE INJECTION */
+    .aff-widget {
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.83rem;
+      line-height: 1.4;
+      border: 1px solid;
+      margin-top: 10px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .aff-widget:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+    .aff-hot { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.2); color: var(--text); }
+    .aff-wet { background: rgba(56,189,248,0.06); border-color: rgba(56,189,248,0.2); color: var(--text); }
+    .aff-cold { background: rgba(96,165,250,0.06); border-color: rgba(96,165,250,0.2); color: var(--text); }
+    .aff-normal { background: rgba(0,196,160,0.06); border-color: rgba(0,196,160,0.2); color: var(--text); }
+    .aff-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .aff-content { flex: 1; }
+    .aff-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 2px; }
+    .aff-title { font-weight: 600; font-size: 0.88rem; margin-bottom: 2px; }
+    .aff-desc { color: var(--text-dim); font-size: 0.78rem; }
+    .aff-cta {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 12px;
+      background: var(--accent);
+      color: #000;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    /* SIDEBAR */
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+    /* ADSENSE UNIT */
+    .ad-unit {
+      background: var(--bg-card);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 256px;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-align: center;
+      gap: 6px;
+    }
+    .ad-unit-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.5; }
+    .ad-leaderboard {
+      background: var(--bg-card);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      gap: 8px;
+    }
+
+    /* INFO CARD */
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .info-card h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .info-card p, .info-card li { font-size: 0.82rem; color: var(--text-dim); line-height: 1.55; }
+    .info-card ul { padding-left: 16px; display: flex; flex-direction: column; gap: 4px; }
+    .info-card a { color: var(--accent); text-decoration: none; }
+
+    /* TOP AFF SIDEBAR BLOCK */
+    .aff-sidebar-card {
+      background: linear-gradient(135deg, rgba(0,196,160,0.08) 0%, rgba(14,165,233,0.05) 100%);
+      border: 1px solid rgba(0,196,160,0.2);
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .aff-sidebar-card h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 12px; }
+    .aff-list { display: flex; flex-direction: column; gap: 10px; }
+    .aff-list-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+    .aff-list-item:hover { border-color: var(--accent); background: rgba(0,196,160,0.06); }
+    .aff-list-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .aff-list-text { flex: 1; }
+    .aff-list-title { font-weight: 600; font-size: 0.83rem; }
+    .aff-list-sub { font-size: 0.72rem; color: var(--text-dim); }
+    .aff-list-arrow { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* DATA SOURCE FOOTER */
+    .page-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      margin-top: 32px;
+    }
+    .footer-inner {
+      max-width: 1260px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-sources { font-size: 0.75rem; color: var(--text-muted); }
+    .footer-sources strong { color: var(--text-dim); }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a { font-size: 0.75rem; color: var(--text-muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* LOADING SKELETON */
+    .skeleton {
+      background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card2) 50%, var(--bg-card) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 6px;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* LAST UPDATED */
+    .last-updated {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .sidebar { order: -1; }
+      .ad-unit { min-height: 150px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-brand">
+    <div class="nav-brand-dot"></div>
+    World Monitor
+  </a>
+  <div class="nav-links">
+    <a href="/" class="nav-links-link">Dashboard</a>
+    <a href="/weather-intel.html" class="active">Weather Intel</a>
+    <a href="/travel-safety.html">Travel Safety</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <div class="hero-badge-dot"></div>
+    Live Global Data
+  </div>
+  <h1>Global Weather Intelligence</h1>
+  <p>Real-time climate anomaly monitoring across 15 strategic regions worldwide. Powered by NASA FIRMS, Open-Meteo ERA5 reanalysis, and GDACS alerts.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-num" id="stat-regions">15</span>
+      <span class="hero-stat-label">Regions Monitored</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num" id="stat-extreme">—</span>
+      <span class="hero-stat-label">Extreme Zones</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num" id="stat-moderate">—</span>
+      <span class="hero-stat-label">Moderate Anomalies</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">24/7</span>
+      <span class="hero-stat-label">Monitoring</span>
+    </div>
+  </div>
+</section>
+
+<!-- ADSENSE LEADERBOARD (under hero) -->
+<div class="container" style="padding-top: 20px;">
+  <div class="ad-leaderboard">
+    <!-- AdSense 728x90 Leaderboard -->
+    <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXX" data-ad-slot="XXXXXXX" data-ad-format="auto"></ins> -->
+    <span class="ad-unit-label">📢 Advertisement</span>
+    <span style="font-size:0.8rem; opacity:0.4">Google AdSense Unit — 728×90</span>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="container">
+  <div class="main-grid">
+
+    <!-- ═══ LEFT COLUMN ═══ -->
+    <div>
+      <div class="alert-banner" id="alert-banner">
+        <span class="alert-banner-icon">🚨</span>
+        <div class="alert-banner-text">
+          <strong>Active Extreme Events:</strong> <span class="alert-banner-count" id="alert-count">0</span> regions are experiencing severe climate anomalies right now.
+        </div>
+      </div>
+
+      <div class="last-updated" id="last-updated">
+        <span>🔄</span> Loading latest data...
+      </div>
+
+      <div class="section-heading">
+        <div class="live-dot"></div>
+        <h2>Climate Anomaly Radar</h2>
+        <span class="badge-count" id="total-count">—</span>
+      </div>
+
+      <div class="zones-grid" id="zones-container">
+        <!-- skeleton placeholders -->
+        <div class="zone-card" style="height:84px"><div class="skeleton" style="height:100%;border-radius:8px;"></div></div>
+        <div class="zone-card" style="height:84px"><div class="skeleton" style="height:100%;border-radius:8px;"></div></div>
+        <div class="zone-card" style="height:84px"><div class="skeleton" style="height:100%;border-radius:8px;"></div></div>
+        <div class="zone-card" style="height:84px"><div class="skeleton" style="height:100%;border-radius:8px;"></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ SIDEBAR ═══ -->
+    <div class="sidebar">
+
+      <!-- ADSENSE 300x250 -->
+      <div class="ad-unit">
+        <!-- AdSense 300x250 Medium Rectangle -->
+        <!-- <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-XXXXXXX" data-ad-slot="XXXXXXX"></ins> -->
+        <span style="font-size:1.5rem">📢</span>
+        <span class="ad-unit-label">Google AdSense</span>
+        <span style="font-size:0.72rem; opacity:0.4">300 × 250 — Medium Rectangle</span>
+      </div>
+
+      <!-- AFFILIATE SIDEBAR — Travel Insurance -->
+      <div class="aff-sidebar-card">
+        <h3>🛡️ Smart Travel Picks</h3>
+        <div class="aff-list">
+          <a href="https://worldnomads.com/?affiliate=worldmonitor" target="_blank" rel="noopener sponsored" class="aff-list-item">
+            <span class="aff-list-icon">🌍</span>
+            <div class="aff-list-text">
+              <div class="aff-list-title">Travel Insurance</div>
+              <div class="aff-list-sub">World Nomads — covers extreme weather</div>
+            </div>
+            <span class="aff-list-arrow">→</span>
+          </a>
+          <a href="https://www.booking.com/?aid=XXXXXXX" target="_blank" rel="noopener sponsored" class="aff-list-item">
+            <span class="aff-list-icon">🏨</span>
+            <div class="aff-list-text">
+              <div class="aff-list-title">Find Safer Hotels</div>
+              <div class="aff-list-sub">Booking.com — filter by flexible cancel</div>
+            </div>
+            <span class="aff-list-arrow">→</span>
+          </a>
+          <a href="https://www.getyourguide.com/?partner_id=XXXXXXX" target="_blank" rel="noopener sponsored" class="aff-list-item">
+            <span class="aff-list-icon">🎒</span>
+            <div class="aff-list-text">
+              <div class="aff-list-title">Indoor Activities</div>
+              <div class="aff-list-sub">GetYourGuide — skip bad weather days</div>
+            </div>
+            <span class="aff-list-arrow">→</span>
+          </a>
+          <a href="https://ref.airalo.com/XXXXXXX" target="_blank" rel="noopener sponsored" class="aff-list-item">
+            <span class="aff-list-icon">📡</span>
+            <div class="aff-list-text">
+              <div class="aff-list-title">Stay Connected</div>
+              <div class="aff-list-sub">Airalo eSIM — reliable internet abroad</div>
+            </div>
+            <span class="aff-list-arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- HOW WE MEASURE -->
+      <div class="info-card">
+        <h3>📐 How We Measure Anomalies</h3>
+        <p style="margin-bottom:8px">We compare current conditions against a 30-day ERA5 reanalysis baseline:</p>
+        <ul>
+          <li><strong style="color:var(--extreme)">Extreme</strong> — Temp &gt;5°C above / Precip &gt;80mm above baseline</li>
+          <li><strong style="color:var(--warn)">Moderate</strong> — Temp &gt;3°C / Precip &gt;40mm above baseline</li>
+          <li><strong style="color:var(--normal)">Normal</strong> — Within expected seasonal range</li>
+        </ul>
+        <p style="margin-top: 8px;">Source: <a href="https://open-meteo.com" target="_blank">Open-Meteo ERA5</a> · NASA FIRMS · GDACS</p>
+      </div>
+
+      <!-- ADSENSE 300x600 (Half Page) -->
+      <div class="ad-unit" style="min-height:340px;">
+        <!-- <ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px" data-ad-client="ca-pub-XXXXXXX" data-ad-slot="XXXXXXX"></ins> -->
+        <span style="font-size:1.5rem">📢</span>
+        <span class="ad-unit-label">Google AdSense</span>
+        <span style="font-size:0.72rem; opacity:0.4">300 × 600 — Half Page</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEXTUAL CONTENT (SEO + Affiliate) -->
+  <section style="max-width: 860px; margin: 0 auto 40px; padding: 32px 0; border-top: 1px solid var(--border);">
+    <h2 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 16px;">What Climate Anomalies Mean for Travelers</h2>
+    <div id="contextual-content" style="display:grid; gap:16px;">
+      <div class="info-card">
+        <h3>🌡️ Extreme Heat Zones</h3>
+        <p>When a region exceeds 5°C above its seasonal baseline, outdoor activities become significantly riskier. Travelers should plan indoor alternatives, stay hydrated, and consider flexible bookings.
+          Looking for a cooler destination? <a href="https://www.booking.com/?aid=XXXXXXX" target="_blank" rel="noopener sponsored">Browse alternatives on Booking.com →</a>
+        </p>
+      </div>
+      <div class="info-card">
+        <h3>🌧️ Flood & Heavy Rain Warnings</h3>
+        <p>Precipitation anomalies above 80mm/day signal flash flood risk, infrastructure disruption, and flight delays. Travel insurance that covers natural disasters is essential.
+          <a href="https://worldnomads.com/?affiliate=worldmonitor" target="_blank" rel="noopener sponsored">Compare World Nomads plans →</a>
+        </p>
+      </div>
+      <div class="info-card">
+        <h3>❄️ Cold Snaps & Blizzards</h3>
+        <p>Temperature drops well below baseline can cause road closures, airport shutdowns, and heating failures. Travelers heading to affected regions should carry emergency contacts and consider eSIM coverage for backup communication.
+          <a href="https://ref.airalo.com/XXXXXXX" target="_blank" rel="noopener sponsored">Get Airalo eSIM for global coverage →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER LEADERBOARD AD -->
+<div class="container">
+  <div class="ad-leaderboard" style="margin-bottom: 24px;">
+    <!-- <ins class="adsbygoogle" ...></ins> -->
+    <span class="ad-unit-label">📢 Advertisement · 728×90</span>
+  </div>
+</div>
+
+<!-- PAGE FOOTER -->
+<footer class="page-footer">
+  <div class="footer-inner">
+    <div class="footer-sources">
+      <strong>Data Sources:</strong> Open-Meteo ERA5 Reanalysis · NASA FIRMS · GDACS · USGS · WorldMonitor API
+    </div>
+    <div class="footer-links">
+      <a href="/">← Dashboard</a>
+      <a href="/travel-safety.html">Travel Safety</a>
+      <a href="https://github.com/koala73/worldmonitor" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// =========================================
+// World Monitor — Weather Intel Page
+// Fetches live climate anomaly data from API
+// =========================================
+
+const API_BASE = 'https://worldmonitor.app';
+
+// Affiliate URLs (replace with actual affiliate IDs)
+const AFF_LINKS = {
+  insurance: 'https://worldnomads.com/?affiliate=worldmonitor',
+  booking:   'https://www.booking.com/?aid=XXXXXXX',
+  activities:'https://www.getyourguide.com/?partner_id=XXXXXXX',
+  esim:      'https://ref.airalo.com/XXXXXXX',
+  vpn:       'https://www.expressvpn.com/refer-a-friend/XXXXXXX',
+};
+
+function getSeverityColor(sev) {
+  if (sev === 'extreme') return '#ef4444';
+  if (sev === 'moderate') return '#f59e0b';
+  return '#22c55e';
+}
+
+function getSeverityIcon(a) {
+  if (a.tempDelta > 3) return '🌡️';
+  if (a.tempDelta < -3) return '❄️';
+  if (a.precipDelta > 40) return '🌧️';
+  if (a.precipDelta < -20) return '🏜️';
+  return '🌤️';
+}
+
+function formatDelta(val, unit) {
+  if (val === undefined || val === null) return '—';
+  const sign = val > 0 ? '+' : '';
+  return `${sign}${val.toFixed(1)}${unit}`;
+}
+
+function getAffBlock(anomaly) {
+  const { tempDelta, precipDelta, severity } = anomaly;
+  if (severity === 'normal') return '';
+
+  let type, icon, title, desc, href;
+
+  if (tempDelta > 3) {
+    type = 'aff-hot'; icon = '☀️';
+    title = 'Beat the Heat — Find Cooler Stays';
+    desc = 'Browse destinations with flexible free cancellation.';
+    href = AFF_LINKS.booking + '&label=weather-intel-heat';
+  } else if (precipDelta > 40) {
+    type = 'aff-wet'; icon = '🛡️';
+    title = 'Protect Your Trip — Travel Insurance';
+    desc = 'World Nomads covers floods, trip cancellation & more.';
+    href = AFF_LINKS.insurance + '&src=weather-intel';
+  } else if (tempDelta < -3) {
+    type = 'aff-cold'; icon = '📡';
+    title = 'Stay Connected in Extreme Weather';
+    desc = 'Airalo eSIM works globally — no roaming surprises.';
+    href = AFF_LINKS.esim;
+  } else {
+    return '';
+  }
+
+  return `<a href="${href}" target="_blank" rel="noopener sponsored" class="aff-widget ${type}">
+    <span class="aff-icon">${icon}</span>
+    <div class="aff-content">
+      <div class="aff-label">Partner Recommendation</div>
+      <div class="aff-title">${title}</div>
+      <div class="aff-desc">${desc}</div>
+      <span class="aff-cta">Explore →</span>
+    </div>
+  </a>`;
+}
+
+function renderZone(a) {
+  const icon = getSeverityIcon(a);
+  const sevColor = getSeverityColor(a.severity);
+  const tempCls = a.tempDelta > 0 ? 'warm' : 'cold';
+  const precipCls = a.precipDelta > 0 ? 'wet' : 'dry';
+  const sevCls = `sev-${a.severity}`;
+  const affBlock = getAffBlock(a);
+
+  return `
+    <div class="zone-card" style="--sev-color: ${sevColor}">
+      <div class="zone-card-header">
+        <div class="zone-name">
+          <span class="zone-icon">${icon}</span>
+          ${a.zone}
+        </div>
+        <span class="sev-badge ${sevCls}">${a.severity}</span>
+      </div>
+      <div class="zone-metrics">
+        <div class="zone-metric">
+          <span class="zone-metric-label">Temperature Δ</span>
+          <span class="zone-metric-val ${tempCls}">${formatDelta(a.tempDelta, '°C')}</span>
+        </div>
+        <div class="zone-metric">
+          <span class="zone-metric-label">Precipitation Δ</span>
+          <span class="zone-metric-val ${precipCls}">${formatDelta(a.precipDelta, 'mm')}</span>
+        </div>
+        ${a.description ? `<div class="zone-metric" style="flex:1"><span class="zone-metric-label">Note</span><span style="font-size:0.8rem;color:var(--text-dim)">${a.description}</span></div>` : ''}
+      </div>
+      ${affBlock}
+    </div>`;
+}
+
+async function loadData() {
+  const container = document.getElementById('zones-container');
+  const totalCount = document.getElementById('total-count');
+  const statExtreme = document.getElementById('stat-extreme');
+  const statModerate = document.getElementById('stat-moderate');
+  const alertBanner = document.getElementById('alert-banner');
+  const alertCount = document.getElementById('alert-count');
+  const lastUpdated = document.getElementById('last-updated');
+
+  try {
+    // Try fetching from WorldMonitor API
+    const resp = await fetch(`${API_BASE}/api/climate/v1/list-climate-anomalies`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({})
+    });
+
+    let anomalies = [];
+
+    if (resp.ok) {
+      const data = await resp.json();
+      anomalies = data.anomalies || data.items || data || [];
+    } else {
+      throw new Error('API error');
+    }
+
+    // Sort: extreme first
+    anomalies.sort((a, b) => {
+      const order = { extreme: 0, moderate: 1, normal: 2 };
+      return (order[a.severity] || 2) - (order[b.severity] || 2);
+    });
+
+    const extremes = anomalies.filter(a => a.severity === 'extreme').length;
+    const moderates = anomalies.filter(a => a.severity === 'moderate').length;
+
+    totalCount.textContent = anomalies.length;
+    statExtreme.textContent = extremes;
+    statModerate.textContent = moderates;
+
+    if (extremes > 0) {
+      alertBanner.classList.add('visible');
+      alertCount.textContent = extremes;
+    }
+
+    lastUpdated.innerHTML = `<span>✅</span> Last updated: ${new Date().toUTCString()}`;
+    container.innerHTML = anomalies.map(renderZone).join('');
+
+  } catch (err) {
+    // Fallback: show demo data
+    const demo = [
+      { zone: 'Ukraine–Russia Conflict Zone', lat: 49, lon: 32, tempDelta: -4.2, precipDelta: 12, severity: 'extreme', description: 'Cold snap below seasonal norm' },
+      { zone: 'Persian Gulf', lat: 26, lon: 54, tempDelta: 6.1, precipDelta: -3, severity: 'extreme', description: 'Heat dome persisting' },
+      { zone: 'Sahel Belt (West Africa)', lat: 14, lon: 2, tempDelta: 4.3, precipDelta: 48, severity: 'moderate', description: 'Flash flood season early onset' },
+      { zone: 'Southeast Asia (Mekong)', lat: 16, lon: 102, tempDelta: 2.1, precipDelta: 65, severity: 'moderate', description: 'Heavy monsoon activity' },
+      { zone: 'Central Europe', lat: 51, lon: 16, tempDelta: 1.2, precipDelta: 5, severity: 'normal', description: 'Seasonal norms' },
+      { zone: 'Eastern Australia', lat: -27, lon: 145, tempDelta: 3.8, precipDelta: -18, severity: 'moderate', description: 'Drought conditions expanding' },
+    ];
+
+    const extremes = demo.filter(a => a.severity === 'extreme').length;
+    const moderates = demo.filter(a => a.severity === 'moderate').length;
+    totalCount.textContent = demo.length;
+    statExtreme.textContent = extremes;
+    statModerate.textContent = moderates;
+    if (extremes > 0) { alertBanner.classList.add('visible'); alertCount.textContent = extremes; }
+    lastUpdated.innerHTML = `<span>📡</span> Demo mode — <a href="/" style="color:var(--accent)">Connect to live dashboard</a>`;
+    container.innerHTML = demo.map(renderZone).join('');
+  }
+}
+
+loadData();
+
+// AdSense init (uncomment when live)
+// (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</body>
+</html>

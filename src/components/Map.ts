@@ -343,7 +343,7 @@ export class MapComponent {
       'cables', 'pipelines', 'outages', 'datacenters',   // infrastructure
       // cyberThreats is intentionally hidden on SVG/mobile fallback (DeckGL desktop only)
       'ais', 'flights', 'gpsJamming',                      // transport/interference
-      'natural', 'weather',                               // natural
+      'natural', 'weather', 'weatherAlerts', 'earthquakes', 'naturalDisasters', // natural & weather travel
       'economic',                                         // economic
       'waterways',                                        // labels
     ];
@@ -378,6 +378,9 @@ export class MapComponent {
       flights: 'components.deckgl.layers.flightDelays',
       natural: 'components.deckgl.layers.naturalEvents',
       weather: 'components.deckgl.layers.weatherAlerts',
+      weatherAlerts: 'components.deckgl.layers.weatherAlerts',
+      earthquakes: 'components.deckgl.layers.earthquakes',
+      naturalDisasters: 'components.deckgl.layers.naturalDisasters',
       economic: 'components.deckgl.layers.economicCenters',
       waterways: 'components.deckgl.layers.strategicWaterways',
       startupHubs: 'components.deckgl.layers.startupHubs',

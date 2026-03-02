@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="page-title">Destination Guide | World Monitor Travel</title>
+    <meta name="description" id="page-desc"
+        content="Travel guide with real-time weather, safety rating, best season, and insider tips." />
+    <link rel="canonical" id="page-canonical" href="https://worldmonitor.app/destination/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/favico/favicon.ico" />
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXX" crossorigin="anonymous"></script> -->
+
+    <style>
+        :root {
+            --bg: #07080a;
+            --bg-card: #0f1215;
+            --bg-card2: #131820;
+            --border: #1a2030;
+            --text: #e8edf5;
+            --text-dim: #8fa8c0;
+            --text-muted: #3d5470;
+            --accent: #f59e0b;
+            --accent2: #0ea5e9;
+            --font: 'Inter', system-ui, sans-serif;
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --dest-accent: #f59e0b;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh
+        }
+
+        /* NAV */
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 11px 24px;
+            background: rgba(7, 8, 10, .96);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px)
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            text-decoration: none;
+            color: var(--text);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1rem
+        }
+
+        .nav-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--dest-accent);
+            box-shadow: 0 0 8px var(--dest-accent);
+            animation: pulse 2s infinite
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .4
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 5px
+        }
+
+        .nav-links a {
+            padding: 5px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: .78rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            border: 1px solid transparent;
+            transition: all .2s
+        }
+
+        .nav-links a:hover {
+            color: var(--dest-accent);
+            border-color: var(--dest-accent)
+        }
+
+        .breadcrumb {
+            font-size: .75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .breadcrumb a {
+            color: var(--text-dim);
+            text-decoration: none
+        }
+
+        .breadcrumb a:hover {
+            color: var(--dest-accent)
+        }
+
+        /* HERO */
+        .dest-hero {
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 24px 0;
+            position: relative;
+            overflow: hidden;
+            background: var(--hero-gradient, linear-gradient(135deg, #1a1000 0%, #0d0900 100%));
+        }
+
+        .dest-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(7, 8, 10, .95) 0%, rgba(7, 8, 10, .4) 60%, transparent 100%)
+        }
+
+        .dest-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1340px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 36px 0 28px
+        }
+
+        .dest-hero-flag {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: block;
+            filter: drop-shadow(0 2px 12px rgba(0, 0, 0, .6))
+        }
+
+        .dest-hero-region {
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--dest-accent);
+            font-weight: 700;
+            margin-bottom: 6px
+        }
+
+        .dest-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.05;
+            margin-bottom: 8px
+        }
+
+        .dest-hero-country {
+            font-size: 1rem;
+            color: var(--text-dim);
+            margin-bottom: 14px
+        }
+
+        .dest-hero-tagline {
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            line-height: 1.5;
+            margin-bottom: 20px
+        }
+
+        .dest-hero-ctas {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .cta-primary {
+            padding: 10px 20px;
+            background: var(--dest-accent);
+            color: #000;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: .88rem;
+            text-decoration: none;
+            transition: opacity .2s
+        }
+
+        .cta-primary:hover {
+            opacity: .85
+        }
+
+        .cta-secondary {
+            padding: 10px 20px;
+            border: 1px solid var(--dest-accent);
+            color: var(--dest-accent);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: .88rem;
+            text-decoration: none;
+            background: rgba(245, 158, 11, .06);
+            transition: all .2s
+        }
+
+        .cta-secondary:hover {
+            background: rgba(245, 158, 11, .12)
+        }
+
+        /* QUICK STATS BAR */
+        .stats-bar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px
+        }
+
+        .stats-inner {
+            max-width: 1340px;
+            margin: 0 auto;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            align-items: center
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column
+        }
+
+        .stat-item-label {
+            font-size: .62rem;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            color: var(--text-muted)
+        }
+
+        .stat-item-val {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 32px;
+            background: var(--border);
+            flex-shrink: 0
+        }
+
+        .weather-live-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: .72rem;
+            font-weight: 600;
+            border: 1px solid;
+            margin-left: auto
+        }
+
+        .badge-safe {
+            color: #22c55e;
+            border-color: rgba(34, 197, 94, .3);
+            background: rgba(34, 197, 94, .06)
+        }
+
+        .badge-caution {
+            color: #f59e0b;
+            border-color: rgba(245, 158, 11, .3);
+            background: rgba(245, 158, 11, .06)
+        }
+
+        .badge-warn {
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, .3);
+            background: rgba(239, 68, 68, .06)
+        }
+
+        /* MAIN GRID */
+        .container {
+            max-width: 1340px;
+            margin: 0 auto;
+            padding: 0 24px
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 24px;
+            padding: 28px 0;
+            align-items: start
+        }
+
+        /* SECTIONS */
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 16px
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        /* BEST MONTHS VISUAL */
+        .months-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px
+        }
+
+        .month-chip {
+            padding: 8px 4px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: .72rem;
+            font-weight: 600;
+            border: 1px solid;
+            transition: all .2s
+        }
+
+        .month-best {
+            background: rgba(34, 197, 94, .1);
+            color: #22c55e;
+            border-color: rgba(34, 197, 94, .3)
+        }
+
+        .month-ok {
+            background: rgba(245, 158, 11, .06);
+            color: var(--text-muted);
+            border-color: var(--border)
+        }
+
+        .month-current {
+            box-shadow: 0 0 0 2px var(--dest-accent)
+        }
+
+        /* HOTSPOTS */
+        .hotspot-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 8px;
+            margin-top: 2px
+        }
+
+        .hotspot-item {
+            padding: 10px 12px;
+            background: #0a0d12;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: .8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .hotspot-item::before {
+            content: '📍';
+            font-size: .9rem
+        }
+
+        /* WEATHER SECTION */
+        .weather-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .weather-stat {
+            background: #0a0d12;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 14px
+        }
+
+        .weather-stat-label {
+            font-size: .65rem;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            color: var(--text-muted);
+            margin-bottom: 4px
+        }
+
+        .weather-stat-val {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700
+        }
+
+        .weather-anomaly-card {
+            background: rgba(239, 68, 68, .05);
+            border: 1px solid rgba(239, 68, 68, .15);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: .82rem;
+            color: var(--text-dim)
+        }
+
+        /* AFFILIATE BLOCKS */
+        .aff-block {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid;
+            transition: all .2s;
+            margin-bottom: 8px
+        }
+
+        .aff-block:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .3)
+        }
+
+        .aff-booking {
+            background: rgba(14, 165, 233, .05);
+            border-color: rgba(14, 165, 233, .2)
+        }
+
+        .aff-insurance {
+            background: rgba(239, 68, 68, .05);
+            border-color: rgba(239, 68, 68, .2)
+        }
+
+        .aff-flights {
+            background: rgba(99, 102, 241, .05);
+            border-color: rgba(99, 102, 241, .2)
+        }
+
+        .aff-tours {
+            background: rgba(34, 197, 94, .05);
+            border-color: rgba(34, 197, 94, .2)
+        }
+
+        .aff-esim {
+            background: rgba(245, 158, 11, .05);
+            border-color: rgba(245, 158, 11, .2)
+        }
+
+        .aff-block-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0
+        }
+
+        .aff-block-body {
+            flex: 1
+        }
+
+        .aff-block-label {
+            font-size: .62rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--text-muted);
+            margin-bottom: 2px
+        }
+
+        .aff-block-title {
+            font-weight: 700;
+            font-size: .88rem;
+            margin-bottom: 2px
+        }
+
+        .aff-block-desc {
+            font-size: .76rem;
+            color: var(--text-dim)
+        }
+
+        .aff-cta-btn {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 4px 12px;
+            background: var(--dest-accent);
+            color: #000;
+            border-radius: 6px;
+            font-size: .7rem;
+            font-weight: 700
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px
+        }
+
+        .side-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px
+        }
+
+        .side-card h3 {
+            font-size: .85rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .ad-unit {
+            background: var(--bg-card);
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            gap: 6px;
+            text-align: center;
+            padding: 16px
+        }
+
+        .ad-lbl {
+            font-size: .62rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            opacity: .5
+        }
+
+        .ad-leaderboard {
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: .75rem;
+            gap: 8px;
+            margin: 16px 0
+        }
+
+        /* RELATED DESTINATIONS */
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 4px
+        }
+
+        .related-card {
+            padding: 10px 12px;
+            background: #0a0d12;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .related-card:hover {
+            border-color: var(--dest-accent);
+            background: var(--bg-card)
+        }
+
+        .related-icon {
+            font-size: 1.3rem
+        }
+
+        .related-body {}
+
+        .related-name {
+            font-weight: 600;
+            font-size: .82rem
+        }
+
+        .related-country {
+            font-size: .68rem;
+            color: var(--text-muted)
+        }
+
+        /* SEO CONTENT */
+        .content-blocks {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 4px
+        }
+
+        .content-block p {
+            font-size: .85rem;
+            color: var(--text-dim);
+            line-height: 1.65
+        }
+
+        .content-block a {
+            color: var(--dest-accent);
+            text-decoration: none
+        }
+
+        .content-block a:hover {
+            text-decoration: underline
+        }
+
+        .content-block h4 {
+            font-size: .9rem;
+            font-weight: 600;
+            margin-bottom: 6px
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .8rem
+        }
+
+        .info-table td {
+            padding: 8px 6px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-dim)
+        }
+
+        .info-table td:first-child {
+            color: var(--text);
+            font-weight: 500;
+            width: 40%
+        }
+
+        /* PRINT */
+        .not-found {
+            text-align: center;
+            padding: 80px 24px;
+            color: var(--text-muted)
+        }
+
+        .not-found h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: 12px
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px
+        }
+
+        footer p,
+        footer a {
+            font-size: .73rem;
+            color: var(--text-muted)
+        }
+
+        footer a {
+            text-decoration: none
+        }
+
+        footer a:hover {
+            color: var(--dest-accent)
+        }
+
+        @media(max-width:900px) {
+            .main-grid {
+                grid-template-columns: 1fr
+            }
+
+            .sidebar {
+                order: -1
+            }
+
+            .months-grid {
+                grid-template-columns: repeat(4, 1fr)
+            }
+
+            .weather-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        /* ══ YOUTUBE / WEBCAM SECTION ══ */
+        .yt-live-dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 5px #ef4444;
+            animation: pulse 1.5s infinite;
+            margin-left: 4px;
+            flex-shrink: 0;
+        }
+
+        .yt-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0;
+        }
+
+        .yt-tab {
+            padding: 7px 14px;
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            font-size: .78rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: var(--font);
+            border-bottom: 2px solid transparent;
+            transition: all .15s;
+            margin-bottom: -1px;
+        }
+
+        .yt-tab:hover {
+            color: var(--dest-accent);
+        }
+
+        .yt-tab.active {
+            color: var(--dest-accent);
+            border-bottom-color: var(--dest-accent);
+        }
+
+        .yt-tab-content {
+            animation: fadeIn .2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        .yt-search-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .yt-yt-btn {
+            padding: 4px 12px;
+            border: 1px solid rgba(255, 0, 0, .3);
+            border-radius: 6px;
+            background: rgba(255, 0, 0, .08);
+            color: #f87171;
+            font-size: .72rem;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all .15s;
+        }
+
+        .yt-yt-btn:hover {
+            background: rgba(255, 0, 0, .15);
+            color: #fca5a5;
+        }
+
+        .yt-player-wrap {
+            position: relative;
+            padding-top: 56.25%;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 12px;
+        }
+
+        .yt-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .yt-video-chips {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 4px;
+        }
+
+        .yt-chip {
+            padding: 5px 12px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: .72rem;
+            cursor: pointer;
+            color: var(--text-dim);
+            background: transparent;
+            font-family: var(--font);
+            transition: all .15s;
+        }
+
+        .yt-chip:hover {
+            background: rgba(245, 158, 11, .08);
+            color: var(--dest-accent);
+            border-color: rgba(245, 158, 11, .3);
+        }
+
+        .yt-channels {
+            margin-top: 16px;
+        }
+
+        .yt-channels-title {
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 10px;
+        }
+
+        .yt-channel-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .yt-channel-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--bg-card2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: .75rem;
+            transition: all .15s;
+        }
+
+        .yt-channel-chip:hover {
+            border-color: rgba(255, 0, 0, .3);
+            color: #f87171;
+        }
+
+        .yt-webcam-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .webcam-card {
+            background: var(--bg-card2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: all .15s;
+            display: block;
+        }
+
+        .webcam-card:hover {
+            border-color: var(--dest-accent);
+        }
+
+        .webcam-preview {
+            background: linear-gradient(135deg, #0a0f1a, #131820);
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            position: relative;
+        }
+
+        .webcam-live-badge {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            padding: 2px 7px;
+            background: rgba(239, 68, 68, .85);
+            color: #fff;
+            border-radius: 5px;
+            font-size: .6rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .webcam-info {
+            padding: 8px 10px;
+        }
+
+        .webcam-name {
+            font-size: .8rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .webcam-desc {
+            font-size: .65rem;
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="nav">
+        <a href="/" class="nav-brand">
+            <div class="nav-dot"></div>World Monitor
+        </a>
+        <div class="nav-links">
+            <a href="/">Dashboard</a>
+            <a href="/weather-intel.html">Weather</a>
+            <a href="/travel-safety.html">Safety</a>
+            <a href="/destination/">← Destinations</a>
+        </div>
+    </nav>
+
+    <!-- Populated by JS -->
+    <div id="page-content">
+        <div style="padding:60px;text-align:center;color:var(--text-muted)">Loading destination...</div>
+    </div>
+
+    <script src="./destinations-data.js"></script>
+    <script>
+        const AFF = {
+            booking: (city) => `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(city)}&aid=XXXXXXX`,
+            insurance: (country) => `https://worldnomads.com/?affiliate=worldmonitor&country=${encodeURIComponent(country)}`,
+            flights: (iata) => `https://www.skyscanner.net/flights-to/${iata.toLowerCase()}/?associateID=XXXXXXX`,
+            tours: (city) => `https://www.getyourguide.com/s/?q=${encodeURIComponent(city)}&partner_id=XXXXXXX`,
+            esim: () => `https://ref.airalo.com/XXXXXXX`,
+            visa: (country) => `https://www.ivisa.com/partner/XXXXXXX?country=${encodeURIComponent(country)}`,
+        };
+
+        const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const CURR_MONTH_IDX = new Date().getMonth();
+
+        function getSafetyInfo(dest) {
+            const warnC = ['IR', 'IQ', 'SY', 'YE', 'AF', 'MM', 'LY'];
+            const cautionC = ['EG', 'TR', 'PK', 'IN', 'BR', 'MX', 'ZA', 'PH', 'CO'];
+            if (warnC.includes(dest.ciiCountry)) return { cls: 'badge-warn', label: '⚠️ Exercise Caution', dot: 'warn' };
+            if (cautionC.includes(dest.ciiCountry)) return { cls: 'badge-caution', label: '⚡ Check Advisory', dot: 'caution' };
+            return { cls: 'badge-safe', label: '✅ Generally Safe', dot: 'safe' };
+        }
+
+        function getRelated(dest) {
+            return window.DESTINATIONS
+                .filter(d => d.slug !== dest.slug && (d.region === dest.region || d.tags.some(t => dest.tags.includes(t))))
+                .slice(0, 6);
+        }
+
+        function renderCity(dest) {
+            // Update meta
+            document.title = `${dest.name}, ${dest.country} Travel Guide 2026 | World Monitor`;
+            document.getElementById('page-desc').content = `Plan your trip to ${dest.name}. Real-time weather, safety advisory, best time to visit, top attractions and travel deals. Updated daily.`;
+            document.getElementById('page-canonical').href = `https://worldmonitor.app/destination/?city=${dest.slug}`;
+            document.querySelector('meta[name="keywords"]') && (document.querySelector('meta[name="keywords"]').content = `${dest.name} travel guide, ${dest.name} weather, best time to visit ${dest.name}, ${dest.name} hotels, ${dest.country} travel`);
+
+            const safety = getSafetyInfo(dest);
+            const related = getRelated(dest);
+            const goodNow = dest.bestMonths.includes(MONTHS[CURR_MONTH_IDX]);
+            const bestM = dest.bestMonths.join(', ');
+
+            document.getElementById('page-content').innerHTML = `
+  <!-- HERO -->
+  <div class="dest-hero" style="--hero-gradient:${dest.heroGradient}">
+    <div class="dest-hero-content container">
+      <div class="breadcrumb" style="margin-bottom:12px">
+        <a href="/destination/">All Destinations</a> / <a href="/destination/?region=${encodeURIComponent(dest.region)}">${dest.region}</a> / <span>${dest.name}</span>
+      </div>
+      <span class="dest-hero-flag">${dest.flag}</span>
+      <div class="dest-hero-region">${dest.region} · ${goodNow ? '✅ Great time to visit' : '📅 Best: ' + bestM}</div>
+      <h1>${dest.name}</h1>
+      <div class="dest-hero-country">${dest.emoji} ${dest.country}</div>
+      <p class="dest-hero-tagline">${dest.tagline}</p>
+      <div class="dest-hero-ctas">
+        <a href="${AFF.booking(dest.bookingCity)}" target="_blank" rel="noopener sponsored" class="cta-primary">🏨 Find Hotels</a>
+        <a href="${AFF.flights(dest.skyscannerCity)}" target="_blank" rel="noopener sponsored" class="cta-secondary">✈️ Compare Flights</a>
+        <a href="${AFF.insurance(dest.country)}" target="_blank" rel="noopener sponsored" class="cta-secondary">🛡️ Travel Insurance</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK STATS BAR -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat-item"><div class="stat-item-label">Avg Temp</div><div class="stat-item-val" style="color:var(--dest-accent)">${dest.avgTempC}°C</div></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><div class="stat-item-label">Rainy Season</div><div class="stat-item-val">${dest.rainySeason}</div></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><div class="stat-item-label">Visa Required</div><div class="stat-item-val">${dest.visaRequired ? '📋 Yes' : '🆓 No'}</div></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><div class="stat-item-label">Best Months</div><div class="stat-item-val" style="font-size:.85rem">${bestM}</div></div>
+      <div class="weather-live-badge ${safety.cls}"><div style="width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0"></div>${safety.label}</div>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD AD -->
+  <div class="container"><div class="ad-leaderboard">
+    <!-- <ins class="adsbygoogle" ...></ins> -->
+    <span>📢</span><span style="font-size:.72rem;color:var(--text-muted)">Google AdSense · 728×90</span>
+  </div></div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="container">
+    <div class="main-grid">
+      <!-- LEFT COLUMN -->
+      <div>
+
+        <!-- OVERVIEW -->
+        <div class="section">
+          <div class="section-title">📖 Why ${dest.name}?</div>
+          <div class="content-blocks">
+            <div class="content-block">
+              <p>${dest.tagline}. This destination consistently ranks among the world's must-see places, attracting travelers who seek ${dest.tags.slice(0, 3).join(', ')} experiences.</p>
+              <p style="margin-top:8px">The best time to visit ${dest.name} is <strong style="color:var(--text)">${bestM}</strong>, when conditions are optimal for exploring. ${dest.rainySeason !== 'None' ? `Avoid the rainy season (${dest.rainySeason}) if you prefer drier weather.` : 'This destination enjoys fair weather most of the year.'}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- BEST TIME TO VISIT (VISUAL CALENDAR) -->
+        <div class="section">
+          <div class="section-title">📅 Best Time to Visit ${dest.name}</div>
+          <div class="months-grid">
+            ${MONTHS.map((m, i) => {
+                const isBest = dest.bestMonths.includes(m);
+                const isCurr = i === CURR_MONTH_IDX;
+                return `<div class="month-chip ${isBest ? 'month-best' : 'month-ok'} ${isCurr ? 'month-current' : ''}">${m}${isCurr ? '<br><span style="font-size:.55rem">NOW</span>' : ''}</div>`;
+            }).join('')}
+          </div>
+          <p style="font-size:.75rem;color:var(--text-muted);margin-top:10px">🟢 Green = Best month · Current month highlighted with border</p>
+        </div>
+
+        <!-- TOP ATTRACTIONS -->
+        <div class="section">
+          <div class="section-title">📍 Top Hotspots in ${dest.name}</div>
+          <div class="hotspot-list">
+            ${dest.hotspots.map(h => `<div class="hotspot-item">${h}</div>`).join('')}
+          </div>
+        </div>
+
+        <!-- 📺 YOUTUBE & LIVE WEBCAMS SECTION -->
+        <div class="section yt-section">
+          <div class="section-title">
+            📺 Live Cams & Videos — ${dest.name}
+            <span class="yt-live-dot"></span>
+            <span style="font-size:.65rem;color:var(--text-muted);font-weight:400;margin-left:auto">Powered by YouTube + Webcam feeds</span>
+          </div>
+
+          <!-- Tab Switcher -->
+          <div class="yt-tabs">
+            <button class="yt-tab active" onclick="switchYtTab('videos',this)">🎥 Travel Videos</button>
+            <button class="yt-tab" onclick="switchYtTab('vlogs',this)">✈️ Vlogs</button>
+            <button class="yt-tab" onclick="switchYtTab('webcam',this)">📡 Live Webcams</button>
+          </div>
+
+          <!-- VIDEOS TAB -->
+          <div id="yt-tab-videos" class="yt-tab-content">
+            <div class="yt-search-row">
+              <span style="font-size:.75rem;color:var(--text-muted)">Searching YouTube for: <strong style="color:var(--dest-accent)">"${dest.name} travel guide"</strong></span>
+              <a id="yt-search-link-videos" href="https://www.youtube.com/results?search_query=${encodeURIComponent(dest.name + ' travel guide 2026')}" target="_blank" class="yt-yt-btn">Open YouTube ↗</a>
+            </div>
+            <!-- Featured video embed — curated or first result -->
+            <div class="yt-player-wrap">
+              <iframe id="yt-iframe-main" class="yt-player" 
+                src="https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(dest.name + ' travel guide 2026')}&autoplay=0&rel=0&modestbranding=1"
+                title="YouTube Travel Videos — ${dest.name}"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="yt-video-chips" id="yt-video-chips-videos">
+              <!-- Quick search chips -->
+              <button class="yt-chip" onclick="loadYtSearch('${dest.name} travel guide 2026','yt-iframe-main')">📍 Travel Guide</button>
+              <button class="yt-chip" onclick="loadYtSearch('${dest.name} best places','yt-iframe-main')">🗺️ Best Places</button>
+              <button class="yt-chip" onclick="loadYtSearch('${dest.name} food street','yt-iframe-main')">🍜 Food & Street</button>
+              <button class="yt-chip" onclick="loadYtSearch('${dest.name} 4k drone','yt-iframe-main')">🚁 4K Drone</button>
+              <button class="yt-chip" onclick="loadYtSearch('${dest.name} budget travel','yt-iframe-main')">💰 Budget Tips</button>
+            </div>
+          </div>
+
+          <!-- VLOGS TAB -->
+          <div id="yt-tab-vlogs" class="yt-tab-content" style="display:none">
+            <div class="yt-search-row">
+              <span style="font-size:.75rem;color:var(--text-muted)">Searching YouTube for: <strong style="color:var(--dest-accent)">"${dest.name} vlog"</strong></span>
+              <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(dest.name + ' vlog 2026')}" target="_blank" class="yt-yt-btn">Open YouTube ↗</a>
+            </div>
+            <div class="yt-player-wrap">
+              <iframe id="yt-iframe-vlogs" class="yt-player"
+                src="https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(dest.name + ' vlog 2026')}&autoplay=0&rel=0&modestbranding=1"
+                title="YouTube Vlogs — ${dest.name}"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="yt-video-chips">
+              <button class="yt-chip" onclick="loadYtSearch('${dest.name} solo travel vlog','yt-iframe-vlogs')">🎒 Solo Travel</button>
+              <button class="yt-chip" onclick="loadYtSearch('${dest.name} couple vlog','yt-iframe-vlogs')">💑 Couple</button>
+              <button class="yt-chip" onclick="loadYtSearch('${dest.name} backpacker vlog','yt-iframe-vlogs')">🛺 Backpacker</button>
+              <button class="yt-chip" onclick="loadYtSearch('${dest.name} family trip','yt-iframe-vlogs')">👨‍👩‍👧 Family</button>
+            </div>
+            <!-- Channel recommendations -->
+            <div class="yt-channels">
+              <div class="yt-channels-title">📺 Recommended YouTube Channels</div>
+              <div class="yt-channel-row" id="yt-channels-list">
+                <!-- Populated by JS based on destination -->
+              </div>
+            </div>
+          </div>
+
+          <!-- WEBCAM TAB -->
+          <div id="yt-tab-webcam" class="yt-tab-content" style="display:none">
+            <div class="yt-webcam-grid" id="webcam-grid">
+              <!-- Populated dynamically -->
+            </div>
+            <div class="yt-search-row" style="margin-top:12px">
+              <span style="font-size:.75rem;color:var(--text-muted)">Live webcam feeds and outdoor cams near ${dest.name}</span>
+              <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(dest.name + ' live cam')}" target="_blank" class="yt-yt-btn">YouTube Live →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- WEATHER & SAFETY INFO -->
+        <div class="section">
+          <div class="section-title">🌡️ Weather & Safety Intelligence</div>
+          <div class="weather-grid">
+            <div class="weather-stat"><div class="weather-stat-label">Average Temperature</div><div class="weather-stat-val" style="color:var(--dest-accent)">${dest.avgTempC}°C / ${Math.round(dest.avgTempC * 9 / 5 + 32)}°F</div></div>
+            <div class="weather-stat"><div class="weather-stat-label">Rainy Season</div><div class="weather-stat-val" style="font-size:.95rem">${dest.rainySeason}</div></div>
+            <div class="weather-stat"><div class="weather-stat-label">Best Season</div><div class="weather-stat-val" style="font-size:.85rem">${bestM}</div></div>
+            <div class="weather-stat"><div class="weather-stat-label">Safety Rating</div><div class="weather-stat-val ${safety.dot === 'safe' ? '' : safety.dot === 'caution' ? 'text-warn' : ''}" style="font-size:.9rem">${safety.label}</div></div>
+          </div>
+          <div class="weather-anomaly-card" id="live-weather">
+            🔄 Loading live climate anomaly data for this region...
+          </div>
+          <p style="font-size:.72rem;color:var(--text-muted);margin-top:8px">
+            Data from <a href="/weather-intel.html" style="color:var(--dest-accent)">World Monitor Weather Intelligence</a> · <a href="/travel-safety.html" style="color:var(--dest-accent)">Full Safety Advisories →</a>
+          </p>
+        </div>
+
+        <!-- AFFILIATE DEALS (MAIN) -->
+        <div class="section">
+          <div class="section-title">✈️ Plan Your ${dest.name} Trip</div>
+
+          <a href="${AFF.booking(dest.bookingCity)}" target="_blank" rel="noopener sponsored" class="aff-block aff-booking">
+            <span class="aff-block-icon">🏨</span>
+            <div class="aff-block-body">
+              <div class="aff-block-label">Partner — Booking.com</div>
+              <div class="aff-block-title">Find the Best Hotels in ${dest.name}</div>
+              <div class="aff-block-desc">Browse 1,000+ properties with free cancellation. Filter by beach access, pool, breakfast included.</div>
+              <span class="aff-cta-btn">Search Hotels →</span>
+            </div>
+          </a>
+
+          <a href="${AFF.flights(dest.skyscannerCity)}" target="_blank" rel="noopener sponsored" class="aff-block aff-flights">
+            <span class="aff-block-icon">✈️</span>
+            <div class="aff-block-body">
+              <div class="aff-block-label">Partner — Skyscanner</div>
+              <div class="aff-block-title">Compare Cheapest Flights to ${dest.name}</div>
+              <div class="aff-block-desc">Search 1,200+ airlines and find the best prices. Flexible dates tool shows cheapest months to fly.</div>
+              <span class="aff-cta-btn">Find Flights →</span>
+            </div>
+          </a>
+
+          <a href="${AFF.insurance(dest.country)}" target="_blank" rel="noopener sponsored" class="aff-block aff-insurance">
+            <span class="aff-block-icon">🛡️</span>
+            <div class="aff-block-body">
+              <div class="aff-block-label">Partner — World Nomads</div>
+              <div class="aff-block-title">Travel Insurance for ${dest.country}</div>
+              <div class="aff-block-desc">Covers medical emergencies, trip cancellation, adventure sports, and lost baggage. Trusted by 5M+ travelers.</div>
+              <span class="aff-cta-btn">Get Covered →</span>
+            </div>
+          </a>
+
+          <a href="${AFF.tours(dest.getyourguideCity)}" target="_blank" rel="noopener sponsored" class="aff-block aff-tours">
+            <span class="aff-block-icon">🎒</span>
+            <div class="aff-block-body">
+              <div class="aff-block-label">Partner — GetYourGuide</div>
+              <div class="aff-block-title">Top-Rated Tours & Activities in ${dest.name}</div>
+              <div class="aff-block-desc">From day tours to multi-day adventures — skip the line, book in advance, free cancellation on most experiences.</div>
+              <span class="aff-cta-btn">Explore Tours →</span>
+            </div>
+          </a>
+
+          <a href="${AFF.esim()}" target="_blank" rel="noopener sponsored" class="aff-block aff-esim">
+            <span class="aff-block-icon">📡</span>
+            <div class="aff-block-body">
+              <div class="aff-block-label">Partner — Airalo</div>
+              <div class="aff-block-title">Stay Connected in ${dest.country} with eSIM</div>
+              <div class="aff-block-desc">Buy local data before you land. Activate instantly — no physical SIM swap, no roaming charges.</div>
+              <span class="aff-cta-btn">Get eSIM →</span>
+            </div>
+          </a>
+
+          ${dest.visaRequired ? `<a href="${AFF.visa(dest.country)}" target="_blank" rel="noopener sponsored" class="aff-block" style="background:rgba(192,132,252,.05);border-color:rgba(192,132,252,.2)">
+            <span class="aff-block-icon">📋</span>
+            <div class="aff-block-body">
+              <div class="aff-block-label">Partner — iVisa</div>
+              <div class="aff-block-title">Get Your ${dest.country} Visa Fast</div>
+              <div class="aff-block-desc">e-Visa processing in 24–72h. Guided form, expert review, money-back guarantee if rejected.</div>
+              <span class="aff-cta-btn">Apply for Visa →</span>
+            </div>
+          </a>` : ''}
+        </div>
+
+        <!-- ESSENTIAL INFO TABLE (SEO) -->
+        <div class="section">
+          <div class="section-title">ℹ️ ${dest.name} — Essential Travel Facts</div>
+          <table class="info-table">
+            <tr><td>Country</td><td>${dest.emoji} ${dest.country}</td></tr>
+            <tr><td>Region</td><td>${dest.region}</td></tr>
+            <tr><td>Best Months to Visit</td><td>${bestM}</td></tr>
+            <tr><td>Average Temperature</td><td>${dest.avgTempC}°C (${Math.round(dest.avgTempC * 9 / 5 + 32)}°F)</td></tr>
+            <tr><td>Rainy / Off Season</td><td>${dest.rainySeason}</td></tr>
+            <tr><td>Visa Required</td><td>${dest.visaRequired ? '📋 Yes — check iVisa' : '🆓 No visa on arrival (most nationalities)'}</td></tr>
+            <tr><td>Safety Rating</td><td>${safety.label}</td></tr>
+            <tr><td>Top Experiences</td><td>${dest.tags.join(' · ')}</td></tr>
+            <tr><td>Nearest Airport</td><td>${dest.skyscannerCity} (IATA code)</td></tr>
+          </table>
+        </div>
+
+        <!-- RELATED DESTINATIONS -->
+        <div class="section">
+          <div class="section-title">🗺️ Similar Destinations You'll Love</div>
+          <div class="related-grid">
+            ${related.map(r => `
+              <a href="./city.html?city=${r.slug}" class="related-card">
+                <span class="related-icon">${r.flag}</span>
+                <div class="related-body">
+                  <div class="related-name">${r.name}</div>
+                  <div class="related-country">${r.emoji} ${r.country}</div>
+                </div>
+              </a>`).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="sidebar">
+        <!-- ADSENSE 300x250 -->
+        <div class="ad-unit">
+          <!-- <ins class="adsbygoogle" ...></ins> -->
+          <span style="font-size:1.4rem">📢</span>
+          <span class="ad-lbl">Google AdSense — 300×250</span>
+        </div>
+
+        <!-- QUICK BOOKING WIDGET -->
+        <div class="side-card" style="background:linear-gradient(135deg,rgba(245,158,11,.08) 0%,rgba(14,165,233,.04) 100%);border-color:rgba(245,158,11,.2)">
+          <h3 style="color:var(--dest-accent)">⚡ Quick Book</h3>
+          <a href="${AFF.booking(dest.bookingCity)}" target="_blank" rel="noopener sponsored" style="display:block;padding:10px 14px;background:var(--dest-accent);color:#000;border-radius:8px;font-weight:700;font-size:.88rem;text-align:center;text-decoration:none;margin-bottom:8px">🏨 Hotels in ${dest.name}</a>
+          <a href="${AFF.flights(dest.skyscannerCity)}" target="_blank" rel="noopener sponsored" style="display:block;padding:10px 14px;border:1px solid rgba(245,158,11,.3);color:var(--dest-accent);border-radius:8px;font-weight:600;font-size:.85rem;text-align:center;text-decoration:none;margin-bottom:8px">✈️ Flights to ${dest.name}</a>
+          <a href="${AFF.insurance(dest.country)}" target="_blank" rel="noopener sponsored" style="display:block;padding:10px 14px;border:1px solid rgba(239,68,68,.25);color:#fca5a5;border-radius:8px;font-weight:600;font-size:.85rem;text-align:center;text-decoration:none">🛡️ Insure Your Trip</a>
+        </div>
+
+        <!-- SAFETY CARD -->
+        <div class="side-card">
+          <h3>🔒 Safety Rating</h3>
+          <div class="weather-live-badge ${safety.cls}" style="margin-bottom:10px;width:fit-content">${safety.label}</div>
+          <p style="font-size:.78rem;color:var(--text-dim);line-height:1.5">Based on WorldMonitor's Country Instability Index, government travel advisories from US, UK, AU, NZ, and live signal data.</p>
+          <a href="/travel-safety.html" target="_blank" style="display:inline-block;margin-top:10px;font-size:.75rem;color:var(--accent2);text-decoration:none">Full advisory details →</a>
+        </div>
+
+        <!-- ADSENSE 300x600 -->
+        <div class="ad-unit" style="min-height:300px">
+          <span style="font-size:1.4rem">📢</span>
+          <span class="ad-lbl">Google AdSense — 300×600</span>
+        </div>
+
+        <!-- TOP TAGS NAVIGATION -->
+        <div class="side-card">
+          <h3>🏷️ Plan by Interest</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            ${dest.tags.map(t => `<a href="/destination/?tag=${encodeURIComponent(t)}" style="padding:5px 10px;border-radius:20px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);font-size:.72rem;color:var(--dest-accent);text-decoration:none">${t}</a>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="container">
+    <p>© 2026 World Monitor · <a href="/">Dashboard</a> · <a href="/destination/">All Destinations</a> · <a href="/weather-intel.html">Weather</a> · <a href="/travel-safety.html">Travel Safety</a></p>
+    <p>Data: Open-Meteo · NASA · US State Dept · Real-time WorldMonitor API</p>
+  </footer>`;
+
+            // Fetch live climate data for region
+            fetchLiveWeather(dest);
+        }
+
+        async function fetchLiveWeather(dest) {
+            const el = document.getElementById('live-weather');
+            if (!el) return;
+            try {
+                const resp = await fetch('https://worldmonitor.app/api/climate/v1/list-climate-anomalies', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}'
+                });
+                if (!resp.ok) throw new Error();
+                const data = await resp.json();
+                const anomalies = data.anomalies || data.items || [];
+                // Find closest zone by lat/lon
+                const closest = anomalies.sort((a, b) => {
+                    const da = Math.hypot(a.lat - dest.lat, a.lon - dest.lon);
+                    const db = Math.hypot(b.lat - dest.lat, b.lon - dest.lon);
+                    return da - db;
+                })[0];
+                if (closest && Math.hypot(closest.lat - dest.lat, closest.lon - dest.lon) < 20) {
+                    const sev = closest.severity;
+                    const color = sev === 'extreme' ? '#ef4444' : sev === 'moderate' ? '#f59e0b' : '#22c55e';
+                    el.innerHTML = `<strong style="color:${color}">Live Climate: ${sev.toUpperCase()}</strong> — Nearest monitored zone: <strong>${closest.zone}</strong>. Temp deviation: <strong>${closest.tempDelta > 0 ? '+' : ''}${(closest.tempDelta || 0).toFixed(1)}°C</strong>, Precip: <strong>${closest.precipDelta > 0 ? '+' : ''}${(closest.precipDelta || 0).toFixed(0)}mm</strong> vs 30-day baseline. <a href="/weather-intel.html" style="color:var(--dest-accent)">Full weather intel →</a>`;
+                    el.style.borderColor = color + '40';
+                    el.style.background = color.replace('#', 'rgba(') + ',.05)';
+                } else {
+                    el.innerHTML = '✅ No significant climate anomalies detected near this destination. Conditions appear normal. <a href="/weather-intel.html" style="color:var(--dest-accent)">Global weather map →</a>';
+                    el.style.borderColor = 'rgba(34,197,94,.2)';
+                }
+            } catch {
+                el.innerHTML = `🌡️ Current conditions: avg ${dest.avgTempC}°C. Rainy season: ${dest.rainySeason}. <a href="/weather-intel.html" style="color:var(--dest-accent)">Global weather anomaly map →</a>`;
+            }
+        }
+
+        // ══════════════════════════════════════════════════
+        // YOUTUBE / WEBCAM FUNCTIONS
+        // ══════════════════════════════════════════════════
+        function switchYtTab(tab, btn) {
+            ['videos', 'vlogs', 'webcam'].forEach(t => {
+                const el = document.getElementById('yt-tab-' + t);
+                if (el) el.style.display = t === tab ? 'block' : 'none';
+            });
+            document.querySelectorAll('.yt-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function loadYtSearch(query, iframeId) {
+            const iframe = document.getElementById(iframeId);
+            if (!iframe) return;
+            iframe.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}&autoplay=0&rel=0&modestbranding=1`;
+        }
+
+        // Curated YouTube channels per destination tag
+        const YT_CHANNELS = {
+            beach: [
+                { name: 'Kara & Nate', url: 'https://www.youtube.com/@KaraandNate', icon: '🎒' },
+                { name: 'Lost LeBlancs', url: 'https://www.youtube.com/@LostLeBlancs', icon: '🌴' },
+            ],
+            city: [
+                { name: 'Mark Wiens', url: 'https://www.youtube.com/@MarkWiens', icon: '🍜' },
+                { name: 'Expatistan Travel', url: 'https://www.youtube.com/results?search_query=travel+vlog', icon: '🏙️' },
+            ],
+            nature: [
+                { name: 'Yes Theory', url: 'https://www.youtube.com/@YesTheory', icon: '🏔️' },
+                { name: 'Gabriel Traveler', url: 'https://www.youtube.com/@GabrielTraveler', icon: '🌿' },
+            ],
+            culture: [
+                { name: "Migrationology", url: 'https://www.youtube.com/@migrationology', icon: '🕌' },
+                { name: 'Rick Steves', url: 'https://www.youtube.com/@ricksteveseurope', icon: '🗺️' },
+            ],
+            default: [
+                { name: 'Kara & Nate', url: 'https://www.youtube.com/@KaraandNate', icon: '🎒' },
+                { name: 'Mark Wiens', url: 'https://www.youtube.com/@MarkWiens', icon: '🍜' },
+                { name: 'Yes Theory', url: 'https://www.youtube.com/@YesTheory', icon: '🏔️' },
+                { name: 'Lost LeBlancs', url: 'https://www.youtube.com/@LostLeBlancs', icon: '🌴' },
+            ]
+        };
+
+        // Webcam data: slug → list of cams
+        const WEBCAM_DATA = {
+            'bali': [
+                { name: 'Kuta Beach Live', icon: '🌊', type: 'Beach Cam', url: 'https://www.youtube.com/results?search_query=bali+kuta+beach+live+cam', live: true },
+                { name: 'Ubud Rice Terrace', icon: '🌾', type: 'Nature Cam', url: 'https://www.youtube.com/results?search_query=ubud+bali+live', live: false },
+                { name: 'Seminyak Sunset', icon: '🌅', type: 'Sky Cam', url: 'https://www.youtube.com/results?search_query=seminyak+bali+sunset+cam', live: true },
+            ],
+            'tokyo': [
+                { name: 'Shibuya Crossing', icon: '🚦', type: 'City Cam', url: 'https://www.youtube.com/results?search_query=shibuya+crossing+live+cam', live: true },
+                { name: 'Mt. Fuji View', icon: '🗻', type: 'Nature Cam', url: 'https://www.youtube.com/results?search_query=mount+fuji+live+webcam', live: true },
+                { name: 'Shinjuku Night', icon: '🌃', type: 'Night Cam', url: 'https://www.youtube.com/results?search_query=shinjuku+tokyo+live+night', live: false },
+            ],
+            'santorini': [
+                { name: 'Oia Caldera View', icon: '🌋', type: 'Vista Cam', url: 'https://www.youtube.com/results?search_query=santorini+oia+live+cam', live: true },
+                { name: 'Fira Village', icon: '🏛️', type: 'Village Cam', url: 'https://www.youtube.com/results?search_query=santorini+fira+cam', live: false },
+            ],
+            'default': [
+                { name: 'City Center Live', icon: '🌆', type: 'City Cam', url: null, live: false },
+                { name: 'Airport Traffic', icon: '✈️', type: 'Transport Cam', url: null, live: false },
+            ]
+        };
+
+        function initYoutubeSection(dest) {
+            // Channels
+            const chanList = document.getElementById('yt-channels-list');
+            if (chanList) {
+                const tagKey = dest.tags.find(t => YT_CHANNELS[t.toLowerCase()]) || 'default';
+                const channels = YT_CHANNELS[tagKey.toLowerCase()] || YT_CHANNELS.default;
+                chanList.innerHTML = channels.map(ch => `
+                    <a href="${ch.url}" target="_blank" rel="noopener" class="yt-channel-chip">
+                        ${ch.icon} ${ch.name} <span style="font-size:.6rem;color:var(--text-muted)">↗ YouTube</span>
+                    </a>`).join('');
+            }
+            // Webcams
+            const webcamGrid = document.getElementById('webcam-grid');
+            if (webcamGrid) {
+                const cams = WEBCAM_DATA[dest.slug] || WEBCAM_DATA.default;
+                webcamGrid.innerHTML = cams.map(cam => {
+                    const href = cam.url || `https://www.youtube.com/results?search_query=${encodeURIComponent(dest.name + ' ' + cam.name + ' live webcam')}`;
+                    return `<a href="${href}" target="_blank" rel="noopener" class="webcam-card">
+                        <div class="webcam-preview">
+                            ${cam.icon}
+                            ${cam.live ? '<div class="webcam-live-badge">🔴 LIVE</div>' : ''}
+                        </div>
+                        <div class="webcam-info">
+                            <div class="webcam-name">${cam.name}</div>
+                            <div class="webcam-desc">${cam.type} — Click to watch ↗</div>
+                        </div>
+                    </a>`;
+                }).join('');
+            }
+        }
+
+        // Route by ?city= param
+        const params = new URLSearchParams(location.search);
+        const citySlug = params.get('city');
+        const dest = citySlug && window.DEST_BY_SLUG[citySlug];
+
+        if (dest) {
+            // Apply destination accent color to CSS var
+            document.documentElement.style.setProperty('--dest-accent', dest.accentColor || '#f59e0b');
+            renderCity(dest);
+            // Initialize YouTube & Webcam section after DOM is built
+            setTimeout(() => initYoutubeSection(dest), 100);
+        } else {
+            document.getElementById('page-content').innerHTML = `
+    <div class="not-found">
+      <h2>Destination not found</h2>
+      <p style="margin-bottom:20px">We don't have a guide for "${citySlug || 'this destination'}" yet — but we're expanding fast.</p>
+      <a href="/destination/" style="padding:10px 22px;background:var(--dest-accent);color:#000;border-radius:8px;font-weight:700;text-decoration:none">← Browse All Destinations</a>
+    </div>`;
+        }
+    </script>
+</body>
+
+</html>

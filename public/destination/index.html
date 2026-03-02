@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>100 Bucket-List Destinations | World Monitor Travel Intelligence</title>
+    <meta name="description"
+        content="Explore the world's top 100 bucket-list destinations with real-time weather intelligence, travel safety ratings, best season guides, and curated travel deals." />
+    <meta name="keywords"
+        content="bucket list travel, best destinations 2026, world travel guide, where to travel, top destinations, travel weather, safe travel destinations" />
+    <link rel="canonical" href="https://worldmonitor.app/destination/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/favico/favicon.ico" />
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXX" crossorigin="anonymous"></script> -->
+
+    <style>
+        :root {
+            --bg: #07080a;
+            --bg-card: #0f1215;
+            --bg-card2: #131820;
+            --border: #1a2030;
+            --accent: #f59e0b;
+            --accent2: #0ea5e9;
+            --text: #e8edf5;
+            --text-dim: #8fa8c0;
+            --text-muted: #3d5470;
+            --font: 'Inter', system-ui, sans-serif;
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh
+        }
+
+        /* NAV */
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: rgba(7, 8, 10, .96);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px)
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.05rem
+        }
+
+        .nav-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            animation: pulse 2s infinite
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .4
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 6px
+        }
+
+        .nav-links a {
+            padding: 5px 13px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: .8rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            border: 1px solid transparent;
+            transition: all .2s
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: rgba(245, 158, 11, .07)
+        }
+
+        /* HERO */
+        .hero {
+            padding: 56px 24px 44px;
+            text-align: center;
+            background: linear-gradient(180deg, #070a0e 0%, #070808 100%);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(245, 158, 11, .07) 0%, transparent 70%)
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border: 1px solid rgba(245, 158, 11, .3);
+            border-radius: 20px;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            color: var(--accent);
+            background: rgba(245, 158, 11, .06);
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            position: relative
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            font-weight: 700;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 14px;
+            position: relative
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: var(--text-dim);
+            max-width: 580px;
+            margin: 0 auto 28px;
+            position: relative
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            flex-wrap: wrap;
+            position: relative
+        }
+
+        .hero-stat {
+            text-align: center
+        }
+
+        .hero-stat-num {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+            line-height: 1
+        }
+
+        .hero-stat-lbl {
+            font-size: .68rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-top: 2px
+        }
+
+        /* SEARCH & FILTER TOOLBAR */
+        .toolbar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            position: sticky;
+            top: 49px;
+            z-index: 90;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            max-width: 320px;
+            padding: 8px 14px;
+            background: #0a0d12;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: .85rem;
+            font-family: var(--font);
+            outline: none;
+            transition: border-color .2s
+        }
+
+        .search-input:focus {
+            border-color: var(--accent)
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted)
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        .chip {
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-dim);
+            font-size: .75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: var(--font)
+        }
+
+        .chip:hover {
+            color: var(--accent);
+            border-color: var(--accent)
+        }
+
+        .chip.active {
+            background: rgba(245, 158, 11, .1);
+            color: var(--accent);
+            border-color: var(--accent)
+        }
+
+        .sort-select {
+            padding: 7px 12px;
+            background: #0a0d12;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-dim);
+            font-size: .78rem;
+            cursor: pointer;
+            font-family: var(--font)
+        }
+
+        .result-count {
+            font-size: .75rem;
+            color: var(--text-muted);
+            margin-left: auto
+        }
+
+        /* MAIN CONTENT */
+        .container {
+            max-width: 1340px;
+            margin: 0 auto;
+            padding: 0 20px
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 24px;
+            padding: 24px 0
+        }
+
+        /* DESTINATION GRID */
+        .dest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px
+        }
+
+        /* DESTINATION CARD */
+        .dest-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all .25s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .dest-card:hover {
+            border-color: rgba(245, 158, 11, .3);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, .4)
+        }
+
+        .dest-card-hero {
+            height: 140px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            padding: 12px
+        }
+
+        .dest-card-emoji {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            font-size: 2rem;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .5))
+        }
+
+        .dest-card-region {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: .62rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            background: rgba(0, 0, 0, .5);
+            backdrop-filter: blur(4px)
+        }
+
+        .dest-card-tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap
+        }
+
+        .dest-tag {
+            font-size: .6rem;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, .5);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, .1);
+            white-space: nowrap
+        }
+
+        .dest-card-body {
+            padding: 12px 14px 14px;
+            flex: 1;
+            display: flex;
+            flex-direction: column
+        }
+
+        .dest-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px
+        }
+
+        .dest-card-name {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 700
+        }
+
+        .dest-card-country {
+            font-size: .72rem;
+            color: var(--text-muted)
+        }
+
+        .dest-card-tagline {
+            font-size: .78rem;
+            color: var(--text-dim);
+            line-height: 1.45;
+            margin-bottom: 10px;
+            flex: 1
+        }
+
+        .dest-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 8px;
+            border-top: 1px solid var(--border)
+        }
+
+        .best-season {
+            font-size: .68rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px
+        }
+
+        .best-season strong {
+            color: var(--text-dim)
+        }
+
+        .view-btn {
+            font-size: .72rem;
+            font-weight: 600;
+            color: var(--accent);
+            background: rgba(245, 158, 11, .08);
+            border: 1px solid rgba(245, 158, 11, .2);
+            padding: 4px 10px;
+            border-radius: 6px;
+            transition: all .15s
+        }
+
+        .dest-card:hover .view-btn {
+            background: rgba(245, 158, 11, .15);
+            border-color: rgba(245, 158, 11, .4)
+        }
+
+        /* SAFETY INDICATOR */
+        .safety-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0
+        }
+
+        .safe {
+            background: #22c55e;
+            box-shadow: 0 0 4px #22c55e
+        }
+
+        .caution {
+            background: #f59e0b;
+            box-shadow: 0 0 4px #f59e0b
+        }
+
+        .warn {
+            background: #ef4444;
+            box-shadow: 0 0 4px #ef4444
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 18px
+        }
+
+        .ad-unit {
+            background: var(--bg-card);
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: .75rem;
+            gap: 6px;
+            text-align: center
+        }
+
+        .ad-unit-label {
+            font-size: .62rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            opacity: .5
+        }
+
+        .sidebar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px
+        }
+
+        .sidebar-card h3 {
+            font-size: .88rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .quick-links {
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            background: #0a0d12;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: .78rem;
+            border: 1px solid transparent;
+            transition: all .2s
+        }
+
+        .quick-link:hover {
+            border-color: var(--accent);
+            color: var(--accent)
+        }
+
+        .quick-link-icon {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center
+        }
+
+        /* AFF SIDEBAR */
+        .aff-sidebar {
+            background: linear-gradient(135deg, rgba(245, 158, 11, .07) 0%, rgba(14, 165, 233, .04) 100%);
+            border: 1px solid rgba(245, 158, 11, .15);
+            border-radius: 12px;
+            padding: 14px
+        }
+
+        .aff-sidebar h3 {
+            font-size: .88rem;
+            font-weight: 700;
+            margin-bottom: 10px
+        }
+
+        .aff-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            background: rgba(0, 0, 0, .2);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: .76rem;
+            border: 1px solid transparent;
+            transition: all .2s;
+            margin-bottom: 6px
+        }
+
+        .aff-item:hover {
+            border-color: var(--accent)
+        }
+
+        .aff-item-icon {
+            font-size: 1.2rem;
+            fw: 600
+        }
+
+        .aff-item-t {
+            font-weight: 600;
+            font-size: .78rem
+        }
+
+        .aff-item-s {
+            font-size: .68rem;
+            color: var(--text-dim)
+        }
+
+        .aff-arrow {
+            margin-left: auto;
+            color: var(--text-muted);
+            font-size: .75rem
+        }
+
+        /* LEADERBOARD AD */
+        .ad-leaderboard {
+            background: var(--bg-card);
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: .75rem;
+            gap: 8px;
+            margin: 16px 0
+        }
+
+        /* NO RESULTS */
+        .no-results {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 60px 24px;
+            color: var(--text-muted)
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            max-width: 1340px;
+            margin-left: auto;
+            margin-right: auto
+        }
+
+        footer p,
+        footer a {
+            font-size: .75rem;
+            color: var(--text-muted)
+        }
+
+        footer a {
+            text-decoration: none
+        }
+
+        footer a:hover {
+            color: var(--accent)
+        }
+
+        @media(max-width:900px) {
+            .main-layout {
+                grid-template-columns: 1fr
+            }
+
+            .sidebar {
+                display: none
+            }
+        }
+
+        @media(max-width:600px) {
+            .dest-grid {
+                grid-template-columns: 1fr
+            }
+
+            .hero h1 {
+                font-size: 2rem
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <a href="/" class="nav-brand">
+            <div class="nav-dot"></div>World Monitor
+        </a>
+        <div class="nav-links">
+            <a href="/">Dashboard</a>
+            <a href="/weather-intel.html">Weather</a>
+            <a href="/travel-safety.html">Safety</a>
+            <a href="/destination/" class="active">Destinations</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-badge">✈️ Bucket List 2026</div>
+        <h1>100 Places to See<br>Before You Die</h1>
+        <p>Every destination, ranked by traveler demand — with live weather intelligence, safety ratings, and the best
+            season to visit.</p>
+        <div class="hero-stats">
+            <div class="hero-stat"><span class="hero-stat-num" id="s-total">50+</span><span
+                    class="hero-stat-lbl">Destinations</span></div>
+            <div class="hero-stat"><span class="hero-stat-num" id="s-regions">7</span><span class="hero-stat-lbl">World
+                    Regions</span></div>
+            <div class="hero-stat"><span class="hero-stat-num">Real-time</span><span class="hero-stat-lbl">Weather
+                    Intel</span></div>
+            <div class="hero-stat"><span class="hero-stat-num">Free</span><span class="hero-stat-lbl">No Signup</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- LEADERBOARD AD -->
+    <div class="container">
+        <div class="ad-leaderboard">
+            <!-- <ins class="adsbygoogle" data-ad-client="ca-pub-X" data-ad-slot="X" ...></ins> -->
+            <span>📢</span><span class="ad-unit-label">Google AdSense — 728×90</span>
+        </div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+        <input class="search-input" id="search" placeholder="🔍 Search destinations..." oninput="renderGrid()" />
+        <div class="filter-chips" id="region-chips"></div>
+        <select class="sort-select" id="sort-by" onchange="renderGrid()">
+            <option value="default">Sort: Popularity</option>
+            <option value="name">Sort: A–Z</option>
+            <option value="temp">Sort: Warmest</option>
+        </select>
+        <span class="result-count" id="result-count"></span>
+    </div>
+
+    <div class="container">
+        <div class="main-layout">
+            <!-- GRID -->
+            <div>
+                <div class="dest-grid" id="dest-grid"></div>
+            </div>
+
+            <!-- SIDEBAR -->
+            <div class="sidebar">
+                <!-- ADSENSE 300x250 -->
+                <div class="ad-unit">
+                    <!-- <ins class="adsbygoogle" ...></ins> -->
+                    <span style="font-size:1.4rem">📢</span>
+                    <span class="ad-unit-label">Google AdSense — 300×250</span>
+                </div>
+
+                <!-- AFFILIATE SIDEBAR -->
+                <div class="aff-sidebar">
+                    <h3>🎒 Plan Your Trip</h3>
+                    <a href="https://worldnomads.com/?affiliate=worldmonitor" target="_blank" rel="noopener sponsored"
+                        class="aff-item">
+                        <span class="aff-item-icon">🛡️</span>
+                        <div>
+                            <div class="aff-item-t">Travel Insurance</div>
+                            <div class="aff-item-s">World Nomads</div>
+                        </div>
+                        <span class="aff-arrow">→</span>
+                    </a>
+                    <a href="https://www.booking.com/?aid=XXXXXXX" target="_blank" rel="noopener sponsored"
+                        class="aff-item">
+                        <span class="aff-item-icon">🏨</span>
+                        <div>
+                            <div class="aff-item-t">Book Hotels</div>
+                            <div class="aff-item-s">Booking.com</div>
+                        </div>
+                        <span class="aff-arrow">→</span>
+                    </a>
+                    <a href="https://www.skyscanner.net/?associateID=XXXXXXX" target="_blank" rel="noopener sponsored"
+                        class="aff-item">
+                        <span class="aff-item-icon">✈️</span>
+                        <div>
+                            <div class="aff-item-t">Compare Flights</div>
+                            <div class="aff-item-s">Skyscanner</div>
+                        </div>
+                        <span class="aff-arrow">→</span>
+                    </a>
+                    <a href="https://www.getyourguide.com/?partner_id=XXXXXXX" target="_blank" rel="noopener sponsored"
+                        class="aff-item">
+                        <span class="aff-item-icon">🎒</span>
+                        <div>
+                            <div class="aff-item-t">Tours & Activities</div>
+                            <div class="aff-item-s">GetYourGuide</div>
+                        </div>
+                        <span class="aff-arrow">→</span>
+                    </a>
+                    <a href="https://ref.airalo.com/XXXXXXX" target="_blank" rel="noopener sponsored" class="aff-item">
+                        <span class="aff-item-icon">📡</span>
+                        <div>
+                            <div class="aff-item-t">eSIM Data</div>
+                            <div class="aff-item-s">Airalo — 200+ countries</div>
+                        </div>
+                        <span class="aff-arrow">→</span>
+                    </a>
+                </div>
+
+                <!-- USEFUL LINKS -->
+                <div class="sidebar-card">
+                    <h3>🗺️ Tools</h3>
+                    <div class="quick-links">
+                        <a href="/weather-intel.html" class="quick-link"><span class="quick-link-icon">🌡️</span>Weather
+                            Anomaly Radar</a>
+                        <a href="/travel-safety.html" class="quick-link"><span class="quick-link-icon">🛡️</span>Travel
+                            Safety Advisories</a>
+                        <a href="/" class="quick-link"><span class="quick-link-icon">🌍</span>World Monitor
+                            Dashboard</a>
+                    </div>
+                </div>
+
+                <!-- ADSENSE 300x600 -->
+                <div class="ad-unit" style="min-height:300px">
+                    <span style="font-size:1.4rem">📢</span>
+                    <span class="ad-unit-label">Google AdSense — 300×600</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container">
+        <p>© 2026 World Monitor · <a href="/">Dashboard</a> · <a href="/weather-intel.html">Weather</a> · <a
+                href="/travel-safety.html">Travel Safety</a> · <a href="https://github.com/koala73/worldmonitor"
+                target="_blank">GitHub</a></p>
+        <p>Data: Open-Meteo · NASA · ACLED · US State Dept</p>
+    </footer>
+
+    <script src="./destinations-data.js"></script>
+    <script>
+        const REGION_COLORS = {
+            'Asia Pacific': '#22c55e', 'Europe': '#818cf8', 'Americas': '#f59e0b',
+            'Middle East': '#fb923c', 'Africa': '#ef4444', 'South Asia': '#c084fc', 'Oceania': '#38bdf8'
+        };
+
+        // Build region filter chips
+        const regions = [...new Set(window.DESTINATIONS.map(d => d.region))];
+        const chipContainer = document.getElementById('region-chips');
+        const allChip = document.createElement('button');
+        allChip.className = 'chip active'; allChip.dataset.region = 'all'; allChip.textContent = 'All Regions';
+        allChip.onclick = () => setRegion('all', allChip);
+        chipContainer.appendChild(allChip);
+        regions.forEach(r => {
+            const c = document.createElement('button');
+            c.className = 'chip'; c.dataset.region = r; c.textContent = r;
+            c.style.setProperty('--chip-c', REGION_COLORS[r] || '#888');
+            c.onclick = () => setRegion(r, c);
+            chipContainer.appendChild(c);
+        });
+
+        let activeRegion = 'all';
+        function setRegion(r, el) {
+            activeRegion = r;
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            renderGrid();
+        }
+
+        function getSafetyClass(dest) {
+            // Simple heuristic: Middle East/certain countries = caution/warn
+            const warnCountries = ['IR', 'IQ', 'SY', 'YE', 'AF', 'MM'];
+            const cautionCountries = ['EG', 'TR', 'PK', 'IN', 'BR', 'MX', 'ZA'];
+            if (warnCountries.includes(dest.ciiCountry)) return 'warn';
+            if (cautionCountries.includes(dest.ciiCountry)) return 'caution';
+            return 'safe';
+        }
+
+        function getCurrentMonthIdx() { return new Date().getMonth(); }
+        function isGoodNow(dest) {
+            const m = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][getCurrentMonthIdx()];
+            return dest.bestMonths.includes(m);
+        }
+
+        function renderCard(dest) {
+            const safetyCls = getSafetyClass(dest);
+            const good = isGoodNow(dest);
+            const regionColor = REGION_COLORS[dest.region] || '#888';
+            const gradBg = dest.heroGradient;
+            const accentC = dest.accentColor || '#f59e0b';
+            const tags = dest.tags.slice(0, 3).map(t => `<span class="dest-tag">${t}</span>`).join('');
+            const bestM = dest.bestMonths.slice(0, 4).join(', ');
+
+            return `<a class="dest-card" href="./index.html?city=${dest.slug}" onclick="event.preventDefault();openDest('${dest.slug}')">
+    <div class="dest-card-hero" style="background:${gradBg}">
+      <span class="dest-card-emoji">${dest.flag}</span>
+      <span class="dest-card-region" style="color:${regionColor}">${dest.region}</span>
+      <div class="dest-card-tags">${tags}${good ? '<span class="dest-tag" style="color:#22c55e;border-color:#22c55e40">✅ Good Now</span>' : ''}</div>
+    </div>
+    <div class="dest-card-body">
+      <div class="dest-card-header">
+        <div class="safety-dot ${safetyCls}"></div>
+        <div>
+          <div class="dest-card-name">${dest.name}</div>
+          <div class="dest-card-country">${dest.emoji} ${dest.country}</div>
+        </div>
+      </div>
+      <p class="dest-card-tagline">${dest.tagline}</p>
+      <div class="dest-card-footer">
+        <div class="best-season">📅 Best: <strong>${bestM}</strong></div>
+        <span class="view-btn">Explore →</span>
+      </div>
+    </div>
+  </a>`;
+        }
+
+        function renderGrid() {
+            const q = document.getElementById('search').value.toLowerCase().trim();
+            const sort = document.getElementById('sort-by').value;
+
+            let list = [...window.DESTINATIONS];
+            if (activeRegion !== 'all') list = list.filter(d => d.region === activeRegion);
+            if (q) list = list.filter(d =>
+                d.name.toLowerCase().includes(q) ||
+                d.country.toLowerCase().includes(q) ||
+                d.tags.some(t => t.toLowerCase().includes(q)) ||
+                d.tagline.toLowerCase().includes(q)
+            );
+
+            if (sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
+            else if (sort === 'temp') list.sort((a, b) => b.avgTempC - a.avgTempC);
+
+            const grid = document.getElementById('dest-grid');
+            document.getElementById('result-count').textContent = `${list.length} destinations`;
+            document.getElementById('s-total').textContent = window.DESTINATIONS.length + '+';
+
+            if (!list.length) {
+                grid.innerHTML = `<div class="no-results">No destinations found for "<strong>${q}</strong>". Try a different search.</div>`;
+                return;
+            }
+            grid.innerHTML = list.map(renderCard).join('');
+        }
+
+        function openDest(slug) {
+            window.location.href = `./city.html?city=${slug}`;
+        }
+
+        renderGrid();
+    </script>
+</body>
+
+</html>
