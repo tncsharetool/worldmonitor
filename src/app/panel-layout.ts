@@ -112,10 +112,10 @@ export class PanelLayoutManager implements AppModule {
       <div class="header">
         <div class="header-left">
           <div class="variant-switcher">${(() => {
-            const local = this.ctx.isDesktopApp || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-            const vHref = (v: string, prod: string) => local || SITE_VARIANT === v ? '#' : prod;
-            const vTarget = (v: string) => !local && SITE_VARIANT !== v ? 'target="_blank" rel="noopener"' : '';
-            return `
+        const local = this.ctx.isDesktopApp || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        const vHref = (v: string, prod: string) => local || SITE_VARIANT === v ? '#' : prod;
+        const vTarget = (v: string) => !local && SITE_VARIANT !== v ? 'target="_blank" rel="noopener"' : '';
+        return `
             <a href="${vHref('full', 'https://worldmonitor.app')}"
                class="variant-option ${SITE_VARIANT === 'full' ? 'active' : ''}"
                data-variant="full"
@@ -142,6 +142,46 @@ export class PanelLayoutManager implements AppModule {
               <span class="variant-icon">📈</span>
               <span class="variant-label">${t('header.finance')}</span>
             </a>
+            <span class="variant-divider"></span>
+            
+            <a href="${vHref('travel', 'https://travel.breaths.live')}"
+               class="variant-option ${SITE_VARIANT === 'travel' ? 'active' : ''}"
+               data-variant="travel"
+               ${vTarget('travel')}
+               title="Travel Monitor">
+              <span class="variant-icon">✈️</span>
+              <span class="variant-label">TRAVEL</span>
+            </a>
+            <span class="variant-divider"></span>
+
+            <a href="${vHref('climate', 'https://weather.breaths.live')}"
+               class="variant-option ${SITE_VARIANT === 'climate' ? 'active' : ''}"
+               data-variant="climate"
+               ${vTarget('climate')}
+               title="Weather & Climate">
+              <span class="variant-icon">⛅</span>
+              <span class="variant-label">WEATHER</span>
+            </a>
+            <span class="variant-divider"></span>
+
+            <a href="${vHref('health', 'https://health.breaths.live')}"
+               class="variant-option ${SITE_VARIANT === 'health' ? 'active' : ''}"
+               data-variant="health"
+               ${vTarget('health')}
+               title="Health Risk Monitor">
+              <span class="variant-icon">🏥</span>
+              <span class="variant-label">HEALTH</span>
+            </a>
+            <span class="variant-divider"></span>
+
+            <a href="${vHref('sports', 'https://sports.breaths.live')}"
+               class="variant-option ${SITE_VARIANT === 'sports' ? 'active' : ''}"
+               data-variant="sports"
+               ${vTarget('sports')}
+               title="Sports & Events">
+              <span class="variant-icon">⚽</span>
+              <span class="variant-label">SPORTS</span>
+            </a>
             ${SITE_VARIANT === 'happy' ? `<span class="variant-divider"></span>
             <a href="${vHref('happy', 'https://happy.worldmonitor.app')}"
                class="variant-option active"
@@ -151,7 +191,7 @@ export class PanelLayoutManager implements AppModule {
               <span class="variant-icon">☀️</span>
               <span class="variant-label">Good News</span>
             </a>` : ''}`;
-          })()}</div>
+      })()}</div>
           <span class="logo">MONITOR</span><span class="version">v${__APP_VERSION__}</span>${BETA_MODE ? '<span class="beta-badge">BETA</span>' : ''}
           <a href="https://x.com/eliehabib" target="_blank" rel="noopener" class="credit-link">
             <svg class="x-logo" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -209,6 +249,9 @@ export class PanelLayoutManager implements AppModule {
           <div class="map-resize-handle" id="mapResizeHandle"></div>
         </div>
         <div class="panels-grid" id="panelsGrid"></div>
+      </div>
+      <div class="app-footer-donate" style="position:fixed; bottom:0; left:0; width:100%; text-align:center; padding:6px; background:rgba(0,0,0,0.8); font-size:11px; z-index:9999; border-top:1px solid var(--border-subtle); backdrop-filter:blur(4px); color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 8px;">
+        Support us to keep this running → <a href="https://buymeacoffee.com/victorchuyen" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none; font-weight:bold; display: flex; align-items: center; gap: 4px;">☕ Donate</a>
       </div>
     `;
 
