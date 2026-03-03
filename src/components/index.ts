@@ -1,5 +1,6 @@
 export * from './Panel';
 export * from './VirtualList';
+export * from './DonatePopup';
 export { MapComponent } from './Map';
 export * from './MapPopup';
 export { DeckGLMap } from './DeckGLMap';

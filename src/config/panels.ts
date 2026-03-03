@@ -103,6 +103,7 @@ const FULL_MAP_LAYERS: MapLayers = {
   speciesRecovery: false,
   renewableInstallations: false,
   tradeRoutes: false,
+  travelDestinations: false,
   dayNight: false,
 };
 
@@ -154,6 +155,7 @@ const FULL_MOBILE_MAP_LAYERS: MapLayers = {
   speciesRecovery: false,
   renewableInstallations: false,
   tradeRoutes: false,
+  travelDestinations: false,
   dayNight: false,
 };
 
@@ -245,6 +247,7 @@ const TECH_MAP_LAYERS: MapLayers = {
   renewableInstallations: false,
   tradeRoutes: false,
   iranAttacks: false,
+  travelDestinations: false,
   dayNight: false,
 };
 
@@ -296,6 +299,7 @@ const TECH_MOBILE_MAP_LAYERS: MapLayers = {
   renewableInstallations: false,
   tradeRoutes: false,
   iranAttacks: false,
+  travelDestinations: false,
   dayNight: false,
 };
 
@@ -384,6 +388,7 @@ const FINANCE_MAP_LAYERS: MapLayers = {
   renewableInstallations: false,
   tradeRoutes: true,
   iranAttacks: false,
+  travelDestinations: false,
   dayNight: false,
 };
 
@@ -435,6 +440,7 @@ const FINANCE_MOBILE_MAP_LAYERS: MapLayers = {
   renewableInstallations: false,
   tradeRoutes: false,
   iranAttacks: false,
+  travelDestinations: false,
   dayNight: false,
 };
 
@@ -502,6 +508,7 @@ const HAPPY_MAP_LAYERS: MapLayers = {
   renewableInstallations: true,
   tradeRoutes: false,
   iranAttacks: false,
+  travelDestinations: false,
   dayNight: false,
 };
 
@@ -553,15 +560,128 @@ const HAPPY_MOBILE_MAP_LAYERS: MapLayers = {
   renewableInstallations: true,
   tradeRoutes: false,
   iranAttacks: false,
+  travelDestinations: false,
   dayNight: false,
+};
+
+// ============================================
+// TRAVEL VARIANT
+// ============================================
+const TRAVEL_PANELS: Record<string, PanelConfig> = {
+  map: { name: 'Travel Destinations Map', enabled: true, priority: 1 },
+  'live-webcams': { name: 'Live Cams', enabled: true, priority: 1 },
+  climate: { name: 'Country Climate', enabled: true, priority: 1 },
+  'security-advisories': { name: 'Travel Safety Alerts', enabled: true, priority: 1 },
+  'live-news': { name: 'Travel News', enabled: true, priority: 1 },
+};
+
+const TRAVEL_MAP_LAYERS: MapLayers = {
+  ...FULL_MAP_LAYERS,
+  conflicts: true,
+  weather: true,
+  outages: true,
+  protests: true,
+  flights: true,
+  natural: true,
+  fires: true,
+  climate: true,
+  travelDestinations: true,
+  dayNight: true,
+};
+
+const TRAVEL_MOBILE_MAP_LAYERS: MapLayers = {
+  ...TRAVEL_MAP_LAYERS,
+  protests: false,
+  fires: false,
+  flights: false,
+  climate: false,
+  dayNight: false,
+};
+
+// ============================================
+// CLIMATE VARIANT (Weather & Climate Monitoring)
+// Owner: Lucky — do not modify without sync
+// ============================================
+const CLIMATE_PANELS: Record<string, PanelConfig> = {
+  map: { name: 'Global Climate & Weather Map', enabled: true, priority: 1 },
+  climate: { name: 'Climate Anomalies & Trends', enabled: true, priority: 1 },
+  'live-news': { name: 'Weather & Climate News', enabled: true, priority: 1 },
+  'security-advisories': { name: 'Weather Advisories', enabled: true, priority: 1 },
+  'satellite-fires': { name: 'Satellite Fire Detection', enabled: true, priority: 1 },
+  'live-webcams': { name: 'Live Weather Cams', enabled: true, priority: 2 },
+  monitors: { name: 'My Climate Monitors', enabled: true, priority: 2 },
+};
+
+const CLIMATE_MAP_LAYERS: MapLayers = {
+  // ALL geopolitical/finance/tech layers OFF:
+  iranAttacks: false, gpsJamming: false,
+  conflicts: false, bases: false, hotspots: false, nuclear: false,
+  irradiators: false, sanctions: false, economic: false, waterways: false,
+  cyberThreats: false, datacenters: false, protests: false, flights: false,
+  military: false, spaceports: false, minerals: false, ais: false,
+  cables: false, pipelines: false, outages: false,
+  ucdpEvents: false, displacement: false,
+  startupHubs: false, cloudRegions: false, accelerators: false,
+  techHQs: false, techEvents: false,
+  stockExchanges: false, financialCenters: false, centralBanks: false,
+  commodityHubs: false, gulfInvestments: false,
+  positiveEvents: false, kindness: false, happiness: false,
+  speciesRecovery: false, renewableInstallations: false,
+  tradeRoutes: false, travelDestinations: false,
+  // Climate-focused layers ON:
+  weather: true, natural: true, fires: true, climate: true, dayNight: true,
+};
+
+const CLIMATE_MOBILE_MAP_LAYERS: MapLayers = {
+  ...CLIMATE_MAP_LAYERS,
+  fires: false, climate: false, dayNight: false,
+};
+
+// ============================================
+// HEALTH VARIANT (Health Risk & Disease Monitoring)
+// Owner: Lucky — do not modify without sync
+// ============================================
+const HEALTH_PANELS: Record<string, PanelConfig> = {
+  map: { name: 'Global Health Risk Map', enabled: true, priority: 1 },
+  'live-news': { name: 'Health & Disease News', enabled: true, priority: 1 },
+  'security-advisories': { name: 'Health Advisories', enabled: true, priority: 1 },
+  climate: { name: 'Climate & Heat Stress', enabled: true, priority: 2 },
+  'satellite-fires': { name: 'Air Quality (Fires)', enabled: true, priority: 2 },
+  displacement: { name: 'Displacement & Health', enabled: true, priority: 2 },
+  monitors: { name: 'My Health Monitors', enabled: true, priority: 2 },
+};
+
+const HEALTH_MAP_LAYERS: MapLayers = {
+  // ALL geopolitical/finance/tech layers OFF:
+  iranAttacks: false, gpsJamming: false,
+  conflicts: false, bases: false, nuclear: false, irradiators: false,
+  sanctions: false, economic: false, waterways: false, cyberThreats: false,
+  datacenters: false, protests: false, flights: false, military: false,
+  spaceports: false, minerals: false, ais: false,
+  cables: false, pipelines: false, outages: false, weather: false,
+  ucdpEvents: false,
+  startupHubs: false, cloudRegions: false, accelerators: false,
+  techHQs: false, techEvents: false,
+  stockExchanges: false, financialCenters: false, centralBanks: false,
+  commodityHubs: false, gulfInvestments: false,
+  positiveEvents: false, kindness: false, happiness: false,
+  speciesRecovery: false, renewableInstallations: false,
+  tradeRoutes: false, travelDestinations: false, dayNight: false,
+  // Health-focused layers ON:
+  hotspots: true, natural: true, fires: true, displacement: true, climate: true,
+};
+
+const HEALTH_MOBILE_MAP_LAYERS: MapLayers = {
+  ...HEALTH_MAP_LAYERS,
+  fires: false, displacement: false, climate: false,
 };
 
 // ============================================
 // VARIANT-AWARE EXPORTS
 // ============================================
-export const DEFAULT_PANELS = SITE_VARIANT === 'happy' ? HAPPY_PANELS : SITE_VARIANT === 'tech' ? TECH_PANELS : SITE_VARIANT === 'finance' ? FINANCE_PANELS : FULL_PANELS;
-export const DEFAULT_MAP_LAYERS = SITE_VARIANT === 'happy' ? HAPPY_MAP_LAYERS : SITE_VARIANT === 'tech' ? TECH_MAP_LAYERS : SITE_VARIANT === 'finance' ? FINANCE_MAP_LAYERS : FULL_MAP_LAYERS;
-export const MOBILE_DEFAULT_MAP_LAYERS = SITE_VARIANT === 'happy' ? HAPPY_MOBILE_MAP_LAYERS : SITE_VARIANT === 'tech' ? TECH_MOBILE_MAP_LAYERS : SITE_VARIANT === 'finance' ? FINANCE_MOBILE_MAP_LAYERS : FULL_MOBILE_MAP_LAYERS;
+export const DEFAULT_PANELS = SITE_VARIANT === 'climate' ? CLIMATE_PANELS : SITE_VARIANT === 'health' ? HEALTH_PANELS : SITE_VARIANT === 'travel' ? TRAVEL_PANELS : SITE_VARIANT === 'happy' ? HAPPY_PANELS : SITE_VARIANT === 'tech' ? TECH_PANELS : SITE_VARIANT === 'finance' ? FINANCE_PANELS : FULL_PANELS;
+export const DEFAULT_MAP_LAYERS = SITE_VARIANT === 'climate' ? CLIMATE_MAP_LAYERS : SITE_VARIANT === 'health' ? HEALTH_MAP_LAYERS : SITE_VARIANT === 'travel' ? TRAVEL_MAP_LAYERS : SITE_VARIANT === 'happy' ? HAPPY_MAP_LAYERS : SITE_VARIANT === 'tech' ? TECH_MAP_LAYERS : SITE_VARIANT === 'finance' ? FINANCE_MAP_LAYERS : FULL_MAP_LAYERS;
+export const MOBILE_DEFAULT_MAP_LAYERS = SITE_VARIANT === 'climate' ? CLIMATE_MOBILE_MAP_LAYERS : SITE_VARIANT === 'health' ? HEALTH_MOBILE_MAP_LAYERS : SITE_VARIANT === 'travel' ? TRAVEL_MOBILE_MAP_LAYERS : SITE_VARIANT === 'happy' ? HAPPY_MOBILE_MAP_LAYERS : SITE_VARIANT === 'tech' ? TECH_MOBILE_MAP_LAYERS : SITE_VARIANT === 'finance' ? FINANCE_MOBILE_MAP_LAYERS : FULL_MOBILE_MAP_LAYERS;
 
 /** Maps map-layer toggle keys to their data-freshness source IDs (single source of truth). */
 export const LAYER_TO_SOURCE: Partial<Record<keyof MapLayers, DataSourceId[]>> = {
@@ -675,6 +795,20 @@ export const PANEL_CATEGORY_MAP: Record<string, { labelKey: string; panelKeys: s
     labelKey: 'header.panelCatGulfMena',
     panelKeys: ['gcc-investments', 'gccNews', 'monitors'],
     variants: ['finance'],
+  },
+
+  // Climate variant
+  climateCore: {
+    labelKey: 'header.panelCatClimateCore',
+    panelKeys: ['climate', 'satellite-fires', 'security-advisories', 'live-webcams', 'monitors'],
+    variants: ['climate'],
+  },
+
+  // Health variant
+  healthCore: {
+    labelKey: 'header.panelCatHealthCore',
+    panelKeys: ['security-advisories', 'climate', 'satellite-fires', 'displacement', 'monitors'],
+    variants: ['health'],
   },
 };
 

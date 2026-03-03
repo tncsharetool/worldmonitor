@@ -93,6 +93,8 @@
     "filterSources": "Filter sources...",
     "sourcesEnabled": "{{enabled}}/{{total}} enabled",
     "finance": "FINANCE",
+    "travel": "TRAVEL",
+    "weather": "WEATHER",
     "toggleTheme": "Toggle dark/light mode",
     "panelDisplayCaption": "Choose which panels to show on the dashboard",
     "tabGeneral": "General",
@@ -948,8 +950,8 @@
           "techEvents": "Major tech conferences and events",
           "techFires": "Active wildfires near tech infrastructure",
           "financeGulfInvestments": "GCC sovereign wealth fund investments and FDI",
-        "tradeRoutes": "Major global shipping lanes connecting ports through strategic chokepoints",
-        "dayNight": "Real-time solar terminator showing day and night zones"
+          "tradeRoutes": "Major global shipping lanes connecting ports through strategic chokepoints",
+          "dayNight": "Real-time solar terminator showing day and night zones"
         },
         "notes": {
           "timeAffects": "Affects: Earthquakes, Weather, Protests, Outages"
@@ -2104,6 +2106,12 @@
     "retry": "Retry",
     "retrying": "Retrying...",
     "refresh": "Refresh",
-    "all": "All"
+    "all": "All",
+    "donate": {
+      "title": "Love this app?",
+      "message": "Support the author to keep servers running",
+      "buyMeCoffee": "☕ Buy me a coffee",
+      "paypal": "💳 PayPal"
+    }
   }
 }

@@ -9,10 +9,10 @@ interface DesktopRuntimeInfo {
 }
 
 type UpdaterOutcome = 'no_update' | 'update_available' | 'open_failed' | 'fetch_failed';
-type DesktopBuildVariant = 'full' | 'tech' | 'finance';
+type DesktopBuildVariant = 'full' | 'tech' | 'finance' | 'travel' | 'weather' | 'climate' | 'health';
 
 const DESKTOP_BUILD_VARIANT: DesktopBuildVariant = (
-  import.meta.env.VITE_VARIANT === 'tech' || import.meta.env.VITE_VARIANT === 'finance'
+  import.meta.env.VITE_VARIANT === 'tech' || import.meta.env.VITE_VARIANT === 'finance' || import.meta.env.VITE_VARIANT === 'travel' || import.meta.env.VITE_VARIANT === 'weather' || import.meta.env.VITE_VARIANT === 'climate' || import.meta.env.VITE_VARIANT === 'health'
     ? import.meta.env.VITE_VARIANT
     : 'full'
 );
@@ -93,7 +93,7 @@ export class DesktopUpdater implements AppModule {
 
       const releaseUrl = typeof data.url === 'string' && data.url
         ? data.url
-        : 'https://github.com/koala73/worldmonitor/releases/latest';
+        : 'https://github.com/tncsharetool/worldmonitor/releases/latest';
       this.logUpdaterOutcome('update_available', { current, remote, dismissed: false });
       trackUpdateShown(current, remote);
       await this.showUpdateToast(remote, releaseUrl);

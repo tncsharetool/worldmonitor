@@ -90,6 +90,8 @@
     "filterSources": "Lọc nguồn...",
     "sourcesEnabled": "{{enabled}}/{{total}} đã bật",
     "finance": "TÀI CHÍNH",
+    "travel": "DU LỊCH",
+    "weather": "THỜI TIẾT",
     "toggleTheme": "Chuyển chế độ sáng/tối",
     "panelDisplayCaption": "Chọn bảng hiển thị trên bảng điều khiển",
     "tabGeneral": "Chung",
@@ -1988,6 +1990,12 @@
     "currentVariant": "(hiện tại)",
     "retry": "Thử lại",
     "refresh": "Làm mới",
-    "all": "Tất cả"
+    "all": "Tất cả",
+    "donate": {
+      "title": "Thích app này?",
+      "message": "Ủng hộ tác giả duy trì server",
+      "buyMeCoffee": "☕ Mua cho tôi một tách cà phê",
+      "paypal": "💳 PayPal"
+    }
   }
 }

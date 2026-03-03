@@ -115,3 +115,6 @@ export {
 
 // Gulf FDI investment database
 export { GULF_INVESTMENTS } from './gulf-fdi';
+
+// Travel destinations
+export { TRAVEL_DESTINATIONS, type TravelDestination } from './travel-destinations';

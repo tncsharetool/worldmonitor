@@ -14,7 +14,7 @@ import { getNaturalEventIcon } from '@/services/eonet';
 import { getHotspotEscalation, getEscalationChange24h } from '@/services/hotspot-escalation';
 import { getCableHealthRecord } from '@/services/cable-health';
 
-export type PopupType = 'conflict' | 'hotspot' | 'earthquake' | 'weather' | 'base' | 'waterway' | 'apt' | 'cyberThreat' | 'nuclear' | 'economic' | 'irradiator' | 'pipeline' | 'cable' | 'cable-advisory' | 'repair-ship' | 'outage' | 'datacenter' | 'datacenterCluster' | 'ais' | 'protest' | 'protestCluster' | 'flight' | 'militaryFlight' | 'militaryVessel' | 'militaryFlightCluster' | 'militaryVesselCluster' | 'natEvent' | 'port' | 'spaceport' | 'mineral' | 'startupHub' | 'cloudRegion' | 'techHQ' | 'accelerator' | 'techEvent' | 'techHQCluster' | 'techEventCluster' | 'techActivity' | 'geoActivity' | 'stockExchange' | 'financialCenter' | 'centralBank' | 'commodityHub' | 'iranEvent' | 'gpsJamming';
+export type PopupType = 'conflict' | 'hotspot' | 'earthquake' | 'weather' | 'base' | 'waterway' | 'apt' | 'cyberThreat' | 'nuclear' | 'economic' | 'irradiator' | 'pipeline' | 'cable' | 'cable-advisory' | 'repair-ship' | 'outage' | 'datacenter' | 'datacenterCluster' | 'ais' | 'protest' | 'protestCluster' | 'flight' | 'militaryFlight' | 'militaryVessel' | 'militaryFlightCluster' | 'militaryVesselCluster' | 'natEvent' | 'port' | 'spaceport' | 'mineral' | 'startupHub' | 'cloudRegion' | 'techHQ' | 'accelerator' | 'techEvent' | 'techHQCluster' | 'techEventCluster' | 'techActivity' | 'geoActivity' | 'stockExchange' | 'financialCenter' | 'centralBank' | 'commodityHub' | 'iranEvent' | 'gpsJamming' | 'travelDestination';
 
 interface TechEventPopupData {
   id: string;
@@ -144,7 +144,7 @@ interface DatacenterClusterData {
 
 interface PopupData {
   type: PopupType;
-  data: ConflictZone | Hotspot | Earthquake | WeatherAlert | MilitaryBase | StrategicWaterway | APTGroup | CyberThreat | NuclearFacility | EconomicCenter | GammaIrradiator | Pipeline | UnderseaCable | CableAdvisory | RepairShip | InternetOutage | AIDataCenter | AisDisruptionEvent | SocialUnrestEvent | AirportDelayAlert | MilitaryFlight | MilitaryVessel | MilitaryFlightCluster | MilitaryVesselCluster | NaturalEvent | Port | Spaceport | CriticalMineralProject | StartupHub | CloudRegion | TechHQ | Accelerator | TechEventPopupData | TechHQClusterData | TechEventClusterData | ProtestClusterData | DatacenterClusterData | TechHubActivity | GeoHubActivity | StockExchangePopupData | FinancialCenterPopupData | CentralBankPopupData | CommodityHubPopupData | IranEventPopupData | GpsJammingPopupData;
+  data: ConflictZone | Hotspot | Earthquake | WeatherAlert | MilitaryBase | StrategicWaterway | APTGroup | CyberThreat | NuclearFacility | EconomicCenter | GammaIrradiator | Pipeline | UnderseaCable | CableAdvisory | RepairShip | InternetOutage | AIDataCenter | AisDisruptionEvent | SocialUnrestEvent | AirportDelayAlert | MilitaryFlight | MilitaryVessel | MilitaryFlightCluster | MilitaryVesselCluster | NaturalEvent | Port | Spaceport | CriticalMineralProject | StartupHub | CloudRegion | TechHQ | Accelerator | TechEventPopupData | TechHQClusterData | TechEventClusterData | ProtestClusterData | DatacenterClusterData | TechHubActivity | GeoHubActivity | StockExchangePopupData | FinancialCenterPopupData | CentralBankPopupData | CommodityHubPopupData | IranEventPopupData | GpsJammingPopupData | any;
   relatedNews?: NewsItem[];
   x: number;
   y: number;
@@ -456,9 +456,44 @@ export class MapPopup {
         return this.renderIranEventPopup(data.data as IranEventPopupData);
       case 'gpsJamming':
         return this.renderGpsJammingPopup(data.data as GpsJammingPopupData);
+      case 'travelDestination':
+        return this.renderTravelDestinationPopup(data.data as any);
       default:
         return '';
     }
+  }
+
+  private renderTravelDestinationPopup(dest: any): string {
+    return `
+      <div class="popup-header hotspot">
+        <span class="popup-title">${escapeHtml(dest.emoji)} ${escapeHtml(dest.name.toUpperCase())}</span>
+        <span class="popup-badge medium">${escapeHtml(dest.region)}</span>
+        <button class="popup-close">×</button>
+      </div>
+      <div class="popup-body">
+        <p class="popup-description">${escapeHtml(dest.description || 'Bucket-list destination.')}</p>
+        <div class="popup-stats">
+          <div class="popup-stat">
+            <span class="stat-label">Safety</span>
+            <span class="stat-value">${escapeHtml(dest.safetyLevel || 'Normal')}</span>
+          </div>
+          <div class="popup-stat">
+            <span class="stat-label">Best To Visit</span>
+            <span class="stat-value">${escapeHtml(dest.bestMonths || 'All year')}</span>
+          </div>
+        </div>
+        <div class="popup-section why-matters-section">
+          <span class="section-label">Top Attractions</span>
+          <div class="popup-tags">
+            ${(dest.tags || []).map((t: string) => `<span class="popup-tag">${escapeHtml(t)}</span>`).join('')}
+          </div>
+        </div>
+        <div class="popup-section" style="margin-top:16px;">
+          <a href="${sanitizeUrl(`https://www.google.com/search?q=flights+to+${dest.name}`)}" target="_blank" class="popup-link" style="display:block;margin-bottom:8px;padding:8px;background:var(--bg-elevated);border-radius:6px;text-align:center;">✈️ Find Flights to ${escapeHtml(dest.name)}</a>
+          <a href="${sanitizeUrl(`https://www.booking.com/searchresults.html?ss=${dest.name}`)}" target="_blank" class="popup-link" style="display:block;padding:8px;background:var(--bg-elevated);border-radius:6px;text-align:center;">🏨 Book Hotels in ${escapeHtml(dest.name)}</a>
+        </div>
+      </div>
+    `;
   }
 
   private renderConflictPopup(conflict: ConflictZone): string {
@@ -1242,8 +1277,8 @@ export class MapPopup {
       ? marketStatus === 'open'
         ? t('popups.open')
         : marketStatus === 'closed'
-        ? t('popups.economic.closed')
-        : t('popups.unknown')
+          ? t('popups.economic.closed')
+          : t('popups.unknown')
       : '';
 
     return `
@@ -1852,8 +1887,8 @@ export class MapPopup {
     const daysLabel = event.daysUntil === 0
       ? t('popups.techEvent.days.today')
       : event.daysUntil === 1
-      ? t('popups.techEvent.days.tomorrow')
-      : t('popups.techEvent.days.inDays', { count: String(event.daysUntil) });
+        ? t('popups.techEvent.days.tomorrow')
+        : t('popups.techEvent.days.inDays', { count: String(event.daysUntil) });
 
     return `
       <div class="popup-header tech-event ${urgencyClass}">
@@ -2605,11 +2640,11 @@ export class MapPopup {
           <span class="section-label">${t('popups.iranEvent.relatedEvents')}</span>
           <ul class="cluster-list">
             ${event.relatedEvents.map(r => {
-              const rSev = this.normalizeSeverity(r.severity);
-              const rTime = r.timestamp ? this.getTimeAgo(new Date(r.timestamp)) : '';
-              const rTitle = r.title.length > 60 ? r.title.slice(0, 60) + '…' : r.title;
-              return `<li class="cluster-item"><span class="popup-badge ${rSev}" style="font-size:9px;padding:1px 4px;">${escapeHtml(rSev.toUpperCase())}</span> ${escapeHtml(rTitle)}${rTime ? ` <span style="color:var(--text-muted);font-size:10px;">${escapeHtml(rTime)}</span>` : ''}</li>`;
-            }).join('')}
+      const rSev = this.normalizeSeverity(r.severity);
+      const rTime = r.timestamp ? this.getTimeAgo(new Date(r.timestamp)) : '';
+      const rTitle = r.title.length > 60 ? r.title.slice(0, 60) + '…' : r.title;
+      return `<li class="cluster-item"><span class="popup-badge ${rSev}" style="font-size:9px;padding:1px 4px;">${escapeHtml(rSev.toUpperCase())}</span> ${escapeHtml(rTitle)}${rTime ? ` <span style="color:var(--text-muted);font-size:10px;">${escapeHtml(rTime)}</span>` : ''}</li>`;
+    }).join('')}
           </ul>
         </div>` : '';
 

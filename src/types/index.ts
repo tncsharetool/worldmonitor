@@ -545,6 +545,8 @@ export interface MapLayers {
   iranAttacks: boolean;
   // GPS/GNSS interference layer
   gpsJamming: boolean;
+  // Travel & Leisure layer
+  travelDestinations: boolean;
   // Overlay layers
   dayNight: boolean;
 }

@@ -57,6 +57,7 @@ export class App {
 
   private modules: { destroy(): void }[] = [];
   private unsubAiFlow: (() => void) | null = null;
+  private variantChanged: boolean = false;
 
   constructor(containerId: string) {
     const el = document.getElementById(containerId);
@@ -79,7 +80,8 @@ export class App {
     const storedVariant = localStorage.getItem('worldmonitor-variant');
     const currentVariant = SITE_VARIANT;
     console.log(`[App] Variant check: stored="${storedVariant}", current="${currentVariant}"`);
-    if (storedVariant !== currentVariant) {
+    this.variantChanged = storedVariant !== currentVariant;
+    if (this.variantChanged) {
       // Variant changed - use defaults for new variant, clear old settings
       console.log('[App] Variant changed - resetting to defaults');
       localStorage.setItem('worldmonitor-variant', currentVariant);
@@ -180,7 +182,8 @@ export class App {
     }
 
     let initialUrlState: ParsedMapUrlState | null = parseMapUrlState(window.location.search, mapLayers);
-    if (initialUrlState.layers) {
+    // Only apply URL layers if variant didn't change (preserve variant defaults on switch)
+    if (initialUrlState.layers && storedVariant === currentVariant) {
       if (currentVariant === 'tech') {
         const geoLayers: (keyof MapLayers)[] = ['conflicts', 'bases', 'hotspots', 'nuclear', 'irradiators', 'sanctions', 'military', 'protests', 'pipelines', 'waterways', 'ais', 'flights', 'spaceports', 'minerals'];
         const urlLayers = initialUrlState.layers;
@@ -197,6 +200,10 @@ export class App {
         });
       }
       mapLayers = initialUrlState.layers;
+    } else if (storedVariant !== currentVariant) {
+      // Variant changed - clear URL state to prevent old layer params from overriding defaults
+      console.log('[App] Variant changed - ignoring URL layer params, using variant defaults');
+      initialUrlState.layers = undefined;
     }
     if (!CYBER_LAYER_ENABLED) {
       mapLayers.cyberThreats = false;
@@ -386,6 +393,11 @@ export class App {
     this.eventHandlers.init();
     // Capture ?country= BEFORE URL sync overwrites it
     const initState = parseMapUrlState(window.location.search, this.state.mapLayers);
+    // If variant changed, don't apply URL layers from old variant
+    if (this.variantChanged) {
+      console.log('[App] Variant changed - ignoring URL layer params in init');
+      initState.layers = undefined;
+    }
     this.pendingDeepLinkCountry = initState.country ?? null;
     this.eventHandlers.setupUrlStateSync();
 

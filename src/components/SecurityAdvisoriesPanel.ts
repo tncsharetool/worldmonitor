@@ -2,6 +2,7 @@ import { Panel } from './Panel';
 import { escapeHtml } from '@/utils/sanitize';
 import { t } from '@/services/i18n';
 import type { SecurityAdvisory } from '@/services/security-advisories';
+import { SITE_VARIANT } from '@/config';
 
 type AdvisoryFilter = 'all' | 'critical' | 'US' | 'AU' | 'UK' | 'NZ' | 'health';
 
@@ -161,6 +162,31 @@ export class SecurityAdvisoriesPanel extends Panel {
         const levelCls = this.getLevelClass(a.level);
         const levelLabel = this.getLevelLabel(a.level);
         const flag = this.getSourceFlag(a.sourceCountry);
+        let affiliateLinks = '';
+        if (SITE_VARIANT === 'travel' || SITE_VARIANT === 'full') {
+          const query = encodeURIComponent(a.title.replace(/Travel Advisory/i, '').trim() || 'destination');
+          if (a.level === 'normal' || a.level === 'caution') {
+            affiliateLinks = `
+              <div class="sa-affiliates" style="margin-top: 8px; display: flex; gap: 8px;">
+                <a href="${escapeHtml(`https://www.booking.com/searchresults.html?ss=${query}`)}" target="_blank" class="sa-affiliate-link" style="font-size: 12px; color: var(--text-primary); text-decoration: none; padding: 4px 8px; background: var(--bg-elevated); border-radius: 4px; transition: background 0.2s;">🏨 Hotels</a>
+                <a href="${escapeHtml(`https://www.google.com/search?q=flights+to+${query}`)}" target="_blank" class="sa-affiliate-link" style="font-size: 12px; color: var(--text-primary); text-decoration: none; padding: 4px 8px; background: var(--bg-elevated); border-radius: 4px; transition: background 0.2s;">✈️ Flights</a>
+              </div>
+            `;
+          } else if (a.level === 'reconsider') {
+            affiliateLinks = `
+              <div class="sa-affiliates" style="margin-top: 8px; display: flex; gap: 8px;">
+                <a href="https://www.worldnomads.com/travel-insurance" target="_blank" class="sa-affiliate-link" style="font-size: 12px; color: var(--text-primary); text-decoration: none; padding: 4px 8px; background: var(--bg-elevated); border-radius: 4px; border: 1px solid var(--semantic-elevated);">🛡️ Travel Insurance</a>
+                <a href="${escapeHtml(`https://www.google.com/search?q=flights+to+${query}`)}" target="_blank" class="sa-affiliate-link" style="font-size: 12px; color: var(--text-primary); text-decoration: none; padding: 4px 8px; background: var(--bg-elevated); border-radius: 4px;">✈️ Flights</a>
+              </div>
+            `;
+          } else if (a.level === 'do-not-travel') {
+            affiliateLinks = `
+              <div class="sa-affiliates" style="margin-top: 8px; display: flex; gap: 8px;">
+                <a href="https://www.worldnomads.com/travel-insurance" target="_blank" class="sa-affiliate-link" style="font-size: 12px; color: var(--text-inverse); text-decoration: none; padding: 4px 8px; background: var(--semantic-critical); border-radius: 4px; font-weight: bold;">🛡️ Extreme Risk Insurance</a>
+              </div>
+            `;
+          }
+        }
 
         return `<div class="sa-item ${levelCls}">
           <div class="sa-item-header">
@@ -169,25 +195,26 @@ export class SecurityAdvisoriesPanel extends Panel {
           </div>
           <a href="${escapeHtml(a.link)}" target="_blank" rel="noopener" class="sa-title">${escapeHtml(a.title)}</a>
           <div class="sa-time">${this.formatTime(a.pubDate)}</div>
+          ${affiliateLinks}
         </div>`;
       }).join('');
     }
 
     const footerHtml = `
-      <div class="sa-footer">
-        <span class="sa-footer-source">${t('components.securityAdvisories.sources')}</span>
-        <button class="sa-refresh-btn">${t('components.securityAdvisories.refresh')}</button>
-      </div>
-    `;
+              < div class="sa-footer" >
+                <span class="sa-footer-source" > ${t('components.securityAdvisories.sources')} </span>
+                  < button class="sa-refresh-btn" > ${t('components.securityAdvisories.refresh')} </button>
+                    </div>
+                      `;
 
     this.setContent(`
-      <div class="sa-panel-content">
-        ${summaryHtml}
+                    < div class="sa-panel-content" >
+                      ${summaryHtml}
         ${filtersHtml}
-        <div class="sa-list">${itemsHtml}</div>
+            <div class="sa-list" > ${itemsHtml} </div>
         ${footerHtml}
-      </div>
-    `);
+            </div>
+              `);
   }
 
   public setRefreshHandler(handler: () => void): void {

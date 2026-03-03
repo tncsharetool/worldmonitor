@@ -46,7 +46,7 @@ spaces.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the project maintainer at **[GitHub Issues](https://github.com/koala73/worldmonitor/issues)** or by contacting the
+reported to the project maintainer at **[GitHub Issues](https://github.com/tncsharetool/worldmonitor/issues)** or by contacting the
 repository owner directly through GitHub.
 
 All complaints will be reviewed and investigated promptly and fairly. The project
@@ -117,3 +117,8 @@ For answers to common questions about this code of conduct, see the FAQ at
 [Mozilla CoC]: https://github.com/mozilla/diversity
 [FAQ]: https://www.contributor-covenant.org/faq
 [translations]: https://www.contributor-covenant.org/translations
+---
+
+## Acknowledgment of Original Work
+
+This project was originally created by **[Elie Habib](https://github.com/koala73)** (@eliehabib). The foundational architecture, community culture, and code of conduct principles were established under his leadership. We are grateful for his vision and continue to uphold the same values of openness, inclusivity, and technical excellence.
