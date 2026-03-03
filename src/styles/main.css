@@ -15976,3 +15976,177 @@ body.has-breaking-alert .panels-grid {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+   /* ============================================
+   VARIANT HERO LANDING SECTIONS
+   travel / weather / health / sports
+   ============================================ */
+
+.variant-hero {
+  position: relative;
+  width: 100%;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.variant-hero .hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.18;
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px) saturate(1.4);
+}
+
+.travel-hero .hero-bg { background: radial-gradient(ellipse at 30% 50%, #1a6bff 0%, #0a2a6e 50%, #000 100%); opacity: 0.35; }
+.weather-hero .hero-bg { background: radial-gradient(ellipse at 60% 40%, #1e90ff 0%, #0d3b6e 50%, #000 100%); opacity: 0.35; }
+.health-hero .hero-bg { background: radial-gradient(ellipse at 40% 60%, #00c897 0%, #005a40 50%, #000 100%); opacity: 0.35; }
+.sports-hero .hero-bg { background: radial-gradient(ellipse at 50% 50%, #ff6b00 0%, #7a2d00 50%, #000 100%); opacity: 0.35; }
+
+.variant-hero .hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 32px;
+  text-align: center;
+}
+
+.hero-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent, #4af);
+  border: 1px solid var(--accent, #4af);
+  border-radius: 20px;
+  padding: 4px 14px;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.variant-hero h1 {
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #fff;
+  margin: 0 0 16px;
+  letter-spacing: -0.5px;
+}
+
+.variant-hero h1 span {
+  background: linear-gradient(135deg, #4af 0%, #07f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.travel-hero h1 span { background: linear-gradient(135deg, #60c0ff 0%, #4488ff 100%); -webkit-background-clip: text; background-clip: text; }
+.weather-hero h1 span { background: linear-gradient(135deg, #87ceeb 0%, #1e90ff 100%); -webkit-background-clip: text; background-clip: text; }
+.health-hero h1 span { background: linear-gradient(135deg, #00e5a0 0%, #00a870 100%); -webkit-background-clip: text; background-clip: text; }
+.sports-hero h1 span { background: linear-gradient(135deg, #ff9f43 0%, #ee5a24 100%); -webkit-background-clip: text; background-clip: text; }
+
+.variant-hero p {
+  font-size: 16px;
+  color: var(--text-secondary, #aaa);
+  max-width: 600px;
+  margin: 0 auto 32px;
+  line-height: 1.7;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-secondary, #888);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-cta .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 28px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.hero-cta .btn-primary:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.4);
+  transform: translateY(-1px);
+}
+
+.hero-cta .btn-aff {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 28px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.travel-hero .btn-aff { background: linear-gradient(135deg, #1a6bff, #0044cc); }
+.weather-hero .btn-aff { background: linear-gradient(135deg, #1e90ff, #005bb5); }
+.health-hero .btn-aff { background: linear-gradient(135deg, #00c897, #007a5c); }
+.sports-hero .btn-aff { background: linear-gradient(135deg, #ff6b00, #cc4400); }
+
+.hero-cta .btn-aff:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+@media (max-width: 600px) {
+  .variant-hero .hero-content { padding: 32px 16px; }
+  .variant-hero h1 { font-size: 26px; }
+  .hero-stats { gap: 20px; }
+  .stat-num { font-size: 22px; }
+  .hero-cta { flex-direction: column; align-items: center; }
+}
