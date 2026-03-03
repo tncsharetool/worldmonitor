@@ -1060,14 +1060,14 @@ export class DeckGLMap {
       }
     }
 
-    // Earthquakes layer + ghost for easier picking
-    if (mapLayers.natural && filteredEarthquakes.length > 0) {
+    // Earthquakes layer + ghost for easier picking (supports both 'natural' and 'earthquakes' layer types)
+    if ((mapLayers.natural || mapLayers.earthquakes) && filteredEarthquakes.length > 0) {
       layers.push(this.createEarthquakesLayer(filteredEarthquakes));
       layers.push(this.createGhostLayer('earthquakes-layer', filteredEarthquakes, d => [d.location?.longitude ?? 0, d.location?.latitude ?? 0], { radiusMinPixels: 12 }));
     }
 
-    // Natural events layer
-    if (mapLayers.natural && filteredNaturalEvents.length > 0) {
+    // Natural events layer (supports both 'natural' and 'naturalDisasters' layer types)
+    if ((mapLayers.natural || mapLayers.naturalDisasters) && filteredNaturalEvents.length > 0) {
       layers.push(this.createNaturalEventsLayer(filteredNaturalEvents));
     }
 
@@ -1082,8 +1082,8 @@ export class DeckGLMap {
       layers.push(this.createGhostLayer('iran-events-layer', this.iranEvents, d => [d.longitude, d.latitude], { radiusMinPixels: 12 }));
     }
 
-    // Weather alerts layer
-    if (mapLayers.weather && filteredWeatherAlerts.length > 0) {
+    // Weather alerts layer (supports both 'weather' and 'weatherAlerts' layer types)
+    if ((mapLayers.weather || mapLayers.weatherAlerts) && filteredWeatherAlerts.length > 0) {
       layers.push(this.createWeatherLayer(filteredWeatherAlerts));
     }
 
