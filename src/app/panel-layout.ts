@@ -144,7 +144,7 @@ export class PanelLayoutManager implements AppModule {
             </a>
             <span class="variant-divider"></span>
             
-            <a href="${vHref('travel', 'https://travel.breaths.live')}"
+            <a href="${vHref('travel', 'https://travel.breaths.me')}"
                class="variant-option ${SITE_VARIANT === 'travel' ? 'active' : ''}"
                data-variant="travel"
                ${vTarget('travel')}
@@ -154,7 +154,7 @@ export class PanelLayoutManager implements AppModule {
             </a>
             <span class="variant-divider"></span>
 
-            <a href="${vHref('climate', 'https://weather.breaths.live')}"
+            <a href="${vHref('climate', 'https://weather.breaths.me')}"
                class="variant-option ${SITE_VARIANT === 'climate' ? 'active' : ''}"
                data-variant="climate"
                ${vTarget('climate')}
@@ -164,7 +164,7 @@ export class PanelLayoutManager implements AppModule {
             </a>
             <span class="variant-divider"></span>
 
-            <a href="${vHref('health', 'https://health.breaths.live')}"
+            <a href="${vHref('health', 'https://health.breaths.me')}"
                class="variant-option ${SITE_VARIANT === 'health' ? 'active' : ''}"
                data-variant="health"
                ${vTarget('health')}
@@ -174,7 +174,7 @@ export class PanelLayoutManager implements AppModule {
             </a>
             <span class="variant-divider"></span>
 
-            <a href="${vHref('sports', 'https://sports.breaths.live')}"
+            <a href="${vHref('sports', 'https://sports.breaths.me')}"
                class="variant-option ${SITE_VARIANT === 'sports' ? 'active' : ''}"
                data-variant="sports"
                ${vTarget('sports')}
